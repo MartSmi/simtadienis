@@ -63,5 +63,5 @@ typings/
 package-lock.json
 db_cr
 
-#Visual studio condfiguration files
+# Visual studio code editor configuration files
 .vscode
