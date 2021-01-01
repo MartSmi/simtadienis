@@ -1,0 +1,63 @@
+extends layout
+
+append scripts
+  script(src='/javascripts/admin/main.js')
+
+block content
+  main.container.pt-4
+    .row
+      .col-4
+        h2.mb-3 Add user
+        form#form-add-user
+          .form-group
+            label(for='full-name') Full name
+            input#full-name.form-control.form-control-sm(type='text' name='full_name' maxlength='60' required)
+          .form-group
+            label(for='klase') Class
+            input#klase.form-control.form-control-sm(type='text' name='klase' maxlength='4')
+          .form-group
+            label(for='username') Username
+            input#username.form-control.form-control-sm(type='text' name='username' maxlength='50' required)
+          .form-group
+            label(for='password') Password
+            input#password.form-control.form-control-sm(type='password' name='password' required)
+          .form-group
+            label(for='balance') Balance
+            input#balance.form-control.form-control-sm(type='number' name='balance' value='0' required)
+          .form-check
+            input#can-send.form-check-input(type='checkbox' name='can_send' value='1' checked)
+            label.form-check-label(for='can-send') Can make transfers
+          .form-check
+            input#can-receive.form-check-input(type='checkbox' name='can_receive' value='1' checked)
+            label.form-check-label(for='can-receive') Can receive transfers
+          .form-check
+            input#is-station.form-check-input(type='checkbox' name='is_station' value='1')
+            label.form-check-label(for='is-station') Station
+          .form-group.form-check
+            input#is-frozen.form-check-input(type='checkbox' name='is_frozen' value='1')
+            label.form-check-label(for='is-frozen') Frozen
+          button.btn.btn-primary(type='submit') Submit
+        #add-user-success-template.mt-3.alert.alert-success.alert-dismissible.fade.show.d-none
+          | User <span class="alrt-username"></span> successfully added.
+          button.close(type='button' data-dismiss='alert')
+            span &times;
+        #add-user-failure-template.mt-3.alert.alert-danger.alert-dismissible.fade.show.d-none
+          <span class="alrt-error-type"></span> while adding user <span class="alrt-username"></span>: <span class="alrt-error"></span>
+          button.close(type='button' data-dismiss='alert')
+            span &times;
+      .col-8
+        h2.mb-3 Add users in bulk
+        form#form-add-users-bulk(method='post' action='/admin-action/add-users-bulk')
+          .form-group
+            label(for='bulk-csv') CSV data
+            textarea#bulk-csv.form-control(rows='18' name='table')
+          button.btn.btn-primary(type='submit') Submit
+    hr
+    div.mb-2.buttons
+      a.btn.btn-outline-dark(href='/admin/users' target='_blank') Users
+      a.btn.btn-outline-dark(href='/admin/transactions' target='_blank') Transactions
+    div.buttons
+      form(method='post' action='/admin/logout')
+        button.btn.btn-outline-danger(type='submit') Log out
+      form(method='post' action='/admin-action/destroy-all-admin-sessions')
+        button.btn.btn-outline-danger(type='submit') Destroy all admin sessions

@@ -1,0 +1,30 @@
+extends layout
+
+append scripts
+  script(src='/javascripts/admin/transactions.js')
+
+block content
+  main.container.pt-3
+    h1.mb-4 Transactions
+    table.table.table-hover
+      thead
+        tr
+          th ID
+          th From
+          th To
+          th Amount
+          th Time
+          th Actions
+      tbody
+        each t in transactions
+          tr(class=t.reverted ? 'reverted' : '')
+            th= t.id
+            td(title=`ID: ${t.from_id}`)= t.from
+            td(title=`ID: ${t.to_id}`)= t.to
+            td= t.amount
+            td= t.time
+            td
+              if !t.reverted
+                button.btn.btn-sm.btn-danger.revert(data-id=t.id) Revert
+              else
+                button.btn.btn-sm.btn-success.unrevert(data-id=t.id) Unrevert

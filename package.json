@@ -1,0 +1,30 @@
+{
+  "name": "bankas",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./server.js"
+  },
+  "dependencies": {
+    "app-root-path": "^2.1.0",
+    "bcrypt": "^3.0.4",
+    "cluster-service": "^2.1.2",
+    "cookie-parser": "~1.4.3",
+    "csv-parse": "^4.3.3",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.4",
+    "express-mysql-session": "^2.1.5",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.1",
+    "helmet": "^3.15.1",
+    "http-errors": "~1.6.2",
+    "morgan": "~1.9.0",
+    "mysql": "^2.18.1",
+    "pug": "^2.0.3",
+    "q": "^1.5.1",
+    "split": "^1.0.1",
+    "validator": "^10.11.0",
+    "winston": "^3.2.1"
+  }
+}

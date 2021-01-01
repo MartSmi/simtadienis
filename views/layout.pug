@@ -1,0 +1,16 @@
+doctype html
+html(lang='lt')
+  head
+    title= title
+    block meta
+      meta(charset='utf-8')
+      meta(name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no")
+      meta(name='robots' content='noindex')
+    block stylesheets
+      link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
+      link(rel='stylesheet' href='/stylesheets/style.css')
+    block scripts
+      script(src='https://code.jquery.com/jquery-3.3.1.min.js' integrity='sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT' crossorigin='anonymous')
+      script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js', integrity='sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o', crossorigin='anonymous')
+  body
+    block content

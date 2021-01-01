@@ -1,0 +1,55 @@
+extends layout
+
+append scripts
+  script(src='/javascripts/admin/users.js')
+
+block content
+  main.container-fluid.pt-3
+    h1 Users
+    table.table.table-hover.mt-4
+      thead
+        tr
+          th ID
+          th Username
+          th Full name
+          th Class
+          th Balance
+          th Can send?
+          th Can receive?
+          th Station?
+          th Frozen?
+          th Actions
+      tbody
+        each user in users
+          tr
+            th.id= user.id
+            td= user.username
+            td= user.full_name
+            td= user.klase
+            td= user.balance
+            if user.can_send
+              td.text-success &#x2713;
+            else
+              td.text-warning &#x2717;
+              
+            if user.can_receive
+              td.text-success &#x2713;
+            else
+              td.text-warning &#x2717;
+
+            if user.is_station
+              td &#x2713;
+            else
+              td
+
+            td.frozen.text-danger
+              if user.is_frozen
+                | &#x2713;
+
+            td
+              button.change-password.btn.btn-sm.btn-dark Change password
+              button.destroy-sessions.btn.btn-sm.btn-warning.ml-2 Destroy sessions
+              if user.is_frozen
+                button.unfreeze.btn.btn-sm.btn-success.ml-2 Unfreeze
+              else
+                button.freeze.btn.btn-sm.btn-danger.ml-2 Freeze
