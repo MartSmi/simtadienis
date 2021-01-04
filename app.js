@@ -17,6 +17,7 @@ var accountRouter = require('./routes/account');
 var accountActionRouter = require('./routes/account-action');
 var adminRouter = require('./routes/admin');
 var adminActionRouter = require('./routes/admin-action');
+var rockPaperScissorsRouter = require('./routes/games/rock-paper-scissors');
 
 var app = express();
 
@@ -58,7 +59,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(
   session({
     cookie: {
-      secure: false, // set to false if using localhost TODO: make auto change 
+      secure: false, // set to false if using localhost TODO: make auto change
       maxAge: 86400000,
     },
     name: 'bankas_session',
@@ -85,6 +86,7 @@ app.use('/account', accountRouter);
 app.use('/account-action', accountActionRouter);
 app.use('/admin', adminRouter);
 app.use('/admin-action', adminActionRouter);
+app.use('/games/rock_paper_scissors', rockPaperScissorsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

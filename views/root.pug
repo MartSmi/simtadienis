@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  nav.navbar.navbar-expand-lg.navbar-light.bg-light
+    a.navbar-brand(href='#') Šimtadienis
+    button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
+    span.navbar-toggler-icon
+    ul.navbar-nav
+      li.nav-item
+        a.nav-link(href='/account') Account
+  .container.mt-5
+    .row
+      .col
+        h1 Žaidimai
+    .row
+      .col Among us
+    .row
+      .col
+        a(href="/games/rock_paper_scissors") Rock paper scissors
+    .row
+      .col Catch
