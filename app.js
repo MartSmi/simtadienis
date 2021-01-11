@@ -86,7 +86,7 @@ app.use('/account', accountRouter);
 app.use('/account-action', accountActionRouter);
 app.use('/admin', adminRouter);
 app.use('/admin-action', adminActionRouter);
-app.use('/games/rock_paper_scissors', gameRockPaperScissorsRouter);
+//app.use('/games/rock_paper_scissors', gameRockPaperScissorsRouter);
 app.use('/games/pacman', gamePacman);
 
 // catch 404 and forward to error handler
