@@ -17,7 +17,7 @@ var accountRouter = require('./routes/account');
 var accountActionRouter = require('./routes/account-action');
 var adminRouter = require('./routes/admin');
 var adminActionRouter = require('./routes/admin-action');
-var rockPaperScissorsRouter = require('./routes/games/rock-paper-scissors');
+var gamePacman = require('./routes/games/pacman');
 
 var app = express();
 
@@ -86,7 +86,8 @@ app.use('/account', accountRouter);
 app.use('/account-action', accountActionRouter);
 app.use('/admin', adminRouter);
 app.use('/admin-action', adminActionRouter);
-app.use('/games/rock_paper_scissors', rockPaperScissorsRouter);
+app.use('/games/rock_paper_scissors', gameRockPaperScissorsRouter);
+app.use('/games/pacman', gamePacman);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
