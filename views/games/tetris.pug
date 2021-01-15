@@ -2,8 +2,8 @@ extends ../layout
 
 block content
 
-  div(style={user-select:'none', color:'#fff', background-image:url('/images/games/tetris/siena.jpg'), background-repeat: 'no-repeat', background-attachment: 'fixed', background-position: '38% 85%', background-size: '50%'; font: '17px georgia'})
-    div(style={display: 'table', margin: '0 auto'})
+  div(style={'user-select': 'none', color: '#fff', 'background-image': 'url("/images/games/tetris/siena.jpg")', 'background-repeat': 'no-repeat', 'background-attachment': 'fixed', 'background-position': '38% 85%', 'background-size': '50%', font: '17px georgia'})
+    div(style={display:'table', margin:'0 auto'})
       canvas#tetris-canvas.canvas(width='520' height='600')
       div(style={padding:'0px 30px 15px 30px'})
         label(for='level-input') Start level:
