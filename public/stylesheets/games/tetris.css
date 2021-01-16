@@ -1,0 +1,38 @@
+#div1 {
+    user-select:none; 
+    color:#fff; 
+    background-image:url("/images/games/tetris/siena.jpg");
+    background-repeat: no-repeat; 
+    background-attachment: fixed; 
+    background-position: 38% 85%; 
+    background-size: 50%; 
+    font:17px georgia;
+}
+#div2 {
+    display:table; 
+    margin:0 auto;
+}
+#div3 {
+    padding: 0px 30px 15px 30px;
+}
+
+#gameScreen {
+    border: 1px solid black;
+}
+img {
+    display: none;
+}
+  
+
+<div >
+    <div style=''>
+      <canvas id='tetris-canvas' class='canvas' width='520' height='600'></canvas>
+      <div style=''>
+        <label for='level-input'>Start level:</label>
+        <input id='level-input' name='level-input' type='number' min='0' max='19' value='5'></input>
+        <button id='start-stop-btn'>Play/Pause</button>
+        <button id='quit-btn'>Quit</button>
+      </div>
+    </div>
+  </div>
+</body>
