@@ -1,4 +1,4 @@
-// Pabaigos sąlyga - 166 eilutėje
+// Pabaigos sąlyga - 166 eilutėje, pabaigos veiksmai apie 80 eilute.
 // Sorry už plagijavimą
 /*
 Create by Learn Web Developement
@@ -54,7 +54,6 @@ left.src = "audio/left.mp3";
 down.src = "audio/down.mp3";
 
 // create the snake
-
 let snake = [];
 
 snake[0] = {
@@ -74,10 +73,27 @@ let food = {
 let score = 0;
 
 //control the snake
-
 let d;
 
 document.addEventListener("keydown",direction);
+
+function mirtis(){
+    clearInterval(game);
+    ctx.fillStyle = "black";
+    ctx.font = "45px Changa one";
+     ctx.fillText("Deja",10*box,10*box);
+    dead.play();
+
+
+    ///čia skaičiuojam rezultątą ir visą kitą
+
+
+
+    setTimeout(() => {  location.reload(); }, 2000);
+
+}
+
+let veikia =1;
 
 function direction(event){
     let key = event.keyCode;
@@ -94,6 +110,15 @@ function direction(event){
         d = "DOWN";
         down.play();
     }
+    else if(key == 82){
+        mirtis();
+    }
+    else if(key == 32){
+        if(veikia==1)veikia=0;
+        else veikia=1;
+        dead.play();
+    }
+
 }
 
 // cheack collision function
@@ -113,15 +138,17 @@ var naujas = Math.floor(Math.random() * kiek);
 let segmentai =[];
 // draw everything to the canvas
 function draw(){
+    //let key = keyCode;
+    //if(key==32)veikia=0;
+    if(veikia ==1){
     ctx.drawImage(ground,0,0);
     ctx.drawImage(licejus,20,17);
-    
+
     
     for( let i = 1; i < snake.length ; i++){
         ctx.fillStyle = ( i == 0 )? "green" : "white";
         ctx.fillRect(snake[i].x,snake[i].y,box,box);
         ctx.drawImage(maistas[segmentai[i-1]], snake[i].x, snake[i].y);
-        
         ctx.strokeStyle = "grey";
         ctx.strokeRect(snake[i].x,snake[i].y,box,box);
        // ctx.drawImage(maistas[1], food.x, food.y);
@@ -166,11 +193,8 @@ function draw(){
     // game over
     
     if(snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17*box || collision(newHead,snake)){
-        clearInterval(game);
-        ctx.fillStyle = "black";
-        ctx.font = "45px Changa one";
-         ctx.fillText("Deja",10*box,10*box);
-        dead.play();
+        mirtis();
+
     }
     
     snake.unshift(newHead);
@@ -178,6 +202,7 @@ function draw(){
     ctx.fillStyle = "black";
     ctx.font = "45px Changa one";
     ctx.fillText(score,2*box,1.6*box);
+}
 }
 
 // call draw function every 100 ms
