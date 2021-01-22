@@ -190,62 +190,44 @@ class Level {
       }
     }
 
-    console.log(ids);
+    //console.log(ids);
 
     return ids;
   }
 
   getId (i, j) {
     let id = i * this.levelWidth + j;
-    console.log("i: " + i + " j: " + j + " id: " + id);
+    //console.log("i: " + i + " j: " + j + " id: " + id);
     return id;
   }
 
-  constructGraph (posFrom, posTo) {
-    var edges = [];
-    let mapToId = new Map();
-    var nodeCount = 0;
-    
-    for (var i = 0; i < this.levelHeight; i++) {
-      for (var j = 0; j < this.levelWidth; j++) {
-        if (this.intersections[i][j]) {
-          let nearIntersections = this.getNearIntersections(i, j);
-          for (var intersection in nearIntersections) {
-            console.log("after this an intersection");
-            console.log(intersection);
-            let u = this.getId(i, j);
-            let v = this.getId(intersection.x, intersection.y);
+  idToIndices (id) {
+    let calcI = Math.floor(id / this.levelWidth);
+    let calcJ = id - calcI * this.levelWidth;
+    let ret = {
+      i: calcI,
+      j: calcJ
+    };
+    return ret;
+  }
 
-            if (!mapToId.has(u)) {
-              mapToId.set(u, nodeCount);
-              nodeCount++;
-            }
+  posToId (pos) {
+    let calcedI = Math.floor (pos.y / this.cellSizeY);
+    let calcedJ = Math.floor (pos.x / this.cellSizeX);
+    let id = {
+      i: calcedI,
+      j: calcedJ
+    };
+    return id;
+  }
 
-            if (!mapToId.has(v)) {
-              mapToId.set(v, nodeCount);
-              nodeCount++;
-            }
-
-            let edgeWeight = Math.abs(i - intersection.x) + Math.abs(j - intersection.y);
-
-            edges.push ({
-              u: mapToId.get(u),
-              v: mapToId.get(v),
-              w: edgeWeight,
-            });
-
-          }
-        }
-      }
-    }
-
-    console.log("nodeCount: " + nodeCount);
-    console.log(mapToId);
-    mapToId.forEach((values, keys) => {
-      console.log("key: " + keys.i + " , " + keys.j + "  values: " + values);
-    });
-
-    let graph = new Graph(nodeCount, edges);
-    return graph;
+  idToPos (id) {
+    let posX = id.j * this.cellSizeX + this.cellSizeX/2;
+    let posY = id.i * this.cellSizeY + this.cellSizeY/2;
+    let pos = {
+      x: posX,
+      y: posY
+    };
+    return pos;
   }
 }

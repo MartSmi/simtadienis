@@ -22,15 +22,16 @@ class Ghost {
         this.img = document.getElementById('img_ghost');
 
         this.game = game;
-
-
-        this.tmpcnt = false;
     }
 
     draw(ctx) {
         let posX = this.position.x - this.sizeX / 2;
         let posY = this.position.y - this.sizeY / 2;
         ctx.drawImage(this.img, posX, posY, this.sizeX, this.sizeY);
+
+        let targetX = this.targetPosition.x - this.sizeX / 2;
+        let targetY = this.targetPosition.y - this.sizeY / 2;
+        ctx.drawImage(this.img, targetX, targetY, this.sizeX/2, this.sizeY/2);
     }
 
     move (deltaTime) {
@@ -73,20 +74,22 @@ class Ghost {
 
     calculateNewTarget () {
         let newTarget = this.game.getNextIntersection (this.position, this.getTarget());
-       // this.targetPosition = newTarget;
+        this.targetPosition = newTarget;
     }
 
     update (deltaTime) {
         this.move(deltaTime);
 
        
-        if (this.tmpcnt == false && this.atPlace()) {
-            //console.log("at place");
-            this.tmpcnt = true;
+        if (this.atPlace()) {
+            // console.log("at place");
             this.calculateNewTarget ();
             // HERE: update animations/sprite to look to correct direction
-
         }
+
+        // console.log("ghost pos:")
+        // console.log(this.position);
+        // console.log(this.targetPosition);
 
     }
 }

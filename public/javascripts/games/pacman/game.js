@@ -46,6 +46,16 @@ class Game {
   }
 
   getNextIntersection (posFrom, posTo) {
-    let graph = this.level.constructGraph (posFrom, posTo);
+    let graph = new Graph (this, this.level, posFrom, posTo);
+    let idLinear = graph.getNextIntersectionInShortestRoute();
+    let idInArray = this.level.idToIndices(idLinear);
+    let intersectionPos = this.level.idToPos (idInArray);
+    
+    // console.log("from getnextinter at game.js:");
+    // console.log(idLinear);
+    // console.log(idInArray);
+    // console.log(intersectionPos);
+    
+    return intersectionPos;
   }
 }
