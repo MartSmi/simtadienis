@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack</title>
+    <link href="styles.css" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <!-- ŠIMTADIENIS -->
+
+    <div class="insuranceInputContainer hide" data-insurance-input-container>
+        <div class="insuranceInputText">Įveskite draudimo sumą</div>
+        <input type="text" class="insuranceInputField" data-insurance-input-field>
+        <button type="button" class="insuranceInputButton" data-insurance-input-button>Drausti</button>
+    </div>
+
+    <button type="button" class="insuranceRequestButton hide" data-insurance-request-button>Drausti</button>
+
+    <div class="stakeInputContainer hide" data-stake-input-container>
+        <div class="stakeInputText">Įveskite statymą</div>
+        <input type="text" class="stakeInputField" data-stake-input-field>
+        <button type="button" class="stakeInputButton" data-stake-input-button>Statyti</button>
+    </div>
+
+    <div class="balanceRequestContainer" data-balance-request-container>
+        <div class="balanceRequestText">Kiek persivedate iš banko sąskaitos?</div>
+        <input type="text" class="balanceRequestInputField" data-balance-value>
+        <button type="button" class="balanceRequestButton" data-balance-request-button>Pervesti</button>
+    </div>
+
+    <div class="stakeField"></div>
+    <div class="loseScreen hide" data-lose-screen></div>
+    <div class="winScreen hide" data-win-screen></div>
+    <div class="tieScreen hide" data-tie-screen></div>
+
+    <div class="gameTable">
+        <button type="button" class="withdrawMoneyButton" data-withdraw-money-button>Atsiimti</button>
+
+        <div class="playerPoints" data-player-points></div>
+        <div class="topRow">
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="playerCard" data-player-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+        </div>
+        <div class="middleRow">
+            <div class="balanceContainer">
+                <div class="balanceText">Bankas:</div>
+                <div class="balance" data-balance></div>
+            </div>
+            <div class="stakeContainer">
+                <div class="stakeText">Statymas:</div>
+                <div class="stake" data-stake></div>
+            </div>
+            <div class="potentialWinningsContainer">
+                <div class="potentialWinningsText">Galimas laimėjimas:</div>
+                <div class="potentialWinnings" data-potential-winnings></div>
+            </div>
+            <div class="insuranceContainer hide" data-insurance-container>
+                <div class="insuranceStakeText">Draudimas:</div>
+                <div class="insuranceStake" data-insurance-stake></div>
+            </div>
+        </div>
+
+        <div class="bottomRow">
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+            <div class="dealerCard" data-dealer-card>
+                <div class="cardValue"></div>
+                <div class="cardSuit"></div>
+            </div>
+        </div>
+        <div class="dealerPoints" data-dealer-points></div>
+    </div>
+    <button type="button" class="hitButton" data-hit-button>Imti</button>
+    <button type="button" class="restartButton" data-restart-button>Iš naujo</button>
+    <button type="button" class="standButton" data-stand-button>Sustoti</button>
+</body>
+</html>
