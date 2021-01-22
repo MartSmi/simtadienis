@@ -8,6 +8,7 @@ class Game {
   createLevel() {
     this.level = new Level(this);
     this.player = new Player(this);
+    this.ghost = new Ghost(this);
     this.dots = [];
 
     let dotPositions = this.level.getDotPositions();
@@ -23,7 +24,7 @@ class Game {
 
     new InputHandler(this.player);
 
-    this.gameObjects = [this.level, ...this.dots, this.player];
+    this.gameObjects = [this.level, ...this.dots, this.ghost, this.player];
   }
 
   update(deltaTime) {
@@ -38,5 +39,13 @@ class Game {
   addScore(scoreToAdd) {
     this.score += scoreToAdd;
     console.log('Score: ' + this.score);
+  }
+
+  getPacmanPos () {
+    return this.player.position;
+  }
+
+  getNextIntersection (posFrom, posTo) {
+    let graph = this.level.constructGraph (posFrom, posTo);
   }
 }

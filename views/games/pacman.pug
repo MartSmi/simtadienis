@@ -3,14 +3,17 @@ extends ../layout
 block content
   link(rel="stylesheet", href="/stylesheets/games/pacman.css", type="text/css")
   img#img_pacman(src='/images/games/pacman/pacman.svg')
+  img#img_ghost(src='/images/games/pacman/ghost.svg')
   img#img_wall(src='/images/games/pacman/wall.svg')
   img#img_bg(src='/images/games/pacman/bg.svg')
   img#img_dot(src='/images/games/pacman/dot.svg')
   canvas#gameScreen(width='500' height='500')
 
+  script(src='/javascripts/games/pacman/graph.js')
   script(src='/javascripts/games/pacman/input.js')
   script(src='/javascripts/games/pacman/level.js')
   script(src='/javascripts/games/pacman/pickup.js')
+  script(src='/javascripts/games/pacman/ghost.js')
   script(src='/javascripts/games/pacman/player.js')
   script(src='/javascripts/games/pacman/game.js')
   script(src='/javascripts/games/pacman/index.js')

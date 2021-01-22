@@ -1,4 +1,30 @@
 class Level {
+  
+  isIntersection (i, j) {
+    if (this.grid[i][j] == 1)
+      return false;
+    if (i > 0 && i < this.levelHeight - 1 && j > 0 && j < this.levelWidth - 1) {
+      if (this.grid[i-1][j] == 1 && this.grid[i+1][j] == 1 && this.grid[i][j-1] != 1 && this.grid[i][j+1] != 1)
+        return false;
+      if (this.grid[i-1][j] != 1 && this.grid[i+1][j] != 1 && this.grid[i][j-1] == 1 && this.grid[i][j+1] == 1)
+        return false;
+    }
+    return true;
+  }
+
+  markIntersections() {
+    this.intersections = [...Array(this.levelHeight)].map(e => Array(this.levelWidth).fill(0));
+    for (var i = 0; i < this.levelHeight; i++) {
+      for (var j = 0; j < this.levelWidth; j++) {
+        this.intersections[i][j] = this.isIntersection(i, j);
+      }
+    }
+
+    //for (var i = 0; i < this.levelHeight; i++) {
+    //  console.log("Intersections at i = " + i + "  : " + this.intersections[i]);
+    //}
+  }
+  
   constructor(game) {
     this.gameWidth = game.gameWidth;
     this.gameHeight = game.gameHeight;
@@ -31,6 +57,8 @@ class Level {
     this.imgEmpty = document.getElementById('img_bg');
 
     this.game = game;
+
+    this.markIntersections();
   }
 
   draw(ctx) {
@@ -129,5 +157,95 @@ class Level {
     }
 
     return true;
+  }
+
+  getNearIntersections (i, j) {
+    var ids = [];
+
+    for (var ni = i-1; ni >= 0; ni--) {
+      if (this.intersections[ni][j]) {
+        ids.push({x: ni, y: j});
+        break;
+      }
+    }
+
+    for (var ni = i+1; ni < this.levelHeight; ni++) {
+      if (this.intersections[ni][j]) {
+        ids.push({x: ni, y: j});
+        break;
+      }
+    }
+
+    for (var nj = j-1; nj >= 0; nj--) {
+      if (this.intersections[i][nj]) {
+        ids.push({x: i, y: nj});
+        break;
+      }
+    }
+
+    for (var nj = j+1; nj < this.levelWidth; nj++) {
+      if (this.intersections[i][nj]) {
+        ids.push({x: i, y: nj});
+        break;
+      }
+    }
+
+    console.log(ids);
+
+    return ids;
+  }
+
+  getId (i, j) {
+    let id = i * this.levelWidth + j;
+    console.log("i: " + i + " j: " + j + " id: " + id);
+    return id;
+  }
+
+  constructGraph (posFrom, posTo) {
+    var edges = [];
+    let mapToId = new Map();
+    var nodeCount = 0;
+    
+    for (var i = 0; i < this.levelHeight; i++) {
+      for (var j = 0; j < this.levelWidth; j++) {
+        if (this.intersections[i][j]) {
+          let nearIntersections = this.getNearIntersections(i, j);
+          for (var intersection in nearIntersections) {
+            console.log("after this an intersection");
+            console.log(intersection);
+            let u = this.getId(i, j);
+            let v = this.getId(intersection.x, intersection.y);
+
+            if (!mapToId.has(u)) {
+              mapToId.set(u, nodeCount);
+              nodeCount++;
+            }
+
+            if (!mapToId.has(v)) {
+              mapToId.set(v, nodeCount);
+              nodeCount++;
+            }
+
+            let edgeWeight = Math.abs(i - intersection.x) + Math.abs(j - intersection.y);
+
+            edges.push ({
+              u: mapToId.get(u),
+              v: mapToId.get(v),
+              w: edgeWeight,
+            });
+
+          }
+        }
+      }
+    }
+
+    console.log("nodeCount: " + nodeCount);
+    console.log(mapToId);
+    mapToId.forEach((values, keys) => {
+      console.log("key: " + keys.i + " , " + keys.j + "  values: " + values);
+    });
+
+    let graph = new Graph(nodeCount, edges);
+    return graph;
   }
 }
