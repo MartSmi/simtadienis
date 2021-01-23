@@ -166,28 +166,32 @@ class Level {
       if (this.intersections[ni][j]) {
         ids.push({x: ni, y: j});
         break;
-      }
+      } else if (this.grid[ni][j] == 1)
+        break;
     }
 
     for (var ni = i+1; ni < this.levelHeight; ni++) {
       if (this.intersections[ni][j]) {
         ids.push({x: ni, y: j});
         break;
-      }
+      } else if (this.grid[ni][j] == 1)
+      break;
     }
 
     for (var nj = j-1; nj >= 0; nj--) {
       if (this.intersections[i][nj]) {
         ids.push({x: i, y: nj});
         break;
-      }
+      } else if (this.grid[i][nj] == 1)
+        break;
     }
 
     for (var nj = j+1; nj < this.levelWidth; nj++) {
       if (this.intersections[i][nj]) {
         ids.push({x: i, y: nj});
         break;
-      }
+      } else if (this.grid[i][nj] == 1)
+      break;
     }
 
     //console.log(ids);

@@ -82,7 +82,7 @@ class Ghost {
 
        
         if (this.atPlace()) {
-            // console.log("at place");
+             console.log("at place");
             this.calculateNewTarget ();
             // HERE: update animations/sprite to look to correct direction
         }

@@ -1,5 +1,42 @@
 class Graph {
-    
+
+    drawNode (v) {
+        let pos1 = this.game.convertGraphIdToPos(this.idToPos.get(v));
+        ctx.beginPath();
+        ctx.arc(pos1.x, pos1.y, 10, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+
+    drawEdge (u, v) {
+        let pos1 = this.game.convertGraphIdToPos(this.idToPos.get(u));
+        let pos2 = this.game.convertGraphIdToPos(this.idToPos.get(v));
+        
+        ctx.beginPath();
+        ctx.moveTo(pos1.x, pos1.y);
+        ctx.lineTo(pos2.x, pos2.y);
+        ctx.stroke();
+    }
+
+    drawGraph (ctx) {
+
+        ctx.strokeStyle = 'yellow';
+        for (var i = 0; i < this.edges.length; i++) {
+            let u = this.edges[i].u;
+            let v = this.edges[i].v;
+
+            this.drawEdge(u,v);
+        }
+
+        for (var i = 0; i < this.nodeCount; i++) {
+            this.drawNode(i);
+        }
+
+        ctx.strokeStyle = 'red';
+        this.drawNode(this.nodeFrom);
+        this.drawNode(this.nodeTo);
+    }
+
+
     addEdgesTo (i, j) {
         let nearIntersections = this.level.getNearIntersections(i, j);
         for (var k = 0; k < nearIntersections.length; k++) {
@@ -52,6 +89,9 @@ class Graph {
         this.addEdgesTo(fromI, fromJ);
         this.addEdgesTo(toI, toJ);
 
+        this.nodeFrom = this.mapToId.get(this.level.getId(fromI, fromJ));
+        this.nodeTo = this.mapToId.get(this.level.getId(toI, toJ));
+
         // console.log("nodeCount: " + nodeCount);
         // console.log(mapToId);
         // mapToId.forEach((values, keys) => {
@@ -71,26 +111,29 @@ class Graph {
         this.nodeCount = 0;
         
         this.constructGraph (posFrom, posTo);
+
+        //console.log(this.nodeFrom);
+        //console.log(this.nodeTo);
     }
 
-    dijkstra (fr, to) {
-        console.log("dijkstraa started");
-        var dist = [...Array(this.nodeCount)].fill(-1);
-        var pr = [...Array(this.nodeCount)].fill(-1);
-        var vis = [...Array(this.nodeCount)].fill(false);
+    dijkstra (fr, to, nodeCount, edges) {
+        //console.log("dijkstraa started");
+        var dist = [...Array(nodeCount)].fill(-1);
+        var pr = [...Array(nodeCount)].fill(-1);
+        var vis = [...Array(nodeCount)].fill(false);
 
         dist[fr] = 0;
-        var nxt = 0;
+        var nxt = fr;
         while (nxt != -1) {
-            console.log(nxt);
+           // console.log(nxt);
             let v = nxt;
             vis[v] = true;
             nxt = -1;
 
-            for (var i = 0; i < this.edges.length; i++) {
-                let eu = this.edges[i].u;
-                let ev = this.edges[i].v;
-                let ew = this.edges[i].w;
+            for (var i = 0; i < edges.length; i++) {
+                let eu = edges[i].u;
+                let ev = edges[i].v;
+                let ew = edges[i].w;
 
                 if (eu == v || ev == v) {
                     let u;
@@ -104,27 +147,29 @@ class Graph {
                 }
             }
 
-            for (var u = 0; u < this.nodeCount; u++) {
+            for (var u = 0; u < nodeCount; u++) {
                 if (dist[u] != -1 && !vis[u] && (nxt == -1 || dist[nxt] > dist[u]))
                     nxt = u;
             }
 
         }
 
-        var cur = to;
-        var lst = to;
-        while (pr[cur] != -1) {
-            lst = cur;
-            cur = pr[cur];
-        }
+        //for (var i = 0; i < nodeCount; i++) {
+        //    console.log(" i=" + i + " id: " + this.idToPos.get(i) + " dist: " + dist[i] + " pr: " + pr[i]);
+       // }
 
-        console.log("dijkstra ended")
-        return lst;
+        //console.log("dijkstra ended")
+        if (pr[to] == -1) return to;
+        else return pr[to];
     }
 
-    getNextIntersectionInShortestRoute (fr = this.nodeCount-2, to = this.nodeCount-1) {
-        //let id = this.dijkstra (fr);
-        let id = 0;
+    getNextIntersectionInShortestRoute () {
+        let fr = this.nodeFrom;
+        let to = this.nodeTo;
+        let id = this.dijkstra (to, fr, this.nodeCount, this.edges);
+        
+        //let id = 0;
         return this.idToPos.get(id);
     }
+
 }

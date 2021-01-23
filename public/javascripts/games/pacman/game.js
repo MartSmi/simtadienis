@@ -34,6 +34,9 @@ class Game {
   draw(ctx) {
     ctx.clearRect(0, 0, this.gameWidth, this.gameWidth);
     this.gameObjects.forEach(object => object.draw(ctx));
+
+    //let graph = new Graph (this, this.level, this.ghost.position, this.player.position);
+    //graph.drawGraph(ctx);
   }
 
   addScore(scoreToAdd) {
@@ -45,11 +48,16 @@ class Game {
     return this.player.position;
   }
 
+  convertGraphIdToPos (idLinear) {
+    let idInArray = this.level.idToIndices(idLinear);
+    let intersectionPos = this.level.idToPos (idInArray);
+    return intersectionPos;
+  }
+
   getNextIntersection (posFrom, posTo) {
     let graph = new Graph (this, this.level, posFrom, posTo);
     let idLinear = graph.getNextIntersectionInShortestRoute();
-    let idInArray = this.level.idToIndices(idLinear);
-    let intersectionPos = this.level.idToPos (idInArray);
+    let intersectionPos = this.convertGraphIdToPos(idLinear);
     
     // console.log("from getnextinter at game.js:");
     // console.log(idLinear);
