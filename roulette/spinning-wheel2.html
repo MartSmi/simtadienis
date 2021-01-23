@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Roulette</title>
+	<style>
+		*{
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+			outline: none;
+		}
+		body{
+			font-family: Open Sans;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			overflow: hidden;
+			background: #F44336 ;
+			background-size: cover;
+		}
+		
+		.mainbox{
+			position: relative;
+			width: 500px;
+			height: 500px;
+		}
+		.mainbox:after{
+			position: absolute;
+			content: '';
+			width: 32px;
+			height: 32px;
+			background: url('arrow.png') no-repeat;
+			background-size: 32px;
+			right: -30px;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+		.box{
+			width: 100%;
+			height: 100%;
+			position: relative;
+			border-radius: 50%;
+			border: 10px solid #fff;
+			overflow: hidden;
+			transition: all ease 5s;
+		}
+		span b{
+			width: 65px;
+			height: 65px;
+			line-height: 65px;
+			border-radius: 50%;
+			font-size: 26px;
+			text-align: center;
+			background-color: #fff;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			box-shadow: inset 0 3px 3px 0 #717171;
+		}
+		.spin{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 75px;
+			height: 75px;
+			border-radius: 50%;
+			border: 4px solid #fff;
+			background-color: #ff5722;
+			color: #fff;
+			box-shadow: 0 5px 20px #000;
+			font-weight: bold;
+			font-size: 22px;
+			cursor: pointer;
+		}
+		.spin:active{
+			width: 70px;
+			height: 70px;
+			font-size: 20px;
+		}
+
+		.mainbox.animate:after{
+			animation: animateArrow 0.7s ease infinite;
+		}
+		@keyframes animateArrow{
+			50%{
+				right: -40px;
+			}
+		}
+		.refresh{
+			border-radius: 12px;
+			padding: 14px 28px;
+			position: relative;
+			left:550px;
+			top:300px;
+			background-color:blue;
+		}
+		a:link {
+			text-decoration: none;
+			color: white;
+		}
+		.bets{
+			position: relative;
+			left:-100px;
+
+		}
+	</style>
+</head>
+<body>
+	<div class="bets">
+	<p>Write the amount you want to bet</p>
+	<input type="text" id="myText" value="">
+	<p>Write the color you want to bet on</p>
+	<input type="text" id="myText2" value="">
+	</div>
+	<div id="mainbox" class="mainbox">
+		<div id="box" class="box">
+			<div class="box1" style = "position:relative; left:-10px; top:-10px; rotate(30deg);">
+			<img src="roulette_png4.png" height="500" width="500">
+			</div>
+		</div>
+
+		<button class="spin" onclick="myfunction()">SPIN</button>
+	</div>
+
+
+<script>
+var rnumber=Math.floor(Math.random()*16);
+var deg = 30*360 + rnumber*22.5;
+var deg2=deg-30*360;
+function myfunction(){
+	var number = document.getElementById("myText").value;
+	var color = document.getElementById("myText2").value;
+	var number1 = Number(number) 
+	document.getElementById('box').style.transform = "rotate("+deg+"deg)";
+	var element = document.getElementById('mainbox');
+	element.classList.remove('animate');
+	setTimeout(function(){
+		element.classList.add('animate');
+	}, 5000); //5000 = 5 second
+	if(color=="red" || color=="RED" || color=="Red"){
+		if(deg2==22.5 ||deg2==67.5 || deg2==112.5 || deg2==157.5 || deg2== 202.5 || deg2==247.5 || deg2==292.5 || deg2==337.5){
+			winr = number1*1.5;
+			setTimeout(function(){alert("You win "+winr); }, 5500);
+		}
+		else{
+			setTimeout(function(){alert("You lose"); }, 5500);
+		}
+	}
+	else if(color=="black" || color=="BLACK" || color=="Black"){
+		if(deg2==0||deg2==45 ||deg2==270 || deg2==135 || deg2==180 || deg2== 225 || deg2==315 || deg2==360){
+			winb = number1*2;
+			setTimeout(function(){alert("You win "+winb); }, 5500);
+		}//black color
+		else{
+			setTimeout(function(){alert("You lose"); }, 5500);
+		}
+	}	
+	else if(color=="green" || color=="GREEN" || color=="Green"){
+		if(deg2==90){
+			wing = number1*5;
+			setTimeout(function(){alert("You win "+wing); }, 5500);
+		}
+		else{
+			setTimeout(function(){alert("You lose"); }, 5500);
+		}
+	}else{
+		setTimeout(function(){alert("You lose"); }, 5500);
+	}
+	setTimeout(function(){
+		location.reload();
+	}, 7000);
+}
+</script>
+</body>
+</html>
