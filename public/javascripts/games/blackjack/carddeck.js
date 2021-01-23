@@ -12,4 +12,4 @@ const cardDeck = [
     "\uD83C\uDCD8", "\uD83C\uDCD9", "\uD83C\uDCDA", "\uD83C\uDCDB", "\uD83C\uDCDD", "\uD83C\uDCDE"]
 ];
 
-export {cardDeck}
+//export {cardDeck}

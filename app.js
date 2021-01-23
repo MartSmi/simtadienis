@@ -19,6 +19,7 @@ var adminRouter = require('./routes/admin');
 var adminActionRouter = require('./routes/admin-action');
 var gamePacman = require('./routes/games/pacman');
 var gameTetris = require('./routes/games/tetris');
+var gameBlackjack = require('./routes/games/blackjack');
 
 var app = express();
 
@@ -89,6 +90,7 @@ app.use('/admin', adminRouter);
 app.use('/admin-action', adminActionRouter);
 app.use('/games/pacman', gamePacman);
 app.use('/games/tetris', gameTetris);
+app.use('/games/blackjack', gameBlackjack);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
