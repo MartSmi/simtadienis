@@ -206,7 +206,7 @@ function countThePoints(card, target) {
 function playerBust() {
     if (Number(playerPoints.textContent) > 21) {
         loseScreen.classList.remove('hide')
-
+        insuranceReqButton.classList.add('hide')
         if (check()) {
             balance.textContent = currentBalance
             currentStake = 0
@@ -214,7 +214,7 @@ function playerBust() {
             potentialWinnings.textContent = `0`
             
         } else {
-            alert('sup cheat')
+            alert('Error')
         }
 
         disableHitButton()
@@ -279,6 +279,8 @@ function winner() {
             potentialWinnings.textContent = `0`
             restartButton.disabled = false
             withdrawButton.disabled = false
+            disableHitButton()
+            disableStandButton()
             if (isThereInsurance()) {
                 currentInsurance = 0
                 insuranceReqButton.classList.add('hide')
@@ -426,6 +428,7 @@ restartButton.addEventListener('click', () => {
     uncolor()
     betWindow.classList.remove('hide')
     betWindow.classList.add('stakeInputContainer')
+    insuranceReqButton.classList.add('hide')
     restartButton.disabled = true
 })
 
