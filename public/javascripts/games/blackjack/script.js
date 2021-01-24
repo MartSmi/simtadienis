@@ -73,6 +73,7 @@ function setPrimaryBalance() {
         currentBalance = Number(balanceValue.value)
         balance.textContent = balanceValue.value
         balanceRequestContainer.classList.add('hide')
+        balanceRequestContainer.classList.remove('balanceRequestContainer')
     } else {
         alert('Error')
     }
@@ -96,6 +97,7 @@ function placeBet() {
         currentBalance -= currentStake
         balance.textContent = Number(balance.textContent) - Number(stake.textContent)
         betWindow.classList.add('hide')
+        betWindow.classList.remove('stakeInputContainer')
         gameLoad()
         potentialGameWinnings()
     } else {
@@ -359,12 +361,14 @@ insuranceReqButton.addEventListener('click', () => {
     disableStandButton()
     insuranceReqButton.classList.add('hide')
     insuranceInputContainer.classList.remove('hide')
+    insuranceInputContainer.classList.add('insuranceInputContainer')
 })
 
 insuranceButton.addEventListener('click', () => {
     currentInsurance = Number(insuranceField.value)
     if (insuranceIsValid(currentStake, currentInsurance)) {
         insuranceInputContainer.classList.add('hide')
+        insuranceInputContainer.classList.remove('insuranceInputContainer')
         insuranceContainer.classList.remove('hide')
         insuranceStake.textContent = currentInsurance
         currentBalance -= currentInsurance
@@ -421,6 +425,7 @@ restartButton.addEventListener('click', () => {
     
     uncolor()
     betWindow.classList.remove('hide')
+    betWindow.classList.add('stakeInputContainer')
     restartButton.disabled = true
 })
 
