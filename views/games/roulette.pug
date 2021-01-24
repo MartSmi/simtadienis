@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+  link(rel="stylesheet", href="/stylesheets/games/roulette.css", type="text/css")
+
+  .bets
+    p Write the amount you want to bet
+    input#myText(type='text' value='')
+    p Write the color you want to bet on
+    input#myText2(type='text' value='')
+  #mainbox.mainbox
+    #box.box
+      .box1
+        img(src='/images/games/roulette/roulette_png4.png' height='500' width='500')
+    button.spin#spinButton SPIN
+
+  script(src='/javascripts/games/roulette/main.js')
