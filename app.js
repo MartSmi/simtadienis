@@ -93,11 +93,8 @@ app.use('/admin-action', adminActionRouter);
 app.use('/games/pacman', gamePacman);
 app.use('/games/tetris', gameTetris);
 app.use('/games/blackjack', gameBlackjack);
-<<<<<<< HEAD
 app.use('/games/slots', gameSlots);
-=======
 app.use('/games/roulette', gameRoulette);
->>>>>>> fe0df727d178aed34e4f4a0358251ce71e0138ef
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
