@@ -1,0 +1,94 @@
+*, *::before, *::after {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #00BCFF;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.navbar {
+    position: relative;
+    width: 100vw;
+    height: 10vw;
+}
+
+.content-div {
+    position: relative;
+}
+
+.image-div {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: relative;
+    height: 50vw;
+    width: 88.9vw;
+}
+
+.mapImage {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+
+.pacmanImage {
+    position: absolute;
+    height: 9vw;
+    width: 10.47vw;
+    top: 15%;
+    left: 18%;
+}
+
+.tetrisImage {
+    position: absolute;
+    height: 9vw;
+    width: 10.47vw;
+    top: 35%;
+    left: 25%;
+}
+
+.snakeImage {
+    position: absolute;
+    height: 9vw;
+    width: 10.47vw;
+    top: 50%;
+    left: 12.5%;
+}
+
+.rouletteImage {
+    position: absolute;
+    height: 9vw;
+    width: 8.16vw;
+    top: 13%;
+    left: 45%;
+}
+
+.slotsImage {
+    position: absolute;
+    height: 9vw;
+    width: 14.67vw;
+    top: 25%;
+    left: 55%;
+}
+
+.blackjackImage {
+    position: absolute;
+    height: 9vw;
+    width: 8.16vw;
+    top: 37%;
+    left: 48%;
+}
+
+.bankImage {
+    position: absolute;
+    height: 15vw;
+    width: 18.41vw;
+    top: 55%;
+    left: 63%;
+}
