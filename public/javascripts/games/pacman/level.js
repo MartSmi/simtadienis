@@ -1,101 +1,92 @@
-class Level {
-  
-  isIntersection (i, j) {
-    if (this.grid[i][j] == 1)
-      return false;
-    if (i > 0 && i < this.levelHeight - 1 && j > 0 && j < this.levelWidth - 1) {
-      if (this.grid[i-1][j] == 1 && this.grid[i+1][j] == 1 && this.grid[i][j-1] != 1 && this.grid[i][j+1] != 1)
-        return false;
-      if (this.grid[i-1][j] != 1 && this.grid[i+1][j] != 1 && this.grid[i][j-1] == 1 && this.grid[i][j+1] == 1)
-        return false;
-    }
-    return true;
+class GridTile {
+  constructor (name, id, elementId, canWalk) {
+    this.name = name;
+    this.id = id;
+    this.img = document.getElementById(elementId);
+    this.canWalk = canWalk;
   }
+}
 
-  markIntersections() {
-    this.intersections = [...Array(this.levelHeight)].map(e => Array(this.levelWidth).fill(0));
-    for (var i = 0; i < this.levelHeight; i++) {
-      for (var j = 0; j < this.levelWidth; j++) {
-        this.intersections[i][j] = this.isIntersection(i, j);
-      }
-    }
-
-    //for (var i = 0; i < this.levelHeight; i++) {
-    //  console.log("Intersections at i = " + i + "  : " + this.intersections[i]);
-    //}
-  }
-  
-  constructor(game) {
-    this.gameWidth = game.gameWidth;
-    this.gameHeight = game.gameHeight;
-
-    // 0 - empty
-    // 1 - wall
-    // 2 - empty with dot
-    this.grid = [
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 2, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 2, 0, 0, 1, 1, 1, 1, 1],
-      [1, 2, 2, 1, 0, 1, 1, 1, 1, 1],
-      [1, 1, 2, 1, 0, 0, 1, 1, 1, 1],
-      [1, 1, 2, 1, 0, 0, 1, 1, 1, 1],
-      [1, 1, 2, 1, 1, 0, 0, 2, 1, 1],
-      [1, 0, 2, 0, 0, 0, 1, 1, 1, 1],
-      [1, 0, 2, 1, 1, 1, 1, 1, 1, 1],
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+class GridSetup {
+  constructor (game) {
+    this.gridTiles = [
+      new GridTile (
+        'Empty',
+        0,
+        'img_bg',
+        true
+      ),
+      new GridTile (
+        'FullWall',
+        1,
+        'img_wall',
+        false
+      ),
+      new GridTile (
+        'Pickup1',
+        2,
+        'img_bg',
+        true
+      ),
+      new GridTile (
+        'EmptyNotWalkable',
+        3,
+        'img_bg',
+        false
+      ),
     ];
 
-    this.levelHeight = this.grid.length;
-    this.levelWidth = this.grid[0].length;
+    this.levelGrid = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],//
+      [1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1],//
+      [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],//
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],//
+      [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], //
+      [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], //
+      [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], //
+      [1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1], //
+      [3, 3, 3, 3, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 3, 3, 3, 3], //
+      [3, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 3], //
+      [1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1],//
+      [0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0],///
+      [1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1],
+      [3, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 3], 
+      [3, 3, 3, 3, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 3, 3, 3, 3], 
+      [1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1], 
+      [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], 
+      [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], 
+      [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], 
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+      [1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1],
+      [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+    ];
 
+    this.levelHeight = this.levelGrid.length;
+    this.levelWidth = this.levelGrid[0].length;
+
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
     this.cellSizeX = this.gameWidth / this.levelWidth;
     this.cellSizeY = this.gameHeight / this.levelHeight;
-    // console.log("level width: " + this.levelWidth);
-    // console.log("level height: " + this.levelHeight);
-
-    this.imgWall = document.getElementById('img_wall');
-    this.imgEmpty = document.getElementById('img_bg');
-
-    this.game = game;
-
-    this.markIntersections();
   }
 
-  draw(ctx) {
-    for (var i = 0; i < this.levelHeight; i++) {
-      for (var j = 0; j < this.levelWidth; j++) {
-        let posX = this.cellSizeX * j;
-        let posY = this.cellSizeY * i;
-        if (this.grid[i][j] == 1) {
-          // ctx.fillStyle = 'blue';
-          // ctx.fillRect(this.cellSizeX * j, this.cellSizeY * i, this.cellSizeX, this.cellSizeY);
-          // console.log("draw level: " + (cellSizeX * j) + ", " + (cellSizeY * i) + ", " + cellSizeX + ", " + cellSizeY);
-
-          ctx.drawImage(
-            this.imgWall,
-            posX,
-            posY,
-            this.cellSizeX,
-            this.cellSizeY
-          );
-        } else {
-          ctx.drawImage(
-            this.imgEmpty,
-            posX,
-            posY,
-            this.cellSizeX,
-            this.cellSizeY
-          );
-        }
-      }
-    }
+  canWalk (i, j) {
+    let id = this.levelGrid[i][j];
+    return this.gridTiles[id].canWalk;
   }
 
-  getDotPositions() {
+  getDotPositions () {
     var positions = [];
     for (var i = 0; i < this.levelHeight; i++) {
       for (var j = 0; j < this.levelWidth; j++) {
-        if (this.grid[i][j] == 2) {
+        let id = this.levelGrid[i][j];
+
+        if (id > 0 && this.gridTiles[id].canWalk) {
           let pos = {
             x: this.cellSizeX * j + this.cellSizeX / 2,
             y: this.cellSizeY * i + this.cellSizeY / 2,
@@ -108,6 +99,82 @@ class Level {
     // for (var p of positions)
     //     console.log("  in p: " + p.x + " " + p.y);
     return positions;
+  }
+}
+
+class Level {
+  
+  isIntersection (i, j) {
+    if (!this.setup.canWalk(i,j))
+      return false;
+    if (i > 0 && i < this.levelHeight - 1 && j > 0 && j < this.levelWidth - 1) {
+      if (this.setup.canWalk(i-1, j) && this.setup.canWalk(i+1, j) && !this.setup.canWalk(i, j-1) && !this.setup.canWalk(i, j+1))
+        return false;
+      if (!this.setup.canWalk(i-1, j) && !this.setup.canWalk(i+1, j) && this.setup.canWalk(i, j-1) && this.setup.canWalk(i, j+1))
+        return false;
+    }
+    return true;
+  }
+
+  markIntersections() {
+    this.intersections = [...Array(this.levelHeight)].map(e => Array(this.levelWidth).fill(0));
+    for (var i = 0; i < this.levelHeight; i++) {
+      for (var j = 0; j < this.levelWidth; j++) {
+        this.intersections[i][j] = this.isIntersection(i, j);
+        if (this.intersections[i][j]) {
+          this.intersectionList.push({i: i, j: j});
+        }
+      }
+    }
+
+    //for (var i = 0; i < this.levelHeight; i++) {
+    //  console.log("Intersections at i = " + i + "  : " + this.intersections[i]);
+    //}
+  }
+  
+  constructor(game) {
+    this.gameWidth = game.gameWidth;
+    this.gameHeight = game.gameHeight;
+    this.setup = new GridSetup (game);
+
+
+    this.levelHeight = this.setup.levelGrid.length;
+    this.levelWidth = this.setup.levelGrid[0].length;
+
+    this.cellSizeX = this.gameWidth / this.levelWidth;
+    this.cellSizeY = this.gameHeight / this.levelHeight;
+    // console.log("level width: " + this.levelWidth);
+    // console.log("level height: " + this.levelHeight);
+
+    //this.imgWall = document.getElementById('img_wall');
+    //this.imgEmpty = document.getElementById('img_bg');
+
+    this.game = game;
+
+    this.intersectionList = [];
+    this.markIntersections();
+  }
+
+  draw(ctx) {
+    for (var i = 0; i < this.levelHeight; i++) {
+      for (var j = 0; j < this.levelWidth; j++) {
+        let posX = this.cellSizeX * j;
+        let posY = this.cellSizeY * i;
+        let id = this.setup.levelGrid[i][j];
+
+        ctx.drawImage(
+          this.setup.gridTiles[id].img,
+          posX,
+          posY,
+          this.cellSizeX,
+          this.cellSizeY
+        );
+      }
+    }
+  }
+
+  getDotPositions() {
+    return this.setup.getDotPositions();
   }
 
   update(deltaTime) {
@@ -125,7 +192,7 @@ class Level {
 
     for (var i = 0; i < this.levelHeight; i++) {
       for (var j = 0; j < this.levelWidth; j++) {
-        if (this.grid[i][j] == 1) {
+        if (!this.setup.canWalk(i, j)) {
           let cellMinX = this.cellSizeX * j;
           let cellMinY = this.cellSizeY * i;
           let cellMaxX = cellMinX + this.cellSizeX;
@@ -166,7 +233,7 @@ class Level {
       if (this.intersections[ni][j]) {
         ids.push({x: ni, y: j});
         break;
-      } else if (this.grid[ni][j] == 1)
+      } else if (!this.setup.canWalk(ni, j))
         break;
     }
 
@@ -174,7 +241,7 @@ class Level {
       if (this.intersections[ni][j]) {
         ids.push({x: ni, y: j});
         break;
-      } else if (this.grid[ni][j] == 1)
+      } else if (!this.setup.canWalk(ni, j))
       break;
     }
 
@@ -182,7 +249,7 @@ class Level {
       if (this.intersections[i][nj]) {
         ids.push({x: i, y: nj});
         break;
-      } else if (this.grid[i][nj] == 1)
+      } else if (!this.setup.canWalk(i, nj))
         break;
     }
 
@@ -190,7 +257,7 @@ class Level {
       if (this.intersections[i][nj]) {
         ids.push({x: i, y: nj});
         break;
-      } else if (this.grid[i][nj] == 1)
+      } else if (!this.setup.canWalk(i, nj))
       break;
     }
 
@@ -233,5 +300,29 @@ class Level {
       y: posY
     };
     return pos;
+  }
+
+  goUntilIntersection (curId, di, dj) {
+    var i = curId.i;
+    var j = curId.j;
+    while (!this.intersections[i][j]){
+      i += di;
+      j += dj;
+      if (!this.setup.canWalk(i, j)) {
+        i = curId.i;
+        j = curId.j;
+        break;
+      }
+    }
+    let ret = {
+      i: i,
+      j: j
+    };
+    return ret;
+  }
+
+  getRandomIntersection () {
+    let randId = Math.floor(Math.random() * this.intersectionList.length);
+    return this.intersectionList[randId];
   }
 }

@@ -5,12 +5,12 @@ class Player {
     this.sizeY = game.level.cellSizeY - smallOfset;
     this.radius = this.sizeX / 2;
 
-    this.speed = 150;
+    this.speed = 75;
     this.dir = 0;
     this.savedDir = 0;
 
     this.position = {
-      x: game.gameWidth / 2,
+      x: game.gameWidth / 2 - 100,
       y: game.gameHeight / 2,
     };
 
