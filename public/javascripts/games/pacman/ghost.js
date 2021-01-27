@@ -1,11 +1,23 @@
+const GhostMode = {
+    CHASE: 'chase',
+    SCATTER: 'scatter',
+    FRIGHTENED: 'frightened'
+ };
+ Object.freeze(GhostMode);
+
 class Ghost {
     constructor (game) {
+        this.mode = GhostMode.CHASE;
+
         let smallOfset = 5;
         this.sizeX = game.level.cellSizeX - smallOfset;
         this.sizeY = game.level.cellSizeY - smallOfset;
         this.radius = this.sizeX / 2;
 
-        this.speed = 55;
+        this.chaseSpeed = 75;
+        this.scatterSpeed = 70;
+        this.frightenedSpeed = 50;
+        this.speed = this.chaseSpeed;
         this.dir = 0;
 
         this.position = {
@@ -21,13 +33,20 @@ class Ghost {
 
         this.game = game;
 
+        this.frightenedImg = document.getElementById('img_frightened_ghost');
+
         this.updateEveryIntersection = true;
     }
 
     draw(ctx) {
         let posX = this.position.x - this.sizeX / 2;
         let posY = this.position.y - this.sizeY / 2;
-        ctx.drawImage(this.img, posX, posY, this.sizeX, this.sizeY);
+        if (this.mode == GhostMode.FRIGHTENED) {
+            ctx.drawImage(this.frightenedImg, posX, posY, this.sizeX, this.sizeY);
+        } else {
+            ctx.drawImage(this.img, posX, posY, this.sizeX, this.sizeY);
+        }
+        
 
         let targetX = this.targetPosition.x - this.sizeX / 2;
         let targetY = this.targetPosition.y - this.sizeY / 2;
@@ -86,8 +105,23 @@ class Ghost {
     }
 
     calculateNewTarget () {
-        if (this.atUltimate())
-            this.ultimateTarget = this.getTarget();
+        if (this.atUltimate()) {
+            switch (this.mode) {
+                case GhostMode.CHASE:
+                    this.ultimateTarget = this.getTarget();
+                    break;
+                case GhostMode.SCATTER:
+                    this.ultimateTarget = this.game.getRandomPos();
+                    break;
+                case GhostMode.FRIGHTENED:
+                    this.ultimateTarget = this.game.getRandomPos();
+                    break;
+                default:
+                    console.log("unknown ghost mode");
+                    break;
+            }
+            
+        }
         let newTarget = this.game.getNextIntersection (this.position, this.ultimateTarget);
         this.targetPosition = newTarget;
        // console.log("update : " + this.updateEveryIntersection);
@@ -95,20 +129,71 @@ class Ghost {
             this.ultimateTarget = newTarget;
     }
 
-    update (deltaTime) {
+    /*updateChase (deltaTime) {
         this.move(deltaTime);
 
-       
+        if (this.atPlace()) {
+             //console.log("at place");
+            this.calculateNewTarget ();
+            // HERE: update animations/sprite to look to correct direction
+        }
+    }
+
+    updateScatter (deltaTime) {
+        this.updateChase(deltaTime);
+    }
+
+    updateFrightened (deltaTime) {
+        this.updateChase(deltaTime);
+    }*/
+
+    update (deltaTime) {
+
+        /*switch (this.mode) {
+            case GhostMode.CHASE:
+                this.updateChase(deltaTime);
+                break;
+            case GhostMode.SCATTER:
+                this.updateScatter(deltaTime);
+                break;
+            case GhostMode.FRIGHTENED:
+                this.updateFrightened (deltaTime);
+                break;
+            default:
+                console.log("unknown ghost mode");
+                break;
+        }*/
+
+        this.move(deltaTime);
+
         if (this.atPlace()) {
              //console.log("at place");
             this.calculateNewTarget ();
             // HERE: update animations/sprite to look to correct direction
         }
 
-        // console.log("ghost pos:")
-        // console.log(this.position);
-        // console.log(this.targetPosition);
+    }
 
+    switchToMode (newMode) {
+        this.mode = newMode;
+        this.updateEveryIntersection = false;
+        switch (newMode) {
+            case GhostMode.CHASE:
+                this.updateEveryIntersection = true;
+                this.speed = this.chaseSpeed;
+                break;
+            case GhostMode.SCATTER:
+                this.speed = this.scatterSpeed;
+                break;
+            case GhostMode.FRIGHTENED:
+                this.speed = this.frightenedSpeed;
+                break;
+            default:
+                console.log("unknown ghost mode");
+                break;
+        }
+        this.ultimateTarget = this.position;
+        this.calculateNewTarget();
     }
 }
 
@@ -116,6 +201,14 @@ class RedGhost extends Ghost {
     constructor (game) {
         super(game);
         this.img = document.getElementById('img_red_ghost');
+
+        this.position = {
+            x: game.level.cellSizeX,
+            y: game.level.cellSizeY,
+        };
+
+        this.targetPosition = this.position;
+        this.ultimateTarget = this.position;
     }
 
     getTarget () {
@@ -127,6 +220,14 @@ class PinkGhost extends Ghost {
     constructor (game) {
         super(game);
         this.img = document.getElementById('img_pink_ghost');
+    
+        this.position = {
+            x: game.gameWidth - 2*game.level.cellSizeX,
+            y: game.level.cellSizeY,
+        };
+
+        this.targetPosition = this.position;
+        this.ultimateTarget = this.position;
     }
 
     getTarget () {
@@ -139,9 +240,18 @@ class YellowGhost extends Ghost {
         super(game);
         this.img = document.getElementById('img_yellow_ghost');
         this.updateEveryIntersection = false;
+
+        this.position = {
+            x: game.level.cellSizeX,
+            y: game.gameHeight - 2*game.level.cellSizeY,
+        };
+
+        this.targetPosition = this.position;
+        this.ultimateTarget = this.position;
     }
 
     getTarget () {
+        this.updateEveryIntersection = false;
         return this.game.getRandomPos();
     }
 }
@@ -150,6 +260,14 @@ class CyanGhost extends Ghost {
     constructor (game) {
         super(game);
         this.img = document.getElementById('img_cyan_ghost');
+
+        this.position = {
+            x: game.gameWidth - 2*game.level.cellSizeX,
+            y: game.gameHeight - 2*game.level.cellSizeY,
+        };
+
+        this.targetPosition = this.position;
+        this.ultimateTarget = this.position;
     }
 
     getTarget () {

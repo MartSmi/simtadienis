@@ -12,7 +12,7 @@ class Game {
     this.pinkGhost = new PinkGhost(this);
     this.yellowGhost = new YellowGhost(this);
     this.cyanGhost = new CyanGhost(this);
-    this.dots = [];
+    this.pickups = [];
 
     this.ghosts = [];
     this.ghosts.push(this.redGhost);
@@ -25,7 +25,17 @@ class Game {
     // console.log("dotPositions: " + dotPositions);
     for (var pos of dotPositions) {
       // console.log("in dot: " + pos.x + "  " + pos.y);
-      this.dots.push(new Pickup(this, pos));
+      this.pickups.push(new Pickup(this, pos));
+    }
+
+    let powerPickupPositions = this.level.getPowerPickupPositions();
+    for (var pos of powerPickupPositions) {
+      this.pickups.push(new PowerPickup(this, pos));
+    }
+
+    let fruitPickupPositions = this.level.getFruitPickupPositions();
+    for (var pos of fruitPickupPositions) {
+      this.pickups.push(new FruitPickup(this, pos));
     }
   }
 
@@ -34,11 +44,56 @@ class Game {
 
     new InputHandler(this.player);
 
-    this.gameObjects = [this.level, ...this.dots, ...this.ghosts, this.player];
+    this.gameObjects = [this.level, ...this.pickups, ...this.ghosts, this.player];
+
+    this.chaseTime = 20;
+    this.scatterTime = 20;
+    this.frightenedTime = 10;
+    this.leftTime = this.chaseTime;
+    this.ghostMode = GhostMode.CHASE;
+  }
+
+  ghostsToChase () {
+    this.ghostMode = GhostMode.CHASE;
+    this.leftTime = this.chaseTime;
+    this.ghosts.forEach(ghost => ghost.switchToMode(this.ghostMode));
+  }
+
+  ghostsToScatter () {
+    this.ghostMode = GhostMode.SCATTER;
+    this.leftTime = this.scatterTime;
+    this.ghosts.forEach(ghost => ghost.switchToMode(this.ghostMode));
+  }
+
+  ghostsToFrightened () {
+    this.ghostMode = GhostMode.FRIGHTENED;
+    this.leftTime = this.frightenedTime;
+    this.ghosts.forEach(ghost => ghost.switchToMode(this.ghostMode));
   }
 
   update(deltaTime) {
+    //console.log(deltaTime);
+    if (deltaTime > 0.1) return;
+
     this.gameObjects.forEach(object => object.update(deltaTime));
+
+    this.leftTime -= deltaTime;
+    if (this.leftTime <= 0) {
+      switch (this.ghostMode) {
+        case GhostMode.CHASE:
+            this.ghostsToScatter();
+            break;
+        case GhostMode.SCATTER:
+            this.ghostsToChase();
+            break;
+        case GhostMode.FRIGHTENED:
+            this.ghostsToChase();
+            break;
+        default:
+            console.log("unknown ghost mode");
+            break;
+      }
+    }
   }
 
   draw(ctx) {
@@ -69,7 +124,7 @@ class Game {
         break;
       case 1: // right
         di = 0;
-        dj = 1;
+        dj = -1;
         break;
       case 2: // down
         di = 1;
@@ -77,14 +132,14 @@ class Game {
         break;
       case 3: // left
         di = 0;
-        dj = -1;
+        dj = 1;
         break;
       default:
         console.log("unknown dir");
         break;
     }
 
-    let targetId = this.level.goUntilIntersection (curId, di, dj);
+    let targetId = this.level.goUntilWall (curId, di, dj);
     let targetPos = this.level.idToPos(targetId);
     return targetPos;
   }

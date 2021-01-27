@@ -34,15 +34,27 @@ class GridSetup {
         'img_bg',
         false
       ),
+      new GridTile (
+        'Pickup2',
+        4,
+        'img_bg',
+        true
+      ),
+      new GridTile (
+        'Pickup3',
+        5,
+        'img_bg',
+        true
+      ),
     ];
 
     this.levelGrid = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1],
       [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],//
       [1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1],//
       [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],//
-      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],//
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],//
       [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], //
       [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], //
       [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], //
@@ -50,7 +62,7 @@ class GridSetup {
       [3, 3, 3, 3, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 3, 3, 3, 3], //
       [3, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 3], //
       [1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1],//
-      [0, 0, 0, 0, 0, 0, 0, 0, 1, 3, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0],///
+      [0, 0, 4, 0, 0, 0, 0, 0, 1, 3, 3, 3, 1, 0, 0, 0, 0, 0, 4, 0, 0],///
       [1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1],
       [3, 3, 3, 3, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 3, 3, 3, 3], 
       [3, 3, 3, 3, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 3, 3, 3, 3], 
@@ -62,7 +74,7 @@ class GridSetup {
       [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
       [1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1, 0, 1, 3, 1, 0, 1, 3, 1, 0, 1],
       [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
-      [1, 2, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+      [1, 2, 2, 2, 0, 0, 0, 0, 0, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
@@ -80,13 +92,13 @@ class GridSetup {
     return this.gridTiles[id].canWalk;
   }
 
-  getDotPositions () {
+  getPositions (idToLook) {
     var positions = [];
     for (var i = 0; i < this.levelHeight; i++) {
       for (var j = 0; j < this.levelWidth; j++) {
         let id = this.levelGrid[i][j];
 
-        if (id > 0 && this.gridTiles[id].canWalk) {
+        if (id == idToLook) {
           let pos = {
             x: this.cellSizeX * j + this.cellSizeX / 2,
             y: this.cellSizeY * i + this.cellSizeY / 2,
@@ -100,6 +112,8 @@ class GridSetup {
     //     console.log("  in p: " + p.x + " " + p.y);
     return positions;
   }
+
+  
 }
 
 class Level {
@@ -174,7 +188,15 @@ class Level {
   }
 
   getDotPositions() {
-    return this.setup.getDotPositions();
+    return this.setup.getPositions(2);
+  }
+
+  getPowerPickupPositions() {
+    return this.setup.getPositions(4);
+  }
+
+  getFruitPickupPositions() {
+    return this.setup.getPositions(5);
   }
 
   update(deltaTime) {
@@ -302,18 +324,15 @@ class Level {
     return pos;
   }
 
-  goUntilIntersection (curId, di, dj) {
+  goUntilWall (curId, di, dj) {
     var i = curId.i;
     var j = curId.j;
-    while (!this.intersections[i][j]){
+    while (i < this.levelWidth && j < this.levelHeight && i >= 0 && j >= 0 && this.setup.canWalk(i,j)){
       i += di;
       j += dj;
-      if (!this.setup.canWalk(i, j)) {
-        i = curId.i;
-        j = curId.j;
-        break;
-      }
     }
+    i -= di;
+    j -= dj;
     let ret = {
       i: i,
       j: j

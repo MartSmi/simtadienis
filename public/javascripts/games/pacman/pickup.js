@@ -2,7 +2,7 @@ class Pickup {
   constructor(game, position) {
     this.game = game;
     this.position = position;
-    this.radius = 10;
+    this.radius = game.level.cellSizeX / 3;
     this.position = position;
     this.picked = false;
     this.points = 10;
@@ -33,5 +33,27 @@ class Pickup {
     let doPick = sqDist <= sumRadius * sumRadius;
 
     if (doPick) this.pick();
+  }
+}
+
+class PowerPickup extends Pickup {
+  constructor (game, position) {
+    super (game, position);
+    this.radius = this.radius * 3 / 2;
+  }
+
+  pick () {
+    super.pick();
+    //console.log("supered");
+    this.game.ghostsToFrightened();
+  }
+}
+
+class FruitPickup extends Pickup {
+  constructor (game, position) {
+    super (game, position);
+    this.points = 100;
+    this.img = document.getElementById('img_fruit');
+    this.radius = this.radius * 2;
   }
 }
