@@ -13,9 +13,9 @@ function doSlot(){
 	if (doing){return null;}
 	doing = true;
 	var numChanges = randomInt(1,4)*7
-	var numeberSlot1 = numChanges+randomInt(1,7)
-	var numeberSlot2 = numChanges+2*7+randomInt(1,7)
-	var numeberSlot3 = numChanges+4*7+randomInt(1,7)
+	var numberSlot1 = numChanges+randomInt(1,7)
+	var numberSlot2 = numChanges+2*7+randomInt(1,7)
+	var numberSlot3 = numChanges+4*7+randomInt(1,7)
 
 	var i1 = 0;
 	var i2 = 0;
@@ -27,7 +27,7 @@ function doSlot(){
 	slot3 = setInterval(spin3, 50);
 	function spin1(){
 		i1++;
-		if (i1>=numeberSlot1){
+		if (i1>=numberSlot1){
 			//coin[0].play()
 			clearInterval(slot1);
 			return null;
@@ -40,7 +40,7 @@ function doSlot(){
 	}
 	function spin2(){
 		i2++;
-		if (i2>=numeberSlot2){
+		if (i2>=numberSlot2){
 			//coin[1].play()
 			clearInterval(slot2);
 			return null;
@@ -53,7 +53,7 @@ function doSlot(){
 	}
 	function spin3(){
 		i3++;
-		if (i3>=numeberSlot3){
+		if (i3>=numberSlot3){
 			//coin[2].play()
 			clearInterval(slot3);
 			testWin();

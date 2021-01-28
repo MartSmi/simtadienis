@@ -105,5 +105,8 @@ a:link {
 .bets{
     position: relative;
     left:-100px;
+}
 
+.btn-group-toggle > label {
+    cursor: pointer;
 }

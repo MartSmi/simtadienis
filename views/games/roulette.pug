@@ -5,9 +5,18 @@ block content
 
   .bets
     p Write the amount you want to bet
-    input#myText(type='text' value='')
-    p Write the color you want to bet on
-    input#myText2(type='text' value='')
+    input#amountInput(type='number' value='' min='0' step='5')
+    p Choose color
+    .btn-group.btn-group-toggle(data-toggle='buttons')
+      label.btn.btn-danger.btn-lg#colorRed
+        input(type='radio' name='options' autocomplete='off' checked='')
+        | Red
+      label.btn.btn-dark.btn-lg#colorBlack
+        input(type='radio' name='options' autocomplete='off')
+        | Black
+      label.btn.btn-success.btn-lg#colorGreen
+        input(type='radio' name='options' autocomplete='off')
+        | Green
   #mainbox.mainbox
     #box.box
       .box1
