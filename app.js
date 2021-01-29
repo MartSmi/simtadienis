@@ -66,7 +66,7 @@ app.use(
       secure: false, // set to false if using localhost TODO: make auto change
       maxAge: 86400000,
     },
-    name: 'bankas_session',
+    name: 'simtadienis_session',
     resave: true,
     saveUninitialized: false,
     secret: sessionSecret,
