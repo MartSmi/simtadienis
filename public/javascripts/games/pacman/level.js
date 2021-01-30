@@ -203,51 +203,6 @@ class Level {
     return;
   }
 
-  canMove(position) {
-    // needs optimisation
-    let minX = position.x - this.game.player.sizeX / 2;
-    let minY = position.y - this.game.player.sizeY / 2;
-    let maxX = minX + this.game.player.sizeX;
-    let maxY = minY + this.game.player.sizeY;
-
-    // let eps = 0.002;
-
-    for (var i = 0; i < this.levelHeight; i++) {
-      for (var j = 0; j < this.levelWidth; j++) {
-        if (!this.setup.canWalk(i, j)) {
-          let cellMinX = this.cellSizeX * j;
-          let cellMinY = this.cellSizeY * i;
-          let cellMaxX = cellMinX + this.cellSizeX;
-          let cellMaxY = cellMinY + this.cellSizeY;
-
-          // // console.log("cellmin: " + cellMinX + " with eps: " + (cellMinX+eps));
-          // cellMinX += eps;
-          // cellMinY += eps;
-          // cellMaxX -= eps;
-          // cellMaxY -= eps;
-
-          // console.log("cellminX: " + cellMinX);
-          // console.log("cellminY: " + cellMinY);
-          // console.log("cellmaxX: " + cellMaxX);
-          // console.log("cellmaxY: " + cellMaxY);
-
-          let inX =
-            (cellMinX < minX && minX < cellMaxX) ||
-            (cellMinX < maxX && maxX < cellMaxX);
-          let inY =
-            (cellMinY < minY && minY < cellMaxY) ||
-            (cellMinY < maxY && maxY < cellMaxY);
-
-          if (inX && inY) {
-            return false;
-          }
-        }
-      }
-    }
-
-    return true;
-  }
-
   getNearIntersections (i, j) {
     var ids = [];
 
@@ -327,7 +282,7 @@ class Level {
   goUntilWall (curId, di, dj) {
     var i = curId.i;
     var j = curId.j;
-    while (i < this.levelWidth && j < this.levelHeight && i >= 0 && j >= 0 && this.setup.canWalk(i,j)){
+    while (i < this.levelHeight && j < this.levelWidth && i >= 0 && j >= 0 && this.setup.canWalk(i,j)){
       i += di;
       j += dj;
     }
@@ -343,5 +298,73 @@ class Level {
   getRandomIntersection () {
     let randId = Math.floor(Math.random() * this.intersectionList.length);
     return this.intersectionList[randId];
+  }
+
+  canMove(position, di, dj) {
+    
+    let id = this.posToId(position);
+    let newPos = {
+      x: position.x + dj*this.cellSizeX/1.99,
+      y: position.y + di*this.cellSizeY/1.99
+    }
+    let newId = this.posToId(newPos);
+
+    if (newId.i >= 0 && newId.j >= 0 && newId.i < this.levelHeight && newId.j < this.levelWidth){
+      if (!this.setup.canWalk(newId.i, newId.j))
+        return false;
+      
+      let eps = 1e-1;
+      if (dj == 0) {
+        let lineCoord = this.cellSizeX * id.j + this.cellSizeX / 2;
+        if (Math.abs(lineCoord - position.x) > eps)
+          return false;
+      } else {
+        let lineCoord = this.cellSizeY * id.i + this.cellSizeY / 2;
+        if (Math.abs(lineCoord - position.y) > eps)
+          return false;
+      }
+    }
+
+    // let minX = position.x - this.game.player.sizeX / 2;
+    // let minY = position.y - this.game.player.sizeY / 2;
+    // let maxX = minX + this.game.player.sizeX;
+    // let maxY = minY + this.game.player.sizeY;
+
+    /*
+    for (var i = 0; i < this.levelHeight; i++) {
+      for (var j = 0; j < this.levelWidth; j++) {
+        if (!this.setup.canWalk(i, j)) {
+          let cellMinX = this.cellSizeX * j;
+          let cellMinY = this.cellSizeY * i;
+          let cellMaxX = cellMinX + this.cellSizeX;
+          let cellMaxY = cellMinY + this.cellSizeY;
+
+          // // console.log("cellmin: " + cellMinX + " with eps: " + (cellMinX+eps));
+          // cellMinX += eps;
+          // cellMinY += eps;
+          // cellMaxX -= eps;
+          // cellMaxY -= eps;
+
+          // console.log("cellminX: " + cellMinX);
+          // console.log("cellminY: " + cellMinY);
+          // console.log("cellmaxX: " + cellMaxX);
+          // console.log("cellmaxY: " + cellMaxY);
+
+          let inX =
+            (cellMinX < minX && minX < cellMaxX) ||
+            (cellMinX < maxX && maxX < cellMaxX);
+          let inY =
+            (cellMinY < minY && minY < cellMaxY) ||
+            (cellMinY < maxY && maxY < cellMaxY);
+
+          if (inX && inY) {
+            return false;
+          }
+        }
+      }
+    }
+    */
+
+    return true;
   }
 }

@@ -2,7 +2,6 @@ class Game {
   constructor(gameWidth, gameHeight) {
     this.gameHeight = gameHeight;
     this.gameWidth = gameWidth;
-    this.score = 0;
   }
 
   createLevel() {
@@ -51,6 +50,10 @@ class Game {
     this.frightenedTime = 10;
     this.leftTime = this.chaseTime;
     this.ghostMode = GhostMode.CHASE;
+
+    this.score = 0;
+    this.scoreText = document.getElementById('score_text');
+    this.scoreText.innerHTML = 'Score: ' + ("0000" + this.score).slice(-4);
   }
 
   ghostsToChase () {
@@ -71,8 +74,11 @@ class Game {
     this.ghosts.forEach(ghost => ghost.switchToMode(this.ghostMode));
   }
 
-  update(deltaTime) {
+  update(deltaTime, playing) {
     //console.log(deltaTime);
+
+    if (!playing) return;
+
     if (deltaTime > 0.1) return;
 
     this.gameObjects.forEach(object => object.update(deltaTime));
@@ -106,7 +112,9 @@ class Game {
 
   addScore(scoreToAdd) {
     this.score += scoreToAdd;
-    console.log('Score: ' + this.score);
+    //console.log('Score: ' + this.score);
+
+    this.scoreText.innerHTML = 'Score: ' + ("0000" + this.score).slice(-4);
   }
 
   getPacmanPos () {

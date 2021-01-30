@@ -7,7 +7,7 @@ const GhostMode = {
 
 class Ghost {
     constructor (game) {
-        this.mode = GhostMode.CHASE;
+        this.mode = GhostMode.SCATTER;
 
         let smallOfset = 5;
         this.sizeX = game.level.cellSizeX - smallOfset;
