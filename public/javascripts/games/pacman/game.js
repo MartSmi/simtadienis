@@ -2,22 +2,23 @@ class Game {
   constructor(gameWidth, gameHeight) {
     this.gameHeight = gameHeight;
     this.gameWidth = gameWidth;
+    this.gameLog = document.getElementById('log_text');
   }
 
   createLevel() {
     this.level = new Level(this);
     this.player = new Player(this);
-    this.redGhost = new RedGhost(this);
-    this.pinkGhost = new PinkGhost(this);
-    this.yellowGhost = new YellowGhost(this);
-    this.cyanGhost = new CyanGhost(this);
+    let redGhost = new RedGhost(this);
+    let pinkGhost = new PinkGhost(this);
+    let yellowGhost = new YellowGhost(this);
+    let cyanGhost = new CyanGhost(this);
     this.pickups = [];
 
     this.ghosts = [];
-    this.ghosts.push(this.redGhost);
-    this.ghosts.push(this.pinkGhost);
-    this.ghosts.push(this.yellowGhost);
-    this.ghosts.push(this.cyanGhost);
+    this.ghosts.push(redGhost);
+    this.ghosts.push(pinkGhost);
+    this.ghosts.push(yellowGhost);
+    this.ghosts.push(cyanGhost);
 
     let dotPositions = this.level.getDotPositions();
     //console.log(dotPositions);
@@ -81,6 +82,7 @@ class Game {
 
     if (deltaTime > 0.1) return;
 
+    //this.gameObjects.forEach(object => object.updateFrame(deltaTime));
     this.gameObjects.forEach(object => object.update(deltaTime));
 
     this.leftTime -= deltaTime;

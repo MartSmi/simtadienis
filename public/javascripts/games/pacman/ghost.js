@@ -1,7 +1,8 @@
 const GhostMode = {
     CHASE: 'chase',
     SCATTER: 'scatter',
-    FRIGHTENED: 'frightened'
+    FRIGHTENED: 'frightened',
+    EATEN: 'eaten'
  };
  Object.freeze(GhostMode);
 
@@ -17,6 +18,7 @@ class Ghost {
         this.chaseSpeed = 75;
         this.scatterSpeed = 70;
         this.frightenedSpeed = 50;
+        this.eatenSpeed = 150;
         this.speed = this.chaseSpeed;
         this.dir = 0;
 
@@ -34,18 +36,51 @@ class Ghost {
         this.game = game;
 
         this.frightenedImg = document.getElementById('img_frightened_ghost');
+        this.frightenedBlinkImg = document.getElementById('img_frightened_blink_ghost');
+        this.eatenImg = document.getElementById('img_eaten_ghost');
 
         this.updateEveryIntersection = true;
+
+        this.currentImage = this.frightenedImg;
+
+        this.frightenedBlinkingInterval = 0.75;
+        this.frightenedUntilBlinking = 6;
+        
+        this.timeForNextFrame = 0.0;
+        this.curFrameId = 0;
+
+        this.eatenTime = 10;
+        this.leftBeingEaten = 10;
+    }
+
+    updateFrame (deltaTime) {
+        if (this.mode == GhostMode.FRIGHTENED) {
+            //this.currentImage = this.frightenedImg;
+
+            this.timeForNextFrame -= deltaTime;
+            if (this.timeForNextFrame <= 0) {
+                this.timeForNextFrame = this.frightenedBlinkingInterval;
+                
+                this.curFrameId++;
+                this.curFrameId %= 2;
+            }
+            if (this.curFrameId == 0)
+                this.currentImage = this.frightenedImg;
+            else
+                this.currentImage = this.frightenedBlinkImg;
+
+        } else if (this.mode == GhostMode.EATEN) {
+            this.currentImage = this.eatenImg;
+        } else {
+            this.currentImage = this.img;
+        }
     }
 
     draw(ctx) {
         let posX = this.position.x - this.sizeX / 2;
         let posY = this.position.y - this.sizeY / 2;
-        if (this.mode == GhostMode.FRIGHTENED) {
-            ctx.drawImage(this.frightenedImg, posX, posY, this.sizeX, this.sizeY);
-        } else {
-            ctx.drawImage(this.img, posX, posY, this.sizeX, this.sizeY);
-        }
+
+        ctx.drawImage(this.currentImage, posX, posY, this.sizeX, this.sizeY);
         
 
         let targetX = this.targetPosition.x - this.sizeX / 2;
@@ -104,6 +139,15 @@ class Ghost {
         return this.game.getPacmanPos();
     }
 
+    getEatenTarget () {
+        //this.updateEveryIntersection = true;
+        var pos = this.game.getRandomPos();
+        while (!this.game.goCyanToPacman(pos)) {
+            pos = this.game.getRandomPos();
+        }
+        return pos;
+    }
+
     calculateNewTarget () {
         if (this.atUltimate()) {
             switch (this.mode) {
@@ -115,6 +159,9 @@ class Ghost {
                     break;
                 case GhostMode.FRIGHTENED:
                     this.ultimateTarget = this.game.getRandomPos();
+                    break;
+                case GhostMode.EATEN:
+                    this.ultimateTarget = this.getEatenTarget();
                     break;
                 default:
                     console.log("unknown ghost mode");
@@ -128,53 +175,14 @@ class Ghost {
         if (this.updateEveryIntersection)
             this.ultimateTarget = newTarget;
     }
-
-    /*updateChase (deltaTime) {
-        this.move(deltaTime);
-
-        if (this.atPlace()) {
-             //console.log("at place");
-            this.calculateNewTarget ();
-            // HERE: update animations/sprite to look to correct direction
-        }
-    }
-
-    updateScatter (deltaTime) {
-        this.updateChase(deltaTime);
-    }
-
-    updateFrightened (deltaTime) {
-        this.updateChase(deltaTime);
-    }*/
-
-    update (deltaTime) {
-
-        /*switch (this.mode) {
-            case GhostMode.CHASE:
-                this.updateChase(deltaTime);
-                break;
-            case GhostMode.SCATTER:
-                this.updateScatter(deltaTime);
-                break;
-            case GhostMode.FRIGHTENED:
-                this.updateFrightened (deltaTime);
-                break;
-            default:
-                console.log("unknown ghost mode");
-                break;
-        }*/
-
-        this.move(deltaTime);
-
-        if (this.atPlace()) {
-             //console.log("at place");
-            this.calculateNewTarget ();
-            // HERE: update animations/sprite to look to correct direction
-        }
-
-    }
+      
 
     switchToMode (newMode) {
+        if (this.mode == GhostMode.EATEN) {
+           // this.modeAfterEaten = newMode;
+            return;
+        }
+        this.curFrameId = 0;
         this.mode = newMode;
         this.updateEveryIntersection = false;
         switch (newMode) {
@@ -187,6 +195,11 @@ class Ghost {
                 break;
             case GhostMode.FRIGHTENED:
                 this.speed = this.frightenedSpeed;
+                this.timeForNextFrame = this.frightenedUntilBlinking;
+                break;
+            case GhostMode.EATEN:
+                this.speed = this.eatenSpeed;
+                this.leftBeingEaten = this.eatenTime;
                 break;
             default:
                 console.log("unknown ghost mode");
@@ -195,6 +208,56 @@ class Ghost {
         this.ultimateTarget = this.position;
         this.calculateNewTarget();
     }
+
+
+    collisionWithPacman () {
+        if (this.mode == GhostMode.FRIGHTENED) {
+            //this.modeAfterEaten = GhostMode.SCATTER;
+            this.switchToMode(GhostMode.EATEN);
+        } else {
+            console.log("the pacman was eaten tiu tiu tiu");
+        }
+    }
+
+    checkForCollision () {
+        let pacmanPos = this.game.getPacmanPos();
+        let dx = this.position.x - pacmanPos.x;
+        let dy = this.position.y - pacmanPos.y;
+        let sqDist = dx * dx + dy * dy;
+        let sumRadius = this.radius + this.game.player.radius;
+        let doCollide = sqDist <= (sumRadius * sumRadius);
+
+        if (doCollide) 
+            this.collisionWithPacman();
+    }
+
+
+    update (deltaTime) {
+        if (this.mode == GhostMode.EATEN) {
+            this.leftBeingEaten -= deltaTime;
+            if (this.leftBeingEaten <= 0) {
+                this.mode = GhostMode.SCATTER;
+                this.switchToMode(GhostMode.SCATTER);
+            }
+        }
+
+
+        this.updateFrame (deltaTime);
+
+        this.move(deltaTime);
+
+        if (this.atPlace()) {
+             //console.log("at place");
+            this.calculateNewTarget ();
+            // HERE: update animations/sprite to look to correct direction
+        }
+
+        if (this.mode != GhostMode.EATEN)
+            this.checkForCollision();
+
+    }
+
+
 }
 
 class RedGhost extends Ghost {

@@ -2,7 +2,7 @@ class Pickup {
   constructor(game, position) {
     this.game = game;
     this.position = position;
-    this.radius = game.level.cellSizeX / 3;
+    this.radius = game.level.cellSizeX / 4;
     this.position = position;
     this.picked = false;
     this.points = 10;
@@ -24,15 +24,20 @@ class Pickup {
     this.game.addScore(this.points);
   }
 
-  update(deltaTime) {
-    if (this.picked) return;
-    let dx = this.position.x - this.game.player.position.x;
-    let dy = this.position.y - this.game.player.position.y;
+  checkForCollision () {
+    let pacmanPos = this.game.getPacmanPos();
+    let dx = this.position.x - pacmanPos.x;
+    let dy = this.position.y - pacmanPos.y;
     let sqDist = dx * dx + dy * dy;
     let sumRadius = this.radius + this.game.player.radius;
-    let doPick = sqDist <= sumRadius * sumRadius;
+    let doPick = sqDist <= (sumRadius * sumRadius);
 
     if (doPick) this.pick();
+  }
+
+  update(deltaTime) {
+    if (this.picked) return;
+    this.checkForCollision();
   }
 }
 

@@ -168,7 +168,7 @@ class Level {
     this.intersectionList = [];
     this.markIntersections();
   }
-
+  
   draw(ctx) {
     for (var i = 0; i < this.levelHeight; i++) {
       for (var j = 0; j < this.levelWidth; j++) {
