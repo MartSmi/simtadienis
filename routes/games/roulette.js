@@ -46,7 +46,7 @@ router.post('/spin', (req, res, next) => {
     res.redirect(400, req.baseUrl);
     return;
   }
-  let block = Math.floor(Math.random() * 21);
+  let block = Math.floor(Math.random() * 15);
   let winnings = req.body.amount;
   if (chosenColor == 2 && block == 0) {
     // Won on green
@@ -61,6 +61,7 @@ router.post('/spin', (req, res, next) => {
     // Lost
     winnings *= -1;
   }
+  
   res.send({ block });
   let userID = req.session.userID;
   let gameID = 0; //Roulette's game id
