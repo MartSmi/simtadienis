@@ -4,6 +4,8 @@ let ctx = canvas.getContext('2d');
 
 const GAME_WIDTH = 420;
 const GAME_HEIGHT = 540;
+const PLAY_TEXT = "Žaisti";
+const PAUSE_TEXT = "Sustabdyti";
 
 let game = new Game(GAME_WIDTH, GAME_HEIGHT);
 game.start();
@@ -11,12 +13,16 @@ game.start();
 
 var playing = false;
 
-document.getElementById('start_stop_btn').addEventListener('click', event => {
+var startStopButton = document.getElementById('start_stop_btn');
+startStopButton.addEventListener('click', event => {
   playing = !playing;
  /* if (playing)
     game.play();
   else
     game.pause(); */
+
+  if (playing) startStopButton.innerHTML = PAUSE_TEXT;
+  else startStopButton.innerHTML = PLAY_TEXT;
 });
 
 document.getElementById('quit_btn').addEventListener('click', event => {
@@ -27,6 +33,9 @@ document.getElementById('quit_btn').addEventListener('click', event => {
   // !!! pervesti į banką kiekį: game.score
 
   game.start();
+
+  if (playing) startStopButton.innerHTML = PAUSE_TEXT;
+  else startStopButton.innerHTML = PLAY_TEXT;
 });
 
 let lastTime = 0;
