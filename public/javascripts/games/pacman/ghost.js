@@ -51,6 +51,8 @@ class Ghost {
 
         this.eatenTime = 10;
         this.leftBeingEaten = 10;
+
+        this.ghostEatingScore = 50;
     }
 
     updateFrame (deltaTime) {
@@ -158,7 +160,7 @@ class Ghost {
                     this.ultimateTarget = this.game.getRandomPos();
                     break;
                 case GhostMode.FRIGHTENED:
-                    this.ultimateTarget = this.game.getRandomPos();
+                    this.ultimateTarget = this.getEatenTarget();
                     break;
                 case GhostMode.EATEN:
                     this.ultimateTarget = this.getEatenTarget();
@@ -214,8 +216,9 @@ class Ghost {
         if (this.mode == GhostMode.FRIGHTENED) {
             //this.modeAfterEaten = GhostMode.SCATTER;
             this.switchToMode(GhostMode.EATEN);
+            this.game.addScore(this.ghostEatingScore, false);
         } else {
-            game.lost = true;
+            this.game.lost = true;
             //console.log("the pacman was eaten tiu tiu tiu");
         }
     }

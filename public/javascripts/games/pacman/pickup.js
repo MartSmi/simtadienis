@@ -21,7 +21,7 @@ class Pickup {
 
   pick() {
     this.picked = true;
-    this.game.addScore(this.points);
+    this.game.addScore(this.points, true);
   }
 
   checkForCollision () {

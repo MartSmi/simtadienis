@@ -15,7 +15,7 @@ var playing = false;
 
 var startStopButton = document.getElementById('start_stop_btn');
 startStopButton.addEventListener('click', event => {
-  if (game.lost) {
+  if (game.lost || game.won) {
     
     // !!! pervesti į banką kiekį: game.score
 
@@ -58,9 +58,10 @@ function gameLoop(timestamp) {
   game.update(deltaTime, playing);
   game.draw(ctx);
 
-  if (game.lost) {
+  if (game.lost || game.won) {
     playing = false;
-    gameLog.innerHTML = "Pralaimėta...";
+    if (game.lost) gameLog.innerHTML = "Pralaimėta...";
+    else gameLog.innerHTML = "Laimėjot!";
     startStopButton.innerHTML = "Iš naujo";
   }
 

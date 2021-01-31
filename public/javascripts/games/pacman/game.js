@@ -4,6 +4,8 @@ class Game {
     this.gameWidth = gameWidth;
     //this.gameLog = document.getElementById('log_text');
     this.lost = false;
+    this.won = false;
+    this.winScore = 500;
   }
 
   createLevel() {
@@ -14,6 +16,8 @@ class Game {
     let yellowGhost = new YellowGhost(this);
     let cyanGhost = new CyanGhost(this);
     this.pickups = [];
+
+    this.pickupCount = 0;
 
     this.ghosts = [];
     this.ghosts.push(redGhost);
@@ -27,16 +31,19 @@ class Game {
     for (var pos of dotPositions) {
       // console.log("in dot: " + pos.x + "  " + pos.y);
       this.pickups.push(new Pickup(this, pos));
+      this.pickupCount++;
     }
 
     let powerPickupPositions = this.level.getPowerPickupPositions();
     for (var pos of powerPickupPositions) {
       this.pickups.push(new PowerPickup(this, pos));
+      this.pickupCount++;
     }
 
     let fruitPickupPositions = this.level.getFruitPickupPositions();
     for (var pos of fruitPickupPositions) {
       this.pickups.push(new FruitPickup(this, pos));
+      this.pickupCount++;
     }
   }
 
@@ -44,6 +51,7 @@ class Game {
     this.createLevel();
 
     this.lost = false;
+    this.won = false;
 
     new InputHandler(this.player);
 
@@ -115,9 +123,18 @@ class Game {
     //graph.drawGraph(ctx);
   }
 
-  addScore(scoreToAdd) {
+  addScore(scoreToAdd, isPickup) {
     this.score += scoreToAdd;
     //console.log('Score: ' + this.score);
+
+    if (isPickup) {
+      this.pickupCount--;
+      console.log(this.pickupCount);
+      if (this.pickupCount == 0) {
+        this.score += this.winScore;
+        this.won = true;
+      }
+    }
 
     this.scoreText.innerHTML = 'Score: ' + ("0000" + this.score).slice(-4);
   }
