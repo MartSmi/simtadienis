@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: #2D789E;
+}
+
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.formLogout {
+    position: absolute;
+    right: 50px;
+    top: 50px;
+}
+
+#logout-btn {
+    height: 40px;
+    background-color: #2D789E;
+    width: 11vw;
+    min-width: 100px;
+    border-radius: 0;
+    border: 3.5px solid #D5F1FF;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+}
+
+#logout-btn:hover {
+    background-color: white;
+    color: #2D789E;
+    transition-duration: 0.3s;
+    border-color: white;
+}
+
+.btn-primary {
+    background-color: white;
+    color: #2D789E;
+    border-radius: 0;
+    border: none;
+    width: 7vw;
+    min-width: 90px;
+    box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-style: italic;
+}
+
+.btn-primary:hover {
+    background-color: #65B3DB;
+    color: white;
+    transition-duration: 0.3s;
+}
+
+.mainHeader {
+    font-size: 35px;
+    color: white;
+    opacity: 0.3;
+    font-family: sans-serif;
+    font-weight: 600;
+}
+.mt-3 {
+    color: white;
+}
+
+.mb-3 {
+    color: white;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.col-form-label {
+    color: white;
+}
+
+.transactionHeader {
+    border: 2px solid white;
+    box-shadow: 4px 5px #2D789E inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-control {
+    border-radius: 0;
+    border: 2px solid white;
+    box-shadow: 2.5px 3.5px #2D789E inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.form-control:focus {
+    border-radius: 0;
+    border: 2px solid white;
+    box-shadow: 2.5px 3.5px #2D789E inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+}
