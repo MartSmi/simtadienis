@@ -15,6 +15,13 @@ var playing = false;
 
 var startStopButton = document.getElementById('start_stop_btn');
 startStopButton.addEventListener('click', event => {
+  if (game.lost) {
+    
+    // !!! pervesti į banką kiekį: game.score
+
+    game.start();
+  }
+
   playing = !playing;
  /* if (playing)
     game.play();
@@ -23,6 +30,8 @@ startStopButton.addEventListener('click', event => {
 
   if (playing) startStopButton.innerHTML = PAUSE_TEXT;
   else startStopButton.innerHTML = PLAY_TEXT;
+  if (playing) gameLog.innerHTML = "Žaidžiama";
+  else gameLog.innerHTML = "Sustabdyta";
 });
 
 document.getElementById('quit_btn').addEventListener('click', event => {
@@ -40,12 +49,20 @@ document.getElementById('quit_btn').addEventListener('click', event => {
 
 let lastTime = 0;
 
+let gameLog = document.getElementById('log_text');
+
 function gameLoop(timestamp) {
   let deltaTime = (timestamp - lastTime) / 1000;
   lastTime = timestamp;
 
   game.update(deltaTime, playing);
   game.draw(ctx);
+
+  if (game.lost) {
+    playing = false;
+    gameLog.innerHTML = "Pralaimėta...";
+    startStopButton.innerHTML = "Iš naujo";
+  }
 
   requestAnimationFrame(gameLoop);
 }

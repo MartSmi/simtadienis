@@ -2,7 +2,8 @@ class Game {
   constructor(gameWidth, gameHeight) {
     this.gameHeight = gameHeight;
     this.gameWidth = gameWidth;
-    this.gameLog = document.getElementById('log_text');
+    //this.gameLog = document.getElementById('log_text');
+    this.lost = false;
   }
 
   createLevel() {
@@ -41,6 +42,8 @@ class Game {
 
   start() {
     this.createLevel();
+
+    this.lost = false;
 
     new InputHandler(this.player);
 

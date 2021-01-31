@@ -215,7 +215,8 @@ class Ghost {
             //this.modeAfterEaten = GhostMode.SCATTER;
             this.switchToMode(GhostMode.EATEN);
         } else {
-            console.log("the pacman was eaten tiu tiu tiu");
+            game.lost = true;
+            //console.log("the pacman was eaten tiu tiu tiu");
         }
     }
 
