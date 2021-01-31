@@ -51,15 +51,15 @@ block content
       table#transactions.table
         thead
           tr.transactionHeader
-            th Į/Iš
-            th Suma
-            th Laikas
+            th.tableText Į/Iš
+            th.tableText Suma
+            th.tableText Laikas
         tbody
           each row in transactions
             tr(class=row.reverted ? 'reverted' : '')
-              td= row.name
+              td.tableText= row.name
               if row.outgoing
                 td.text-danger -#{row.amount}
               else
                 td.text-success +#{row.amount}
-              td= row.time
+              td.tableText= row.time
