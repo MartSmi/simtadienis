@@ -38,10 +38,12 @@ block content
         .form-group
           button.btn.btn-primary(type='submit') Pervesti
       #transfer-success-template.mt-3.alert.alert-success.alert-dismissible.fade.show.d-none
+        img(src='/images/account/tick.svg' height='22px' width='22px' alt='')
         <span class="alrt-amount"></span> sėkmingai pervesta į sąskaitą <span class="alrt-account"></span>.
         button.close(type='button' data-dismiss='alert')
           span &times;
       #transfer-failure-template.mt-3.alert.alert-danger.alert-dismissible.fade.show.d-none
+        img(src='/images/account/exclamation-mark.svg' height='22px' width='22px' alt='')
         | Klaida: <span class="alrt-error"></span>.
         button.close(type='button' data-dismiss='alert')
           span &times;
