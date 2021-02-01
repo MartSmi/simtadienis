@@ -1,0 +1,107 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+body {
+    background-color: #2D789E;
+}
+
+.btn-primary {
+    background-color: white;
+    color: #2D789E;
+    border-radius: 0;
+    border: none;
+    width: 10vw;
+    min-width: 120px;
+    box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-style: italic;
+    position: relative;
+}
+
+.btn-primary:hover {
+    background-color: #65B3DB;
+    color: white;
+    transition-duration: 0.3s;
+}
+
+.form-control {
+    width: 25vw;
+    min-width: 200px;
+    border-radius: 0;
+    border: 2px solid white;
+    box-shadow: 2.5px 3.5px #2D789E inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+    color: white;
+}
+
+.form-control:focus {
+    border-radius: 0;
+    border: 2px solid white;
+    box-shadow: 2.5px 3.5px #2D789E inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.container {
+    position: relative;
+    height: 100vh;
+    min-height: 400px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.justify-content-center {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    bottom: 50px;
+}
+
+.formContainer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-md-7 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.formGroup {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.formLabel {
+    position: relative;
+    transform: translate(-50%, -50%);
+    top: 20px;
+    left: 50%;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.2em;
+    font-size: 20px;
+}
+
+.mb-4 {
+    color: white;
+    padding-bottom: 50px;
+    font-weight: 600;
+    font-size: 40px;
+    text-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+}
