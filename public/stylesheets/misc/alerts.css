@@ -1,0 +1,8 @@
+.alert-danger, .alert-success {
+    background-color: rgba(255, 255, 255, 0.3);
+    border: none;
+    border-radius: 0;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    color: white;
+}
