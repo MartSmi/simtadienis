@@ -39,6 +39,7 @@ body {
 }
 
 .form-control:focus {
+    color: white;
     border-radius: 0;
     border: 2px solid white;
     box-shadow: 2.5px 3.5px #2D789E inset, 4px 5px rgba(255, 255, 255, 0.3);
