@@ -4,30 +4,30 @@ block content
   link(rel="stylesheet", href="/stylesheets/games/roulette.css", type="text/css")
 
   .bets
-    div(style='padding:30px;')
+    div#wrapper0
       p#text ĮVESK STATOMĄ SUMĄ:
       input#amountInput(type='number' value='' min='0' step='5')
       
-    div(style='padding:30px;')
-      p#text(style='padding-top: 20px;') PASIRINK SPALVĄ UŽ KURIĄ NORI STATYTI:
+    div#wrapper0
+      p#text PASIRINK SPALVĄ UŽ KURIĄ NORI STATYTI:
       .btn-group.btn-group-toggle(data-toggle='buttons')
-        div(style='padding:10px;')
+        div#buttons-div
           label.btn.btn-danger.btn-lg#colorRed
             input#check-buttons(type='radio' name='options' autocomplete='off' checked='')
-        div(style='padding:10px;')
+        div#buttons-div
           label.btn.btn-dark.btn-lg#colorBlack
             input#check-buttons(type='radio' name='options' autocomplete='off')
-        div(style='padding:10px;')
+        div#buttons-div
           label.btn.btn-success.btn-lg#colorGreen
             input#check-buttons(type='radio' name='options' autocomplete='off')
      
-    div(style='padding:30px;')
-      div(style='padding-top: 20px;')
+    div#wrapper0
+      div#submit-div
         button#submit SUK!
         
   #mainbox.mainbox
     #box.box
-      .box1(style='top:-200px; left:-200px;')
+      .box1
         img(src='/images/games/roulette/roulette.svg' height='900' width='900')
     
 
