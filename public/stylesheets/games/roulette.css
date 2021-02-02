@@ -5,13 +5,13 @@
     outline: none !important;
 }
 body{
-    font-family: Open Sans;
+    font-family: sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
-    background: #F44336 ;
+    background: #3b5b2c;
     background-size: cover;
 }
 
@@ -25,10 +25,10 @@ body{
     content: '';
     width: 32px;
     height: 32px;
-    background: url('../../images/games/roulette/arrow.png') no-repeat;
+    background: url('arrow.png') no-repeat;
     background-size: 32px;
-    right: -30px;
-    top: 50%;
+    right: 10px;
+    top: 55%;
     transform: translateY(-50%);
 }
 .box{
@@ -110,4 +110,91 @@ a:link {
 
 .btn-group-toggle > label {
     cursor: pointer;
+}
+
+#text{
+    color: black;
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.1em;
+}
+
+#amountInput{
+    border-radius: 0;
+    border: 2px solid black;
+    box-shadow: 2.5px 3.5px #3b5b2c inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+#amountInput:focus {
+    border-radius: 0;
+    border: 2px solid black;
+    box-shadow: 2.5px 3.5px #3b5b2c  inset, 4px 5px rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+#colorRed{
+    background-color: red;
+    border-radius: 0;
+    border: none;
+    height: 2vw;
+    width: 5vw;
+    min-width: 90px;
+    box-shadow: 4px 5px darkred;
+}
+#colorRed:hover{
+    background-color: rgb(185, 34, 34);
+    transition-duration: 0.3s;
+}
+
+
+#colorBlack{
+    background-color: rgb(37, 37, 37);
+    border-radius: 0;
+    border: none;
+    height: 2vw;
+    width: 5vw;
+    min-width: 90px;
+    box-shadow: 4px 5px black;
+}
+#colorBlack:hover{
+    background-color: rgb(58, 58, 58);
+    transition-duration: 0.3s;
+}
+#colorGreen{
+    background-color: rgb(113, 179, 15);
+    border-radius: 0;
+    border: none;
+    height: 2vw;
+    width: 5vw;
+    min-width: 90px;
+    box-shadow: 4px 5px green;
+}
+#colorGreen:hover{
+    background-color: rgb(39, 173, 39);
+    transition-duration: 0.3s;
+}
+#submit{
+    
+    background-color: #202e19;
+    color: #476439;
+    border-radius: 0;
+    border: 2px solid black;
+    width: 7vw;
+    height:2vw;
+    min-width: 90px;
+    box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-style: italic;
+    
+}
+#submit:hover{
+    background-color: #2f4225;
+    color: white;
+    transition-duration: 0.3s;
+}
+input[type=radio]{
+  
+  visibility: hidden;
+  position: absolute;
 }
