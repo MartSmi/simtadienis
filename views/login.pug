@@ -14,10 +14,12 @@ block content
             | Įvyko techninė klaida.
         if badcreds
           .alert.alert-danger
-            | Neteisingas vartotojo vardas/ID arba slaptažodis.
+            img.alertIcon.alertIconLogin(src='/images/account/exclamation-mark.svg' height='100px' width='30px' alt='')
+            <div class="alertContainer"><div class="alertText">Neteisingas vartotojo vardas/ID arba slaptažodis.</div></div>
         if logout
           .alert.alert-success
-            | Sėkmingai atsijungta.
+            img.alertIcon(src='/images/account/tick.svg' height='80px' width='60px' alt='')
+            <div class="alertContainer"><div class="alertText">Sėkmingai atsijungta.</div></div>
 
         form.formContainer(method='post')
           .form-group
