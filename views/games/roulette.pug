@@ -4,23 +4,31 @@ block content
   link(rel="stylesheet", href="/stylesheets/games/roulette.css", type="text/css")
 
   .bets
-    p Write the amount you want to bet
-    input#amountInput(type='number' value='' min='0' step='5')
-    p Choose color
-    .btn-group.btn-group-toggle(data-toggle='buttons')
-      label.btn.btn-danger.btn-lg#colorRed
-        input(type='radio' name='options' autocomplete='off' checked='')
-        | Red
-      label.btn.btn-dark.btn-lg#colorBlack
-        input(type='radio' name='options' autocomplete='off')
-        | Black
-      label.btn.btn-success.btn-lg#colorGreen
-        input(type='radio' name='options' autocomplete='off')
-        | Green
+    div(style='padding:30px;')
+      p#text ĮVESK STATOMĄ SUMĄ:
+      input#amountInput(type='number' value='' min='0' step='5')
+      
+    div(style='padding:30px;')
+      p#text(style='padding-top: 20px;') PASIRINK SPALVĄ UŽ KURIĄ NORI STATYTI:
+      .btn-group.btn-group-toggle(data-toggle='buttons')
+      div(style='padding:10px;')
+        label.btn.btn-danger.btn-lg#colorRed
+          input#check-buttons(type='radio' name='options' autocomplete='off' checked='')
+      div(style='padding:10px;')
+        label.btn.btn-dark.btn-lg#colorBlack
+          input#check-buttons(type='radio' name='options' autocomplete='off')
+      div(style='padding:10px;')
+        label.btn.btn-success.btn-lg#colorGreen
+          input#check-buttons(type='radio' name='options' autocomplete='off')
+     
+    div(style='padding:30px;')
+      div(style='padding-top: 20px;')
+        button#submit SUK!
+        
   #mainbox.mainbox
     #box.box
-      .box1
-        img(src='/images/games/roulette/roulette.png' height='500' width='500')
+      .box1(style='top:-200px; left:-200px;')
+        img(src='/images/games/roulette/roulette.png' height='900' width='900')
     button.spin#spinButton SPIN
 
   script(src='/javascripts/games/roulette/main.js')
