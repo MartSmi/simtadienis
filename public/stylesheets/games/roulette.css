@@ -46,6 +46,8 @@ body{
     /* left:-10px;
     top:-10px; */
     /* rotate("30deg"); */
+    top:-200px; 
+    left:-200px;
 }
 span b{
     width: 65px;
@@ -118,6 +120,7 @@ a:link {
     font-weight: 700;
     font-style: italic;
     letter-spacing: 0.1em;
+    padding-top: 20px;
 }
 
 #amountInput{
@@ -197,4 +200,13 @@ input[type=radio]{
   
   visibility: hidden;
   position: absolute;
+}
+#wrapper0{
+    padding:30px;
+}
+#buttons-div{
+    padding:10px;
+}
+#submit-div{
+    padding-top: 20px;
 }
