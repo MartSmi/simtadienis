@@ -6,3 +6,36 @@
     letter-spacing: 0.15em;
     color: white;
 }
+
+.alertIcon {
+    position: absolute;
+    bottom: -5px;
+    left: 5px;
+}
+
+.alertContainer {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+}
+
+.alertText {
+    position: relative;
+    margin-right: 15px;
+    left: 25px;
+}
+
+.alrt-amount {
+    position: relative;
+    left: 35px;
+}
+
+.alrt-account, .alrt-error {
+    position: relative;
+    left: 20px;
+}
+
+.alertContainer > * {
+    margin-left: 5px;
+    margin-right: 10px;
+}
