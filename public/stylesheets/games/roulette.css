@@ -64,25 +64,25 @@ span b{
     box-shadow: inset 0 3px 3px 0 #717171;
 }
 .spin{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 75px;
-    height: 75px;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    background-color: #ff5722;
-    color: #fff;
-    box-shadow: 0 5px 20px #000;
-    font-weight: bold;
-    font-size: 22px;
-    cursor: pointer;
+    background-color: #202e19;
+    color: #476439;
+    border-radius: 0;
+    border: 2px solid black;
+    width: 50px;
+    height:2vw;
+    min-width: 90px;
+    box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-style: italic;
 }
 .spin:active{
-    width: 70px;
-    height: 70px;
-    font-size: 20px;
+    background-color: #2f4225;
+    color: white;
+}
+.spin:hover{
+    background-color: #2f4225;
+    color: white;
 }
 
 .mainbox.animate:after{
@@ -115,6 +115,7 @@ a:link {
 }
 
 #text{
+    text-align: center;
     color: black;
     font-size: 16px;
     font-weight: 700;
@@ -124,23 +125,43 @@ a:link {
 }
 
 #amountInput{
+    width:100%;
     border-radius: 0;
     border: 2px solid black;
     box-shadow: 2.5px 3.5px #3b5b2c inset, 4px 5px rgba(255, 255, 255, 0.3);
     background-color: rgba(255, 255, 255, 0.3);
+    color:black;
+    font-size: 16px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: 0.1em;
+    
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+  }
 #amountInput:focus {
     border-radius: 0;
     border: 2px solid black;
     box-shadow: 2.5px 3.5px #3b5b2c  inset, 4px 5px rgba(255, 255, 255, 0.3);
     background-color: rgba(255, 255, 255, 0.3);
+    color:black;
+    font-weight: 700;
+    font-size: 16px;
+    font-style: italic;
+    letter-spacing: 0.1em;
 }
 #colorRed{
     background-color: red;
     border-radius: 0;
     border: none;
     height: 2vw;
-    width: 5vw;
+    width: 50px;
     min-width: 90px;
     box-shadow: 4px 5px darkred;
 }
@@ -155,7 +176,7 @@ a:link {
     border-radius: 0;
     border: none;
     height: 2vw;
-    width: 5vw;
+    width: 50px;
     min-width: 90px;
     box-shadow: 4px 5px black;
 }
@@ -168,7 +189,7 @@ a:link {
     border-radius: 0;
     border: none;
     height: 2vw;
-    width: 5vw;
+    width: 50px;
     min-width: 90px;
     box-shadow: 4px 5px green;
 }
@@ -176,26 +197,7 @@ a:link {
     background-color: rgb(39, 173, 39);
     transition-duration: 0.3s;
 }
-#submit{
-    
-    background-color: #202e19;
-    color: #476439;
-    border-radius: 0;
-    border: 2px solid black;
-    width: 7vw;
-    height:2vw;
-    min-width: 90px;
-    box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    font-style: italic;
-    
-}
-#submit:hover{
-    background-color: #2f4225;
-    color: white;
-    transition-duration: 0.3s;
-}
+
 input[type=radio]{
   
   visibility: hidden;
@@ -205,8 +207,9 @@ input[type=radio]{
     padding:30px;
 }
 #buttons-div{
-    padding:10px;
+    padding:20px;
 }
 #submit-div{
     padding-top: 20px;
+    padding-left: 150px ;
 }
