@@ -161,17 +161,21 @@ input[type=number] {
     border-radius: 0;
     border: none;
     height: 2vw;
-    width: 50px;
+    width: 100px;
     min-width: 90px;
     box-shadow: 4px 5px darkred;
 }
 #colorRed:hover{
     background-color: rgb(185, 34, 34);
     transition-duration: 0.3s;
+    cursor: pointer;
+}
+#colorRed:active, #colorRed:focus {
+    background-color: rgb(185, 34, 34);
 }
 
 
-#colorBlack{
+#colorBlack {
     background-color: rgb(37, 37, 37);
     border-radius: 0;
     border: none;
@@ -183,7 +187,12 @@ input[type=number] {
 #colorBlack:hover{
     background-color: rgb(58, 58, 58);
     transition-duration: 0.3s;
+    cursor: pointer;
 }
+#colorBlack:active, #colorBlack:focus {
+    background-color: rgb(58, 58, 58);
+}
+
 #colorGreen{
     background-color: rgb(113, 179, 15);
     border-radius: 0;
@@ -196,6 +205,9 @@ input[type=number] {
 #colorGreen:hover{
     background-color: rgb(39, 173, 39);
     transition-duration: 0.3s;
+}
+#colorGreen:active, #colorGreen:focus {
+    background-color: rgb(39, 173, 39);
 }
 
 input[type=radio]{
