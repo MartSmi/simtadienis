@@ -211,5 +211,15 @@ input[type=radio]{
 }
 #submit-div{
     padding-top: 20px;
-    padding-left: 150px ;
+    padding-left: 150px;
+}
+
+.rouletteSvg {
+    transform: translate(0.5%, -1%);
+}
+
+.arrowIcon {
+    position: absolute;
+    right: -57%;
+    top: 37%;
 }
