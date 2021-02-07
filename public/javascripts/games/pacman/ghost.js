@@ -85,12 +85,12 @@ class Ghost {
         ctx.drawImage(this.currentImage, posX, posY, this.sizeX, this.sizeY);
         
 
-        let targetX = this.targetPosition.x - this.sizeX / 2;
-        let targetY = this.targetPosition.y - this.sizeY / 2;
-        ctx.drawImage(this.img, targetX, targetY, this.sizeX/2, this.sizeY/2);
-        let ttargetX = this.ultimateTarget.x - this.sizeX / 2;
-        let ttargetY = this.ultimateTarget.y - this.sizeY / 2;
-        ctx.drawImage(this.img, ttargetX, ttargetY, this.sizeX/3, this.sizeY/3);
+        // let targetX = this.targetPosition.x - this.sizeX / 2;
+        // let targetY = this.targetPosition.y - this.sizeY / 2;
+        // ctx.drawImage(this.img, targetX, targetY, this.sizeX/2, this.sizeY/2);
+        // let ttargetX = this.ultimateTarget.x - this.sizeX / 2;
+        // let ttargetY = this.ultimateTarget.y - this.sizeY / 2;
+        // ctx.drawImage(this.img, ttargetX, ttargetY, this.sizeX/3, this.sizeY/3);
     }
 
     move (deltaTime) {
