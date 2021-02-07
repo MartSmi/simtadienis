@@ -16,13 +16,21 @@ const box = 32;
 const ground = new Image();
 ground.src = "img/ground.png";
 
-
 const licejus = new Image();
 licejus.src = "img/licejus.png";
 
 galva = new Image();
 galva.src = "img/Saulius.png";
-//const maistas = new Image()[];
+
+const zalia = new Image();
+zalia.src = "img/zalia.png";
+
+const oboulys = new Image();
+oboulys.src = "img/obuolys.png";
+
+const raudona = new Image();
+raudona.src = "img/raudona.png";
+
 
 var vaizdas = new Array();
 vaizdas =["img/0.png", "img/1.png"]
@@ -30,6 +38,7 @@ var maistas = new Array();
 
 var kiek = vaizdas.length;
 for(var i=0; i<kiek;i++ ){
+    
     maistas[i]= new Image();
     maistas[i].src = vaizdas[i];
 }
@@ -46,12 +55,13 @@ let right = new Audio();
 let left = new Audio();
 let down = new Audio();
 
-dead.src = "audio/dead.mp3";
-eat.src = "audio/eat.mp3";
-up.src = "audio/up.mp3";
-right.src = "audio/right.mp3";
-left.src = "audio/left.mp3";
-down.src = "audio/down.mp3";
+dead.src = "audio/mokytis.mp4";
+eat.src = "audio/tb.mp4";
+up.src = "audio/a.mp4";
+right.src = "audio/b.mp4";
+down.src = "audio/c.mp4";
+left.src = "audio/d.mp4";
+
 
 // create the snake
 let snake = [];
@@ -77,21 +87,7 @@ let d;
 
 document.addEventListener("keydown",direction);
 
-function mirtis(){
-    clearInterval(game);
-    ctx.fillStyle = "black";
-    ctx.font = "45px Changa one";
-     ctx.fillText("Deja",10*box,10*box);
-    dead.play();
 
-
-    ///čia skaičiuojam rezultątą ir visą kitą
-
-
-
-    setTimeout(() => {  location.reload(); }, 2000);
-
-}
 
 let veikia =1;
 
@@ -120,7 +116,6 @@ function direction(event){
     }
 
 }
-
 // cheack collision function
 function collision(head,array){
     for(let i = 0; i < array.length; i++){
@@ -131,6 +126,22 @@ function collision(head,array){
     return false;
 }
 
+function mirtis(ar){
+    clearInterval(game);
+    ctx.fillStyle = "black";
+    ctx.font = "45px Changa one";
+    if(ar) ctx.fillText("Deja, atsitrenkėte į save",84,325);
+    else  ctx.fillText("Deja, atsitrenkėte į sieną",84,325);
+
+     
+    dead.play();
+
+
+    setTimeout(() => {  location.reload(); }, 2000);
+
+}
+
+
 
 
 
@@ -138,8 +149,7 @@ var naujas = Math.floor(Math.random() * kiek);
 let segmentai =[];
 // draw everything to the canvas
 function draw(){
-    //let key = keyCode;
-    //if(key==32)veikia=0;
+
     if(veikia ==1){
     ctx.drawImage(ground,0,0);
     ctx.drawImage(licejus,20,17);
@@ -147,19 +157,19 @@ function draw(){
     
     for( let i = 1; i < snake.length ; i++){
         ctx.fillStyle = ( i == 0 )? "green" : "white";
-        ctx.fillRect(snake[i].x,snake[i].y,box,box);
-        ctx.drawImage(maistas[segmentai[i-1]], snake[i].x, snake[i].y);
-        ctx.strokeStyle = "grey";
-        ctx.strokeRect(snake[i].x,snake[i].y,box,box);
-       // ctx.drawImage(maistas[1], food.x, food.y);
+      
+        ctx.drawImage(maistas[segmentai[i-1]], snake[i].x, snake[i].y, 32,32);
+        ctx.drawImage(zalia, snake[i].x, snake[i].y,32,32);
     }
-    
-    ctx.drawImage(maistas[naujas], food.x, food.y);
+    ctx.drawImage(oboulys, food.x, food.y,32,32);
+    ctx.drawImage(maistas[naujas], food.x+7, food.y+10,18,18);
+    ctx.drawImage(raudona, food.x+7, food.y+10,18,18);
+
     
     // old head position
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
-    ctx.drawImage(galva, snakeX, snakeY);
+    ctx.drawImage(galva, snakeX, snakeY,32,32);
     // which direction
     if( d == "LEFT") snakeX -= box;
     if( d == "UP") snakeY -= box;
@@ -188,20 +198,23 @@ function draw(){
         y : snakeY
     }
     
-    
+    if(snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17*box || collision(newHead,snake)){
+        mirtis(collision(newHead,snake));
+
+    }
 
     // game over
     
-    if(snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17*box || collision(newHead,snake)){
-        mirtis();
 
-    }
     
     snake.unshift(newHead);
     
     ctx.fillStyle = "black";
     ctx.font = "45px Changa one";
     ctx.fillText(score,2*box,1.6*box);
+
+
+
 }
 }
 
