@@ -295,19 +295,35 @@ class Level {
     return ret;
   }
 
+  isPosIntersection (pos) {
+    let id = this.posToId(pos);
+    return this.intersections[id.i][id.j];
+  }
+
   getRandomIntersection () {
     let randId = Math.floor(Math.random() * this.intersectionList.length);
     return this.intersectionList[randId];
   }
 
-  canMove(position, di, dj) {
+  canMove(position, di, dj, isTurn) {
     
     let id = this.posToId(position);
     let newPos = {
       x: position.x + dj*this.cellSizeX/1.99,
       y: position.y + di*this.cellSizeY/1.99
     }
-    let newId = this.posToId(newPos);
+
+
+    var newId = {
+      i: id.i + di,
+      j: id.j + dj
+    };
+
+    if (isTurn && newId.i >= 0 && newId.j >= 0 && newId.i < this.levelHeight && newId.j < this.levelWidth)
+      if (!this.setup.canWalk(newId.i, newId.j))
+        return false;
+
+    newId = this.posToId(newPos);
 
     if (newId.i >= 0 && newId.j >= 0 && newId.i < this.levelHeight && newId.j < this.levelWidth){
       if (!this.setup.canWalk(newId.i, newId.j))

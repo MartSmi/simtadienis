@@ -30,12 +30,12 @@ class Player {
     ctx.drawImage(this.img, posX, posY, this.sizeX, this.sizeY);
   }
 
-  moveLeft(deltaTime) {
+  moveLeft(deltaTime, isTurn) {
     let newPosition = {
       x: this.position.x + this.speed * deltaTime,
       y: this.position.y,
     };
-    if (this.game.level.canMove(this.position, 0, 1)) {
+    if (this.game.level.canMove(this.position, 0, 1, isTurn)) {
       this.position = newPosition;
       return true;
     } else {
@@ -43,12 +43,12 @@ class Player {
     }
   }
 
-  moveRight(deltaTime) {
+  moveRight(deltaTime, isTurn) {
     let newPosition = {
       x: this.position.x - this.speed * deltaTime,
       y: this.position.y,
     };
-    if (this.game.level.canMove(this.position, 0, -1)) {
+    if (this.game.level.canMove(this.position, 0, -1, isTurn)) {
       this.position = newPosition;
       return true;
     } else {
@@ -56,12 +56,12 @@ class Player {
     }
   }
 
-  moveUp(deltaTime) {
+  moveUp(deltaTime, isTurn) {
     let newPosition = {
       x: this.position.x,
       y: this.position.y - this.speed * deltaTime,
     };
-    if (this.game.level.canMove(this.position, -1, 0)) {
+    if (this.game.level.canMove(this.position, -1, 0, isTurn)) {
       this.position = newPosition;
       return true;
     } else {
@@ -69,12 +69,12 @@ class Player {
     }
   }
 
-  moveDown(deltaTime) {
+  moveDown(deltaTime, isTurn) {
     let newPosition = {
       x: this.position.x,
       y: this.position.y + this.speed * deltaTime,
     };
-    if (this.game.level.canMove(this.position, 1, 0)) {
+    if (this.game.level.canMove(this.position, 1, 0, isTurn)) {
       this.position = newPosition;
       return true;
     } else {
@@ -82,30 +82,40 @@ class Player {
     }
   }
 
-  move(direction, deltaTime) {
+  move(direction, deltaTime, isTurn) {
     switch (direction) {
       case 0:
-        return this.moveUp(deltaTime);
+        return this.moveUp(deltaTime, isTurn);
       case 1:
-        return this.moveRight(deltaTime);
+        return this.moveRight(deltaTime, isTurn);
       case 2:
-        return this.moveDown(deltaTime);
+        return this.moveDown(deltaTime, isTurn);
       case 3:
-        return this.moveLeft(deltaTime);
+        return this.moveLeft(deltaTime, isTurn);
       default:
         console.log('unknown direction');
         return false;
     }
   }
 
+  atIntersection () {
+    return this.game.level.isPosIntersection(this.position);
+  }
+
   update(deltaTime) {
     // console.log("pacman pos: " + this.position.x + ", " + this.position.y);
-    let moved = this.move(this.savedDir, deltaTime);
+    let moved;
+    
+    if ((8 + this.dir - this.savedDir) % 4 == 2 || this.atIntersection())
+      moved = this.move(this.savedDir, deltaTime, true);
+    else 
+      moved = false;
+
 
     if (moved) {
       this.dir = this.savedDir;
     } else {
-      this.move(this.dir, deltaTime);
+      this.move(this.dir, deltaTime, false);
     }
     
     /*let eps = 1e-3;
