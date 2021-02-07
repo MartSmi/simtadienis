@@ -74,6 +74,7 @@ function setPrimaryBalance() {
         currentBalance = Number(balanceValue.value)
         balance.textContent = balanceValue.value
         balanceRequestContainer.classList.add('hide')
+        balanceRequestContainer.classList.remove('balanceRequestContainer')
     } else {
         alert('Error')
     }
@@ -97,6 +98,7 @@ function placeBet() {
         currentBalance -= currentStake
         balance.textContent = Number(balance.textContent) - Number(stake.textContent)
         betWindow.classList.add('hide')
+        betWindow.classList.remove('stakeInputContainer')
         gameLoad()
         potentialGameWinnings()
     } else {
@@ -205,7 +207,7 @@ function countThePoints(card, target) {
 function playerBust() {
     if (Number(playerPoints.textContent) > 21) {
         loseScreen.classList.remove('hide')
-
+        insuranceReqButton.classList.add('hide')
         if (check()) {
             balance.textContent = currentBalance
             currentStake = 0
@@ -213,7 +215,7 @@ function playerBust() {
             potentialWinnings.textContent = `0`
             
         } else {
-            alert('sup cheat')
+            alert('Error')
         }
 
         disableHitButton()
@@ -278,6 +280,8 @@ function winner() {
             potentialWinnings.textContent = `0`
             restartButton.disabled = false
             withdrawButton.disabled = false
+            disableHitButton()
+            disableStandButton()
             if (isThereInsurance()) {
                 currentInsurance = 0
                 insuranceReqButton.classList.add('hide')
@@ -360,12 +364,14 @@ insuranceReqButton.addEventListener('click', () => {
     disableStandButton()
     insuranceReqButton.classList.add('hide')
     insuranceInputContainer.classList.remove('hide')
+    insuranceInputContainer.classList.add('insuranceInputContainer')
 })
 
 insuranceButton.addEventListener('click', () => {
     currentInsurance = Number(insuranceField.value)
     if (insuranceIsValid(currentStake, currentInsurance)) {
         insuranceInputContainer.classList.add('hide')
+        insuranceInputContainer.classList.remove('insuranceInputContainer')
         insuranceContainer.classList.remove('hide')
         insuranceStake.textContent = currentInsurance
         currentBalance -= currentInsurance
@@ -422,6 +428,8 @@ restartButton.addEventListener('click', () => {
     
     uncolor()
     betWindow.classList.remove('hide')
+    betWindow.classList.add('stakeInputContainer')
+    insuranceReqButton.classList.add('hide')
     restartButton.disabled = true
 })
 
