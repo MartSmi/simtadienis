@@ -1,3 +1,7 @@
+let costImage = document.querySelector('[data-cost-image]')
+let loseImage = document.querySelector('[data-lose-image]')
+let winImage = document.querySelector('[data-win-image]')
+
 document.getElementById("Gira").addEventListener("click", doSlot);
 
 var doing = false;
@@ -10,6 +14,7 @@ let status = document.getElementById("status")
 var info = true;
 
 function doSlot(){
+	costImage.classList.add('hide')
 	if (doing){return null;}
 	doing = true;
 	var numChanges = randomInt(1,4)*7
@@ -21,7 +26,7 @@ function doSlot(){
 	var i2 = 0;
 	var i3 = 0;
 	var sound = 0
-	status.innerHTML = "SPINNING"
+	status.innerHTML = "..."
 	slot1 = setInterval(spin1, 50);
 	slot2 = setInterval(spin2, 50);
 	slot3 = setInterval(spin3, 50);
@@ -84,10 +89,12 @@ function testWin(){
 		(slot1 == slot2 && slot1 == "a7") ||
 		(slot1 == slot3 && slot1 == "a7") ||
 		(slot2 == slot3 && slot2 == "a7") ) && !(slot1 == slot2 && slot2 == slot3 && slot1=="a7")){
-		status.innerHTML = "YOU WIN!";
+		winImage.classList.remove('hide')
+		status.innerHTML = 'LAIMEJAI!'
 		//win.play();
 	}else{
-		status.innerHTML = "YOU LOSE!"
+		loseImage.classList.remove('hide')
+		status.innerHTML = 'PRALAIMEJAI!'
 		//lose.play();
 	}
 	doing = false;
