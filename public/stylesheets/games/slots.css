@@ -1,135 +1,117 @@
-a{
-	color: #283593;
-	text-decoration: none;
-}
-h3{
-	margin-top: 12px;
-}
-*{
-	margin:0px;
+* {
+	margin: 0;
 	padding: 0;
+	font-family: sans-serif;
 }
-body{
-	background-color: #eee8aa;
-	font-family: "Times New Roman";
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden;
-}
-main{
-	border-radius: 5px;
-	background-color: #EF5350;
-	margin-top: 30px;
-	padding-top: 20px;
-	padding-bottom: 20px;
-	padding-left: 15px;
-	padding-right: 15px;
-	margin-left: calc((100% - 580px) / 2);
-	width: 550px;
-}
-section#status{
-	position: absolute;
-	top: 0;
+
+body {
+	height: 100vh;
 	width: 100vw;
-	margin-bottom: 5px;
-	padding-top: 25px;
-	padding-bottom: 25px;
-	border-radius: 5px;
-	text-align: center;
-	background-color: #daa520;
-	color: #FFFFFF;
-	font-size: 25px;
-	font-family: 'Roboto Mono', monospace;
-}
-section#Slots{
-	position: absolute;
-	top: 50px;
-	left: 450px;
-	width: 90em;
-	height: 40em;
-	background-image: url('/images/games/slots/slots2.svg');
-	background-repeat: no-repeat;
-	background-size: 700px 700px;
+	background-color: #eee8aa;
 	display: flex;
-	justify-content: center;
-	flex-direction: row;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
 }
-#slot1, #slot2, #slot3{
-	margin-left: 5px;
-	margin-right: 5px;
+
+#status {
 	position: relative;
-	top: 335px;
-	background-size: 120px;
-	width: 120px;
-	height: 120px;
-}
-#slot1 {
-	right: 405px;
-}
-#slot2 {
-	right: 395px;
-}
-#slot3 {
-	right: 390px;
-}
-section#Gira{
-	bottom: 5px;
+	background-color: #daa520;
 	height: 3em;
-	width: 20em;
-	position: absolute;
-	border-radius: 5px;
-	text-align: center;
-	line-height: 3em;
-	background-color: #ffcc00;
-	color: #FFFFFF;
+	width: 100vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	font-size: 20px;
+	font-weight: 600;
 }
-section#Gira:hover{
-	background-color: #ffdf00;
+
+#Slots {
+	position: relative;
+	margin-top: 10px;
+	background-size: 50%;
+	width: 80vw;
+	height: 40vw;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 300px;
+	min-width: 600px;
+}
+
+.slotsImage {
+	transform: translate(3%, 0);
+	position: absolute;
+	height: 100%;
+	width: 50%;
+}
+
+#Gira {
+	border-radius: 10px;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	bottom: 10px;
+	margin-bottom: 20px;
+	background-color: #ffcc00;
+	width: 20vw;
+	height: 3vw;
+	min-width: 40px;
+	min-height: 30px;
+	font-weight: 600;
+	font-size: 15px;
+}
+
+#Gira:hover {
 	cursor: pointer;
+	background-color: #ffdf00;
+	transition-duration: 0.3s;
 }
-section#options{
-	margin-top: 20px;
-	padding-top: 5px;
-	border-radius: 5px;
-	background-color: #C62828;
-	color: #FFFFFF;
+
+#slot1, #slot2, #slot3 {
+	position: relative;
+	top: 7%;
+	right: 0.3%;
+	height: 24%;
+	width: 8%;
+	background-size: 100% 100%;
+	margin-left: 0.9%;
+	margin-right: 0.9%;
 }
-.option{
-	padding-left: 5px;
+
+.loseImage {
+	position: absolute;
+	display: block;
+	height: 100px;
+	width: 300px;
+	background-color: black;
+	/*background-image: url('/images/games/slots/pralaimejai.png');
+	background-size: 300px 100px;*/
 }
-section#info{
-	background-color: #616161;
-	padding-left: 12px;
-	padding-bottom: 12px;
-	border-radius: 5px;
-	overflow: hidden;
-	animation-duration: 1s;
-	color: #BDBDBD;
-	margin-top: 50px;
-	margin-left: 30%;
-	margin-right: 30%;
+
+.hide {
 	display: none;
 }
+
 .a1{
-	background-image: url("../../images/games/slots/number1.png");
+	background-image: url("../../images/games/slots/1.png");
 }
 .a2{
-	background-image: url("../../images/games/slots/number2.png");
+	background-image: url("../../images/games/slots/2.png");
 }
 .a3{
-	background-image: url("../../images/games/slots/number3.png");
+	background-image: url("../../images/games/slots/3.png");
 }
 .a4{
-	background-image: url("../../images/games/slots/number4.png");
+	background-image: url("../../images/games/slots/4.png");
 }
 .a5{
-	background-image: url("../../images/games/slots/number5.png");
+	background-image: url("../../images/games/slots/5.png");
 }
 .a6{
-	background-image: url("../../images/games/slots/number6.png");
+	background-image: url("../../images/games/slots/6.png");
 }
 .a7{
-	background-image: url("../../images/games/slots/number7.png");
+	background-image: url("../../images/games/slots/7.png");
 }
