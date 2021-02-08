@@ -12,14 +12,14 @@ block content
       p#text PASIRINK SPALVĄ UŽ KURIĄ NORI STATYTI:
       .btn-group.btn-group-toggle(data-toggle='buttons')
         div#buttons-div
-          label.btn.btn-danger.btn-lg#colorRed
-            input#check-buttons(type='radio' name='options' autocomplete='off' checked='')
+          //-label.btn.btn-danger.btn-lg
+          button#colorRed(type='button')
         div#buttons-div
-          label.btn.btn-dark.btn-lg#colorBlack
-            input#check-buttons(type='radio' name='options' autocomplete='off')
+          //-label.btn.btn-dark.btn-lg
+          button#colorBlack(type='button')
         div#buttons-div
-          label.btn.btn-success.btn-lg#colorGreen
-            input#check-buttons(type='radio' name='options' autocomplete='off')
+          //-label.btn.btn-success.btn-lg
+          button#colorGreen(type='button')
      
     div#wrapper0
       div#submit-div
@@ -28,7 +28,8 @@ block content
   #mainbox.mainbox
     #box.box
       .box1
-        img(src='/images/games/roulette/roulette.png' height='500' width='500')
+        img.rouletteSvg(src='/images/games/roulette/roulette.svg' height='900' width='900')
+    img.arrowIcon(src='/images/games/roulette/rodykle.svg' height='150' width='450')
     
 
   script(src='/javascripts/games/roulette/main.js')

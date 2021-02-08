@@ -4,3 +4,9 @@
 img {
   display: none;
 }
+#texts {
+  font-size: 75%;
+}
+#start_stop_btn, #quit_btn {
+  font-size: 75%;
+}
