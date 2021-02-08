@@ -16,8 +16,14 @@ const box = 32;
 const ground = new Image();
 ground.src = "img/ground.png";
 
+const fonas = new Image();
+fonas.src = "img/fonas.png";
+
 const licejus = new Image();
 licejus.src = "img/licejus.png";
+
+const icon = new Image();
+icon.src = "img/icon.png";
 
 galva = new Image();
 galva.src = "img/Saulius.png";
@@ -130,6 +136,9 @@ function mirtis(ar){
     clearInterval(game);
     ctx.fillStyle = "black";
     ctx.font = "45px Changa one";
+
+    //kokia pabaiga
+    ctx.drawImage(fonas,60,270, 490 ,80);
     if(ar) ctx.fillText("Deja, atsitrenkėte į save",84,325);
     else  ctx.fillText("Deja, atsitrenkėte į sieną",84,325);
 
@@ -152,7 +161,7 @@ function draw(){
 
     if(veikia ==1){
     ctx.drawImage(ground,0,0);
-    ctx.drawImage(licejus,20,17);
+    ctx.drawImage(icon,20,17, 40 ,40);
 
     
     for( let i = 1; i < snake.length ; i++){
