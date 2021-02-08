@@ -1,4 +1,8 @@
-document.getElementById('spinButton').addEventListener('click', spin);
+document.getElementById('spinButton').addEventListener('click', () => {
+  if (!spinning) {
+    spin();
+  }
+});
 document.getElementById('colorRed').addEventListener('click', () => {
   chosenColor = 0;
 });
@@ -9,7 +13,8 @@ document.getElementById('colorGreen').addEventListener('click', () => {
   chosenColor = 2;
 });
 
-
+let deg;
+let spinning = false;
 let chosenColor; //0 - red, 1 - black, 2 - green
 let numSpins = 0;
 let previousBlockDeg = 0;
@@ -23,6 +28,8 @@ function spin() {
     console.log('A color must be chosen');
     return;
   }
+  spinning = true;
+
   let xhttp = new XMLHttpRequest();
   xhttp.open('POST', '/games/roulette/spin', true);
   xhttp.setRequestHeader('Content-Type', 'application/json');
@@ -34,7 +41,7 @@ function spin() {
       const block = JSON.parse(response).block;
       let currentBlockDeg = 24 * block;
       // console.log("block: " + block + "  currentBlockDeg: " + currentBlockDeg + "   previousBlockDeg: " + previousBlockDeg);
-      let deg = numSpins * 3600 - currentBlockDeg + 90;
+      deg = numSpins * 3600 - currentBlockDeg + 90;
       previousBlockDeg = currentBlockDeg;
       document.getElementById('box').style.transform = 'rotate(' + deg + 'deg)';
       let winnings = amount;
@@ -55,6 +62,15 @@ function spin() {
         winnings *= -1;
         lost(winnings);
       }
+    } else if (
+      this.readyState == 4 &&
+      this.status == 406 &&
+      JSON.parse(this.response).error == 'Bet too big'
+    ) {
+      alert("You don't have that much money");
+      spinning = false;
+    } else if (this.readyState == 4) {
+      spinning = false;
     }
   };
   let data = { amount, chosenColor };
@@ -62,13 +78,15 @@ function spin() {
 }
 
 function won(winnings) {
-  setTimeout(function() {
+  setTimeout(function () {
     alert('You won ' + winnings);
+    spinning = false;
   }, 5000);
 }
 
 function lost(winnings) {
-  setTimeout(function() {
+  setTimeout(function () {
     alert('You lost ' + winnings);
+    spinning = false;
   }, 5000);
 }
