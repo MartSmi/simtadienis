@@ -212,13 +212,19 @@ function draw(){
             for( let i = 0; i < snake.length ; i++){
                 if(food.x==snake[i].x && food.y==snake[i].y){
                     uzimta=1;
-                    food = {
+                }
+            }
+            if(food.x==snakeX.x && food.y==snakeY)uzimta=1;
+
+             if(uzimta==1) {
+                   food = {
+                       
                         x : Math.floor(Math.random()*17+1) * box,
                         y : Math.floor(Math.random()*15+3) * box
                     }
-        }
+                }
             
-        }
+        
     }
 
         // we don't remove the tail
