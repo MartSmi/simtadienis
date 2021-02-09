@@ -60,19 +60,19 @@ let up = new Audio();
 let right = new Audio();
 let left = new Audio();
 let down = new Audio();
-
+let garsas =0; 
 dead.src = "audio/mokytis.mp4";
-dead.volume = 0.11;
+dead.volume = garsas;
 eat.src = "audio/tb.mp4";
-eat.volume = 0.11;
+eat.volume = garsas;
 up.src = "audio/a.mp4";
-up.volume = 0.11;
+up.volume = garsas;
 right.src = "audio/b.mp4";
-right.volume = 0.11;
+right.volume = garsas;
 down.src = "audio/c.mp4";
-down.volume = 0.11;
+down.volume = garsas;
 left.src = "audio/d.mp4";
-left.volume = 0.11;
+left.volume = garsas;
 
 
 
