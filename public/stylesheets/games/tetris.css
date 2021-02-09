@@ -82,4 +82,6 @@
 }
 img{
   display: none;
+  width: 2vw;
+  height: 2vw;
 }
