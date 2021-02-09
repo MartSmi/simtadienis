@@ -39,7 +39,7 @@ raudona.src = "img/raudona.png";
 
 
 var vaizdas = new Array();
-vaizdas =["img/0.png", "img/1.png"]
+vaizdas =["img/1.png", "img/2.png", "img/3.png", "img/4.png", "img/5.png", "img/6.png", "img/7.png", "img/8.png", "img/9.png", "img/10.png", "img/11.png", "img/12.png", "img/13.png", "img/14.png", "img/15.png", "img/16.png", "img/17.png", "img/18.png", "img/19.png", "img/20.png", "img/21.png", "img/22.png", "img/23.png", "img/24.png", "img/25.png", "img/26.png", "img/27.png", "img/28.png", "img/29.png", "img/30.png", "img/31.png", "img/32.png"]
 var maistas = new Array();
 
 var kiek = vaizdas.length;
@@ -62,11 +62,18 @@ let left = new Audio();
 let down = new Audio();
 
 dead.src = "audio/mokytis.mp4";
+dead.volume = 0.11;
 eat.src = "audio/tb.mp4";
+eat.volume = 0.11;
 up.src = "audio/a.mp4";
+up.volume = 0.11;
 right.src = "audio/b.mp4";
+right.volume = 0.11;
 down.src = "audio/c.mp4";
+down.volume = 0.11;
 left.src = "audio/d.mp4";
+left.volume = 0.11;
+
 
 
 // create the snake
@@ -229,4 +236,4 @@ function draw(){
 
 // call draw function every 100 ms
 
-let game = setInterval(draw,100);
+let game = setInterval(draw,110-snake.length);
