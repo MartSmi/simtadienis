@@ -22,6 +22,7 @@ var gameTetris = require('./routes/games/tetris');
 var gameBlackjack = require('./routes/games/blackjack');
 var gameSlots = require('./routes/games/slots');
 var gameRoulette = require('./routes/games/roulette');
+var gameSnake = require('./routes/games/snake');
 
 var app = express();
 
@@ -95,6 +96,7 @@ app.use('/games/tetris', gameTetris);
 app.use('/games/blackjack', gameBlackjack);
 app.use('/games/slots', gameSlots);
 app.use('/games/roulette', gameRoulette);
+app.use('/games/snake', gameSnake);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
