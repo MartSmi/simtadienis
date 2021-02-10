@@ -150,7 +150,9 @@ a:link {
   font-weight: 700;
   font-style: italic;
   letter-spacing: 0.1em;
+  padding-left: 3px;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
