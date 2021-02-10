@@ -1,0 +1,108 @@
+extends ../layout
+
+block content
+  link(rel="stylesheet", href="/stylesheets/games/blackjack.css", type="text/css")
+
+  .hide(data-insurance-input-container='')
+    .insuranceInputText Įveskite draudimo sumą;
+    input.insuranceInputField(type='text' data-insurance-input-field='')
+    button.insuranceInputButton(type='button' data-insurance-input-button='') Drausti
+  .stakeInputContainer.hide(data-stake-input-container='')
+    .stakeInputText Įveskite statymą;
+    input.stakeInputField(type='text' data-stake-input-field='')
+    button.stakeInputButton(type='button' data-stake-input-button='') Statyti
+  .balanceRequestContainer(data-balance-request-container='')
+    .balanceRequestText Kiek persivedate iš banko sąskaitos?
+    input.balanceRequestInputField(type='text' data-balance-value='')
+    button.balanceRequestButton(type='button' data-balance-request-button='') Pervesti
+  .stakeField
+  .loseScreen.hide(data-lose-screen='')
+  .winScreen.hide(data-win-screen='')
+  .tieScreen.hide(data-tie-screen='')
+  .gameTable
+    button.withdrawMoneyButton(type='button' data-withdraw-money-button='') Atsiimti
+    .playerPoints(data-player-points='')
+    .topRow
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+      .playerCard(data-player-card='')
+        .cardValue
+        .cardSuit
+    .middleRow
+      .balanceContainer
+        .balanceText Bankas:
+        .balance(data-balance='')
+      .stakeContainer
+        .stakeText Statymas:
+        .stake(data-stake='')
+      .potentialWinningsContainer
+        .potentialWinningsText Galimas laimėjimas:
+        .potentialWinnings(data-potential-winnings='')
+      .insuranceContainer.hide(data-insurance-container='')
+        .insuranceStakeText Draudimas:
+        .insuranceStake(data-insurance-stake='')
+    .bottomRow
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+      .dealerCard(data-dealer-card='')
+        .cardValue
+        .cardSuit
+    .dealerPoints(data-dealer-points='')
+  .buttonRow
+    button.hitButton(type='button' data-hit-button='') Imti
+    button.restartButton(type='button' data-restart-button='') Iš naujo
+    button.standButton(type='button' data-stand-button='') Sustoti
+    button.insuranceRequestButton.hide(type='button' data-insurance-request-button='') Drausti
+
+  script(src='/javascripts/games/blackjack/carddeck.js')
+  script(src='/javascripts/games/blackjack/script.js')

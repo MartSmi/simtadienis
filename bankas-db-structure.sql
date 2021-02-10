@@ -5,6 +5,7 @@ USE `bankas`;
 --
 -- Table structure for table `sessions`
 --
+DROP TABLE IF EXISTS `play_history`;
 DROP TABLE IF EXISTS `transactions`;
 DROP TABLE IF EXISTS `sessions`;
 DROP TABLE IF EXISTS `users`;
@@ -61,5 +62,23 @@ CREATE TABLE `transactions` (
   KEY `id_to` (`id_to`),
   CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`id_from`) REFERENCES `users` (`id`),
   CONSTRAINT `transactions_ibfk_2` FOREIGN KEY (`id_to`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `play_history`
+--
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `play_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `game_id` tinyint(1) NOT NULL,
+  `winnings` int(11) NOT NULL,
+  `time` time NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `play_history_uid_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

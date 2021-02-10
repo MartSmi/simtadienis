@@ -1,0 +1,250 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  outline: none !important;
+}
+
+body {
+  font-family: sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  background: #3b5b2c;
+  background-size: cover;
+}
+
+.mainbox {
+  position: relative;
+  width: 500px;
+  height: 500px;
+}
+
+.mainbox:after {
+  position: absolute;
+  content: '';
+  width: 32px;
+  height: 32px;
+  background: url('arrow.png') no-repeat;
+  background-size: 32px;
+  right: 10px;
+  top: 55%;
+  transform: translateY(-50%);
+}
+
+@keyframes infinite-rotate {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* border-radius: 50%; */
+  /* border: 10px solid #fff; */
+  /* overflow: hidden; */
+  transition: all ease 5s;
+}
+
+.box1 {
+  position: relative;
+}
+
+span b {
+  width: 65px;
+  height: 65px;
+  line-height: 65px;
+  border-radius: 50%;
+  font-size: 26px;
+  text-align: center;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: inset 0 3px 3px 0 #717171;
+}
+
+.spin {
+  background-color: #202e19;
+  color: #476439;
+  border-radius: 0;
+  border: 2px solid black;
+  width: 50px;
+  height: 2vw;
+  min-width: 90px;
+  box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+.spin:active {
+  background-color: #2f4225;
+  color: white;
+}
+
+.spin:hover {
+  background-color: #2f4225;
+  color: white;
+}
+
+.mainbox.animate:after {
+  animation: animateArrow 0.7s ease infinite;
+}
+
+@keyframes animateArrow {
+  50% {
+    right: -40px;
+  }
+}
+
+.refresh {
+  border-radius: 12px;
+  padding: 14px 28px;
+  position: relative;
+  left: 550px;
+  top: 300px;
+  background-color: blue;
+}
+
+a:link {
+  text-decoration: none;
+  color: white;
+}
+
+.bets {
+  position: relative;
+  left: -100px;
+}
+
+.btn-group-toggle > label {
+  cursor: pointer;
+}
+
+#text {
+  text-align: center;
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  padding-top: 20px;
+}
+
+#amountInput {
+  width: 100%;
+  border-radius: 0;
+  border: 2px solid black;
+  box-shadow: 2.5px 3.5px #3b5b2c inset, 4px 5px rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+  color: black;
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.1em;
+  padding-left: 3px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+#amountInput:focus {
+  border-radius: 0;
+  border: 2px solid black;
+  box-shadow: 2.5px 3.5px #3b5b2c inset, 4px 5px rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+  color: black;
+  font-weight: 700;
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 0.1em;
+}
+#colorRed {
+  background-color: red;
+  border-radius: 0;
+  border: none;
+  height: 2vw;
+  width: 100px;
+  min-width: 90px;
+  box-shadow: 4px 5px darkred;
+}
+#colorRed:hover {
+  background-color: rgb(185, 34, 34);
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+#colorRed:active,
+#colorRed:focus {
+  background-color: rgb(185, 34, 34);
+}
+
+#colorBlack {
+  background-color: rgb(37, 37, 37);
+  border-radius: 0;
+  border: none;
+  height: 2vw;
+  width: 50px;
+  min-width: 90px;
+  box-shadow: 4px 5px black;
+}
+#colorBlack:hover {
+  background-color: rgb(58, 58, 58);
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+#colorBlack:active,
+#colorBlack:focus {
+  background-color: rgb(58, 58, 58);
+}
+
+#colorGreen {
+  background-color: rgb(113, 179, 15);
+  border-radius: 0;
+  border: none;
+  height: 2vw;
+  width: 50px;
+  min-width: 90px;
+  box-shadow: 4px 5px green;
+}
+#colorGreen:hover {
+  background-color: rgb(39, 173, 39);
+  transition-duration: 0.3s;
+}
+#colorGreen:active,
+#colorGreen:focus {
+  background-color: rgb(39, 173, 39);
+}
+
+input[type='radio'] {
+  visibility: hidden;
+  position: absolute;
+}
+#wrapper0 {
+  padding: 30px;
+}
+#buttons-div {
+  padding: 20px;
+}
+#submit-div {
+  padding-top: 20px;
+  padding-left: 150px;
+}
+
+.arrowIcon {
+  position: absolute;
+  right: -57%;
+  top: 33%;
+}

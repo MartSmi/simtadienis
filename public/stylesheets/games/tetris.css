@@ -1,0 +1,85 @@
+* {
+  box-sizing: border-box;
+  font-family: arial;
+  color: black;
+  margin: auto;
+  float: left;
+}
+
+.hat {
+  height: 30%;
+  width: 100%;
+}
+
+.wall {
+  height: 70%;
+  width: 10%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/games/tetris/siena.jpg");
+  background-size: 60%;
+  box-shadow: 2vw 0vw #332210;
+
+}
+
+.playArea {
+  height: 70%;
+  width: 15%;
+  background-color: black;
+
+}
+
+.side {
+  height: 70%;
+  width: 32.5%;
+  /*background-image: url("sd.png");*/
+
+}
+
+.s2 {
+  height: 100%;
+  width: 32.5%;
+  /* background-color: white;*/
+}
+
+
+.hat1 {
+
+
+  height: 100%;
+  width: 35%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/games/tetris/siena.jpg");
+  background-size: 15%;
+  /*box-shadow: 1vw 2vw dimgray;*/
+}
+
+#shadow {
+  width: 2vw;
+  height: 100%;
+}
+
+#shadow-top {
+  width: 100%;
+  height: 10%;
+}
+
+#shadow-bottom {
+  background-color: #332210;
+  transform: skewY(35deg);
+  width: 100%;
+  height: 90%;
+  box-shadow: 0vw 2vw #332210;
+}
+#start-stop-btn{
+  width: 65%; 
+  height: 100%;
+}
+#quit-btn{
+  width: 34%; 
+  height: 100%;
+}
+#bdy{
+  height: 100vh;
+  width: 100vw;
+}
+img{
+  display: none;
+}

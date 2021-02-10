@@ -18,6 +18,10 @@ var accountActionRouter = require('./routes/account-action');
 var adminRouter = require('./routes/admin');
 var adminActionRouter = require('./routes/admin-action');
 var gamePacman = require('./routes/games/pacman');
+var gameTetris = require('./routes/games/tetris');
+var gameBlackjack = require('./routes/games/blackjack');
+var gameSlots = require('./routes/games/slots');
+var gameRoulette = require('./routes/games/roulette');
 
 var app = express();
 
@@ -62,7 +66,7 @@ app.use(
       secure: false, // set to false if using localhost TODO: make auto change
       maxAge: 86400000,
     },
-    name: 'bankas_session',
+    name: 'simtadienis_session',
     resave: true,
     saveUninitialized: false,
     secret: sessionSecret,
@@ -86,8 +90,11 @@ app.use('/account', accountRouter);
 app.use('/account-action', accountActionRouter);
 app.use('/admin', adminRouter);
 app.use('/admin-action', adminActionRouter);
-//app.use('/games/rock_paper_scissors', gameRockPaperScissorsRouter);
 app.use('/games/pacman', gamePacman);
+app.use('/games/tetris', gameTetris);
+app.use('/games/blackjack', gameBlackjack);
+app.use('/games/slots', gameSlots);
+app.use('/games/roulette', gameRoulette);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
