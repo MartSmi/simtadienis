@@ -22,9 +22,9 @@ $(function () {
 				b.text(parseInt(b.text()) - parseInt(data.amount));
 
 				$('#transactions').find('tbody').prepend(
-					$('<tr>').append($('<td>').text(data.account))
+					$('<tr>').append($('<td>').addClass('tableText').text(data.account))
 							 .append($('<td>').addClass('text-danger').text('-' + data.amount))
-							 .append($('<td>').text(data.time))
+							 .append($('<td>').addClass('tableText').text(data.time))
 				);
 
 				transfer_form.get(0).reset();

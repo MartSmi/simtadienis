@@ -4,8 +4,11 @@ append scripts
   script(src='/javascripts/account.js')
 
 block content
+  link(rel="stylesheet", href="/stylesheets/account.css", type="text/css")
+  link(rel="stylesheet" href="/stylesheets/misc/alerts.css" type="text/css")
+
   main.container.pt-2.pt-sm-4
-    h1= name
+    div.mainHeader Banko sąskaita
 
     p.lead.mt-3
       | Vartotojo vardas: 
@@ -14,10 +17,8 @@ block content
       | Balansas: 
       strong#balance= balance
 
-    form(method='post' action='/logout')
+    form.formLogout(method='post' action='/logout')
       button(type='submit')#logout-btn.btn.btn-sm.btn-outline-danger Atsijungti
-
-    hr
 
     if frozen 
       .alert.alert-danger
@@ -29,19 +30,21 @@ block content
         .form-group.row
           label.col-4.col-sm-3.col-md-2.col-form-label(for='to-account') Į sąskaitą
           .col-8.col-sm-9.col-md-10
-            input#to-account.form-control(type='text' name='to_account' placeholder='Sąskaitos vartotojo vardas' required)
+            input#to-account.form-control(type='text' autocomplete='off' name='to_account' placeholder='Sąskaitos vartotojo vardas' required)
         .form-group.row
           label.col-4.col-sm-3.col-md-2.col-form-label(for='amount') Suma
           .col-8.col-sm-9.col-md-10
-            input#amount.form-control(type='number' name='amount' required)
+            input#amount.form-control(type='number' autocomplete='off' name='amount' required)
         .form-group
           button.btn.btn-primary(type='submit') Pervesti
       #transfer-success-template.mt-3.alert.alert-success.alert-dismissible.fade.show.d-none
-        <span class="alrt-amount"></span> sėkmingai pervesta į sąskaitą <span class="alrt-account"></span>.
+        img.alertIcon(src='/images/account/tick.svg' height='80px' width='60px' alt='')
+        <div class="alertContainer"><span class="alrt-amount"></span> <div class="alertText">sėkmingai pervesta į sąskaitą</div> <span class="alrt-account"></span>.</div>
         button.close(type='button' data-dismiss='alert')
           span &times;
       #transfer-failure-template.mt-3.alert.alert-danger.alert-dismissible.fade.show.d-none
-        | Klaida: <span class="alrt-error"></span>.
+        img.alertIcon(src='/images/account/exclamation-mark.svg' height='80px' width='22px' alt='')
+        <div class="alertContainer"><div class="alertText"> Klaida: </div><span class="alrt-error"></span></div>
         button.close(type='button' data-dismiss='alert')
           span &times;
 
@@ -50,16 +53,16 @@ block content
       h2.h4.mb-3.mt-5 Įvykdyti pervedimai
       table#transactions.table
         thead
-          tr
-            th Į/Iš
-            th Suma
-            th Laikas
+          tr.transactionHeader
+            th.tableText Į/Iš
+            th.tableText Suma
+            th.tableText Laikas
         tbody
           each row in transactions
             tr(class=row.reverted ? 'reverted' : '')
-              td= row.name
+              td.tableText= row.name
               if row.outgoing
                 td.text-danger -#{row.amount}
               else
                 td.text-success +#{row.amount}
-              td= row.time
+              td.tableText= row.time

@@ -40,6 +40,7 @@ let cardValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "
 function randomSuit() {
     return suits[Math.floor(Math.random()*4)]
 }
+
 function randomCardValue() {
     return cardValues[Math.floor(Math.random()*13)]
 }

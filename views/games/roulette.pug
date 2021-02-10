@@ -4,23 +4,32 @@ block content
   link(rel="stylesheet", href="/stylesheets/games/roulette.css", type="text/css")
 
   .bets
-    p Write the amount you want to bet
-    input#amountInput(type='number' value='' min='0' step='5')
-    p Choose color
-    .btn-group.btn-group-toggle(data-toggle='buttons')
-      label.btn.btn-danger.btn-lg#colorRed
-        input(type='radio' name='options' autocomplete='off' checked='')
-        | Red
-      label.btn.btn-dark.btn-lg#colorBlack
-        input(type='radio' name='options' autocomplete='off')
-        | Black
-      label.btn.btn-success.btn-lg#colorGreen
-        input(type='radio' name='options' autocomplete='off')
-        | Green
+    div#wrapper0
+      p#text ĮVESK STATOMĄ SUMĄ:
+      input#amountInput(type='number' value='' min='0' step='5')
+      
+    div#wrapper0
+      p#text PASIRINK SPALVĄ UŽ KURIĄ NORI STATYTI:
+      .btn-group.btn-group-toggle(data-toggle='buttons')
+        div#buttons-div
+          //-label.btn.btn-danger.btn-lg
+          button#colorRed(type='button')
+        div#buttons-div
+          //-label.btn.btn-dark.btn-lg
+          button#colorBlack(type='button')
+        div#buttons-div
+          //-label.btn.btn-success.btn-lg
+          button#colorGreen(type='button')
+     
+    div#wrapper0
+      div#submit-div
+        button.spin#spinButton SUK!
+        
   #mainbox.mainbox
     #box.box
       .box1
-        img(src='/images/games/roulette/roulette_png4.png' height='500' width='500')
-    button.spin#spinButton SPIN
+        img.rouletteSvg(src='/images/games/roulette/roulette.svg' height='500' width='500')
+    img.arrowIcon(src='/images/games/roulette/rodykle.svg' height='150' width='450')
+    
 
   script(src='/javascripts/games/roulette/main.js')
