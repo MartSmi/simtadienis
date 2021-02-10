@@ -1,4 +1,5 @@
-// Pabaigos sąlyga - 142 "mirtis" eilutėje, pabaigos veiksmai apie 80 eilute.
+// Pabaiga suveikia ir taškų pervedimas tūrėtų būti: line 160
+
 // Sorry už plagijavimą
 /*
 Create by Learn Web Developement
@@ -153,10 +154,11 @@ function mirtis(ar){
     ctx.drawImage(fonas,60,270, 490 ,80);
     if(ar) ctx.fillText("Deja, atsitrenkėte į save",84,325);
     else  ctx.fillText("Deja, atsitrenkėte į sieną",84,325);
-
-     
     dead.play();
 
+
+    //Šitoje vietoje tūrėtų būti kažkas su taškų pervedimu kintamsis: score
+    // score prasideda nuo 0. Lenta yra 15*17, todėl teoriškai 254 yra įmanoma surinkti idealiai žaidžiat, bet praktiškai tai nėra realu, nes žaidimas greitėja.
 
     setTimeout(() => {  location.reload(); }, 2000);
 
@@ -251,7 +253,7 @@ function draw(){
     snake.unshift(newHead);
     
     ctx.fillStyle = "black";
-    ctx.font = "45px Changa one";
+    ctx.font = "45px Acherus Grotesque";
     ctx.fillText(score,2*box,1.6*box);
 
 
@@ -259,6 +261,6 @@ function draw(){
 }
 }
 
-// call draw function every 100 ms
+// žaidimo greitis
 
 let game = setInterval(draw,120-(score/3));
