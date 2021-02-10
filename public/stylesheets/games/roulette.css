@@ -150,7 +150,9 @@ a:link {
   font-weight: 700;
   font-style: italic;
   letter-spacing: 0.1em;
+  padding-left: 3px;
 }
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -160,72 +162,73 @@ input[type='number'] {
   -moz-appearance: textfield;
 }
 #amountInput:focus {
-    border-radius: 0;
-    border: 2px solid black;
-    box-shadow: 2.5px 3.5px #3b5b2c  inset, 4px 5px rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.3);
-    color:black;
-    font-weight: 700;
-    font-size: 16px;
-    font-style: italic;
-    letter-spacing: 0.1em;
+  border-radius: 0;
+  border: 2px solid black;
+  box-shadow: 2.5px 3.5px #3b5b2c inset, 4px 5px rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.3);
+  color: black;
+  font-weight: 700;
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 0.1em;
 }
-#colorRed{
-    background-color: red;
-    border-radius: 0;
-    border: none;
-    height: 2vw;
-    width: 100px;
-    min-width: 90px;
-    box-shadow: 4px 5px darkred;
+#colorRed {
+  background-color: red;
+  border-radius: 0;
+  border: none;
+  height: 2vw;
+  width: 100px;
+  min-width: 90px;
+  box-shadow: 4px 5px darkred;
 }
-#colorRed:hover{
-    background-color: rgb(185, 34, 34);
-    transition-duration: 0.3s;
-    cursor: pointer;
+#colorRed:hover {
+  background-color: rgb(185, 34, 34);
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
-#colorRed:active, #colorRed:focus {
-    background-color: rgb(185, 34, 34);
+#colorRed:active,
+#colorRed:focus {
+  background-color: rgb(185, 34, 34);
 }
-
 
 #colorBlack {
-    background-color: rgb(37, 37, 37);
-    border-radius: 0;
-    border: none;
-    height: 2vw;
-    width: 50px;
-    min-width: 90px;
-    box-shadow: 4px 5px black;
+  background-color: rgb(37, 37, 37);
+  border-radius: 0;
+  border: none;
+  height: 2vw;
+  width: 50px;
+  min-width: 90px;
+  box-shadow: 4px 5px black;
 }
-#colorBlack:hover{
-    background-color: rgb(58, 58, 58);
-    transition-duration: 0.3s;
-    cursor: pointer;
+#colorBlack:hover {
+  background-color: rgb(58, 58, 58);
+  transition-duration: 0.3s;
+  cursor: pointer;
 }
-#colorBlack:active, #colorBlack:focus {
-    background-color: rgb(58, 58, 58);
-}
-
-#colorGreen{
-    background-color: rgb(113, 179, 15);
-    border-radius: 0;
-    border: none;
-    height: 2vw;
-    width: 50px;
-    min-width: 90px;
-    box-shadow: 4px 5px green;
-}
-#colorGreen:hover{
-    background-color: rgb(39, 173, 39);
-    transition-duration: 0.3s;
-}
-#colorGreen:active, #colorGreen:focus {
-    background-color: rgb(39, 173, 39);
+#colorBlack:active,
+#colorBlack:focus {
+  background-color: rgb(58, 58, 58);
 }
 
-input[type=radio]{
-  
+#colorGreen {
+  background-color: rgb(113, 179, 15);
+  border-radius: 0;
+  border: none;
+  height: 2vw;
+  width: 50px;
+  min-width: 90px;
+  box-shadow: 4px 5px green;
+}
+#colorGreen:hover {
+  background-color: rgb(39, 173, 39);
+  transition-duration: 0.3s;
+}
+#colorGreen:active,
+#colorGreen:focus {
+  background-color: rgb(39, 173, 39);
+}
+
+input[type='radio'] {
   visibility: hidden;
   position: absolute;
 }
@@ -235,17 +238,13 @@ input[type=radio]{
 #buttons-div {
   padding: 20px;
 }
-#submit-div{
-    padding-top: 20px;
-    padding-left: 150px;
-}
-
-.rouletteSvg {
-    transform: translate(0.5%, -1%);
+#submit-div {
+  padding-top: 20px;
+  padding-left: 150px;
 }
 
 .arrowIcon {
-    position: absolute;
-    right: -57%;
-    top: 37%;
+  position: absolute;
+  right: -57%;
+  top: 33%;
 }
