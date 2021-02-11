@@ -134,18 +134,6 @@ body {
     display: none;
 }
 
-.playerPoints {
-    position: absolute;
-    top: 1%;
-    left: 1%;
-}
-
-.dealerPoints {
-    position: absolute;
-    bottom: 1%;
-    right: 1%;
-}
-
 .insuranceInputContainer {
     position: absolute;
 }
@@ -291,4 +279,80 @@ body {
 
 .blur {
     filter: blur(20px);
+}
+
+.playerTag {
+    position: absolute;
+    top: 10%;
+    right: 1%;
+    width: 80%;
+    height: 4%;
+    background-color: #76a162;
+    text-align: right;
+    padding-right: 0.5em;
+    z-index: -1;
+    font-size: 2vmin;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+}
+
+.playerPointsBar {
+    position: absolute;
+    top: 15%;
+    right: 1%;
+    width: 80%;
+    height: 4%;
+    background-color: #76a162;
+    text-align: right;
+    padding-right: 0.5em;
+    z-index: -1;
+    font-size: 2vmin;
+    color: white;
+    font-weight: 600;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.playerPoints {
+    border: 2px solid white;
+    width: 2.5%;
+    text-align: center;
+}
+
+.dealerPointsBar {
+    position: absolute;
+    bottom: 15%;
+    left: 1%;
+    width: 80%;
+    height: 4%;
+    background-color: #76a162;
+    text-align: left;
+    padding-left: 0.5em;
+    z-index: -1;
+    font-size: 2vmin;
+    color: white;
+    font-weight: 600;
+}
+
+.dealerPoints {
+    border: 2px solid white;
+    width: 2.5%;
+    text-align: center;
+}
+
+.dealerTag {
+    position: absolute;
+    bottom: 10%;
+    left: 1%;
+    width: 80%;
+    height: 4%;
+    background-color: #76a162;
+    text-align: left;
+    padding-left: 0.5em;
+    z-index: -1;
+    font-size: 2vmin;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.1em;
 }
