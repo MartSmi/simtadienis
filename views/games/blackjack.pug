@@ -18,7 +18,9 @@ block content
   .tieScreen.hide(data-tie-screen='')
   .gameTable.blur(data-game-table)
     img.gameTableImg(src='/images/games/blackjack/stalas.svg')
-    .playerPoints(data-player-points='')
+    .playerTag ŽAIDĖJAS
+    .playerPointsBar
+      .playerPoints(data-player-points='')
     .topRow
       .playerCard.playerCard1(data-player-card='')
         .cardValue
@@ -96,7 +98,9 @@ block content
       .dealerCard.dealerCard10(data-dealer-card='')
         .cardValue
         .cardSuit
-    .dealerPoints(data-dealer-points='')
+    .dealerPointsBar
+      .dealerPoints(data-dealer-points='')
+    .dealerTag DALINTOJAS
 
   script(src='/javascripts/games/blackjack/carddeck.js')
   script(src='/javascripts/games/blackjack/script.js')
