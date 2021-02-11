@@ -1,219 +1,294 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: sans-serif;
 }
 
 body {
     height: 100vh;
     width: 100vw;
-    font-family: sans-serif;
-    background-color: #DFDFDF;
-
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: top;
+    justify-content: flex-start;
+    background-color: #bfeca9;
+}
+
+.topbar {
+    margin-top: 0;
+    width: 100vw;
+    height: 50px;
+    background-color: #567c45;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 600;
+    color: #213119;
+    padding-left: 10px;
+    font-style: italic;
+    letter-spacing: 1.5px;
 }
 
 .gameTable {
     position: relative;
-    margin-top: 10px;
-    margin-bottom: auto;
-    width: 93vw;
-    height: 38vw;
-    background-color: green;
+    margin-top: 20px;
+    height: 40vw;
+    width: 83vw;
+    min-height: 500px;
+    min-width: 1000px;
 
     display: grid;
     grid-template-rows: 3;
 }
 
-
-.topRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: left;
-}
-
-.bottomRow {
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: right;
-}
-
-.playerCard, .dealerCard {
-    position: relative;
-    display: flex;
-    height: 80%;
-    width: 7%;
-    border: 1px solid black;
-    background-color: #fff;
-}
-
-.playerCard {
-    margin-top: auto;
-    margin-left: 0.5%;
-    margin-right: 0.2%;
-}
-
-.dealerCard {
-    margin-bottom: auto;
-    margin-right: 0.5%;
-    margin-left: 0.2%;
-}
-
-.middleRow {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-
-.middleRow > * {
-    color: #fff;
-    margin-left: 1%;
-    margin-right: 1%;
-    font-size: 2vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.insuranceContainer {
-    margin-left: 150px;
-}
-
-.cardSuit {
+.gameTableImg {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 5vw;
-}
-
-.cardValue {
-    position: absolute;
-    margin-top: 0.2%;
-    font-size: 1.5vw;
+    height: 100%;
+    width: 100%;
 }
 
 .redColor {
     color: red;
 }
 
-[type="button"] {
-    font-size: 80%;
-    height: 3vw;
-    width: 6vw;
-}
-
-.buttonRow {
-    width: 100vw;
+.topRow {
     position: relative;
+    width: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
-    margin-bottom: auto;
 }
 
-.hitButton, .standButton, .insuranceRequestButton {
-    margin-left: auto;
-    margin-right: auto;
+.playerCard {
+    position: relative;
+    height: 60%;
+    width: 7%;
+    background-color: #5f854d;
+    margin-right: 1%;
+    margin-left: 1%;
+    border-radius: 3px;
 }
 
-[type="button"]:hover {
-    cursor: pointer;
+.playerCard7 {
+    transform: rotate(2deg);
 }
 
-.playerPoints {
+.playerCard8 {
+    transform: rotate(7deg);
+    top: 5%;
+}
+
+.playerCard9 {
+    transform: rotate(11deg);
+    top: 15%;
+}
+
+.playerCard10 {
+    transform: rotate(14deg);
+    top: 30%;
+}
+
+.bottomRow {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.dealerCard {
+    position: relative;
+    height: 60%;
+    width: 7%;
+    background-color: #5f854d;
+    margin-right: 1%;
+    margin-left: 1%;
+    border-radius: 3px;
+}
+
+.dealerCard7 {
+    transform: rotate(2deg);
+}
+
+.dealerCard8 {
+    transform: rotate(7deg);
+    bottom: 5%;
+}
+
+.dealerCard9 {
+    transform: rotate(11deg);
+    bottom: 15%;
+}
+
+.dealerCard10 {
+    transform: rotate(14deg);
+    bottom: 30%;
+}
+
+.withdrawMoneyButton {
     position: absolute;
-    margin-top: 0.3%;
-    margin-left: 0.3%;
-    font-size: 20px;
-    color: #fff;
-}
-
-.dealerPoints {
-    position: absolute;
-    align-items: right;
-    font-size: 20px;
-    color: #fff;
-    bottom: 0.3%;
-    right: 0.3%;
-}
-
-.loseScreen {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background-color: red;
-    z-index: 0;
-}
-
-.winScreen {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background-color:#4CD41B;
-    z-index: 0;
+    display: none;
 }
 
 .hide {
     display: none;
 }
 
-.tieScreen {
+.playerPoints {
     position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background-color: #838383;
-    z-index: 0;
+    top: 1%;
+    left: 1%;
 }
 
-.balanceRequestContainer, .stakeInputContainer, .insuranceInputContainer {
-    position: fixed;
-    background-color: black;
-    height: 35vw;
-    width: 60vw;
+.dealerPoints {
+    position: absolute;
+    bottom: 1%;
+    right: 1%;
+}
+
+.insuranceInputContainer {
+    position: absolute;
+}
+
+.balanceRequestContainer, .stakeInputContainer {
+    background-color: rgba(255, 255, 255, 0.3);
+    position: absolute;
+    border: 3px solid #5f854d;
+    height: 30vw;
+    width: 50vw;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
+    box-shadow: 6px 9px #5f854d inset, 8px 10px rgba(255, 255, 255, 0.3);
+    min-height: 200px;
+    min-width: 400px;
+}
+
+.balanceRequestText, .stakeInputText {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 1.3vmax;
+    font-weight: 700;
+}
+
+.balanceRequestInputField, .stakeInputField {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    outline: none;
+}
+
+.balanceRequestButton, .stakeInputButton {
+    position: absolute;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 10%;
+    width: 15%;
+    outline: none;
+}
+
+.buttonRow, .scndButtonRow {
+    position: absolute;
+    height: 40%;
+    width: 10%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-.balanceRequestInputField, .stakeInputField, .insuranceInputField {
-    position: relative;
-    height: 5%;
-    width: 50%;
-    font-size: 100%;
+.buttonRow {
+    top: 30%;
 }
 
-.balanceRequestText, .stakeInputText, .insuranceInputText {
+.scndButtonRow {
+    top: 25%;
+    right: 0;
+}
+
+.buttonRow > *, .scndButtonRow > *{
+    position: relative;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    width: 90%;
+    height: 15%;
+}
+
+[type="button"] {
+    background-color: #5f854d;
+    box-shadow: 4px 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+    border: none;
+}
+
+[type="button"]:disabled {
+    background-color: #2c4122;
+    color: black;
+}
+
+[type="button"]:enabled:hover {
+    background-color: #80c063;
+    transition-duration: 0.3s;
+}
+
+.moneyContainer {
+    position: absolute;
+    height: 25%;
+    width: 25%;
+    top: 50%;
+    right: 50%;
+    transform: translate(50%, -50%);
+    display: flex;
+    flex-direction: row;
+}
+
+.moneyTextContainer {
+    position: relative;
+    height: 100%;
+    width: 50%;
+    text-align: right;
+}
+
+.moneyTextContainer > * {
+    position: relative;
+    margin-top: 10%;
+    margin-bottom: 10%;
+    color: white;
+    font-size: 1.2vmax;
+    font-weight: 700;
+}
+
+.moneyAmountContainer {
+    position: relative;
+    height: 100%;
+    width: 50%;
+    text-align: center;
+    margin-left: 20%;
+}
+
+.moneyAmountContainer > * {
     position: relative;
     color: white;
-    font-size: 2vw;
-}
-
-.balanceRequestButton, .stakeInputButton, .insuranceInputButton{
-    position: relative;
-    bottom: -15%;
-    font-size: 100%;
+    width: 50%;
+    height: 20%;
+    border: 3px solid #5f854d;
+    margin-top: 13%;
+    margin-bottom: 13%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    font-size: 2.4vmax;
+    font-weight: 1000;
 }
 
 .blur {
     filter: blur(20px);
-}
-
-.withdrawMoneyButton {
-    position: absolute;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    left: 6%;
 }
