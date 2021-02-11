@@ -171,6 +171,14 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     outline: none;
+    background-color: #2c4122;
+    box-shadow: 2.5px 3.5px rgba(255, 255, 255, 0.596) inset, 4px 5px #2c4122;
+    color: white;
+    border: 3px solid white;
+}
+
+.balanceRequestInputField:focus, .stakeInputField:focus {
+    color: white;
 }
 
 .balanceRequestButton, .stakeInputButton {
@@ -219,7 +227,7 @@ body {
 
 [type="button"]:disabled {
     background-color: #2c4122;
-    color: black;
+    color: #69a14e;
 }
 
 [type="button"]:enabled:hover {
