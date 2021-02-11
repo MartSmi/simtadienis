@@ -13,22 +13,16 @@ let restartButton = document.querySelector("[data-restart-button]")
 let balance = document.querySelector("[data-balance]")
 let stake = document.querySelector("[data-stake]")
 let potentialWinnings = document.querySelector("[data-potential-winnings]")
-let insuranceContainer = document.querySelector("[data-insurance-container]")
-let insuranceStake = document.querySelector("[data-insurance-stake]")
 let balanceValue = document.querySelector("[data-balance-value]")
 let balanceRequestButton = document.querySelector("[data-balance-request-button]")
 let balanceRequestContainer = document.querySelector("[data-balance-request-container]")
 let betWindow = document.querySelector("[data-stake-input-container]")
 let betField = document.querySelector("[data-stake-input-field]")
 let betButton = document.querySelector("[data-stake-input-button]")
-let insuranceInputContainer = document.querySelector("[data-insurance-input-container]")
-let insuranceField = document.querySelector("[data-insurance-input-field]")
-let insuranceButton = document.querySelector("[data-insurance-input-button]")
-let insuranceReqButton = document.querySelector("[data-insurance-request-button]")
-let withdrawButton = document.querySelector("[data-withdraw-money-button]")
+let gameTable = document.querySelector("[data-game-table]")
 let currentBalance
 let currentStake
-let currentInsurance
+let errorOccurred
 
 playerPoints.textContent = `0`
 dealerPoints.textContent = `0`
@@ -61,7 +55,6 @@ function gameLoad() {
     countThePoints(playerCards[1], playerPoints)
     countThePoints(dealerCards[0], dealerPoints)
 
-    insurance()
     blackjack()
 }
 
@@ -75,8 +68,10 @@ function setPrimaryBalance() {
         balance.textContent = balanceValue.value
         balanceRequestContainer.classList.add('hide')
         balanceRequestContainer.classList.remove('balanceRequestContainer')
+        errorOccurred = false
     } else {
         alert('Error')
+        errorOccurred = true
     }
 }
 
@@ -101,8 +96,10 @@ function placeBet() {
         betWindow.classList.remove('stakeInputContainer')
         gameLoad()
         potentialGameWinnings()
+        errorOccurred = false
     } else {
         alert('no')
+        errorOccurred = true
     }
 }
 
@@ -112,22 +109,24 @@ function potentialGameWinnings() {
 
 betButton.addEventListener('click', () => {
     placeBet()
-    hitButton.disabled = false
-    standButton.disabled = false
-    withdrawButton.disabled = true
+    if (!errorOccurred) {
+        hitButton.disabled = false
+        standButton.disabled = false
+        gameTable.classList.remove('blur')
+    }
 })
 
 balanceRequestButton.addEventListener('click', () => {
     setPrimaryBalance()
-    withdrawButton.disabled = false
-    betWindow.classList.remove('hide')
+    if (!errorOccurred) {
+        betWindow.classList.remove('hide')
+    }
 })
 
 window.addEventListener('load', f => {
     restartButton.disabled = true
     hitButton.disabled = true
     standButton.disabled = true
-    withdrawButton.disabled = true
 })
 
 function colorSuit(suit) {
@@ -207,7 +206,6 @@ function countThePoints(card, target) {
 function playerBust() {
     if (Number(playerPoints.textContent) > 21) {
         loseScreen.classList.remove('hide')
-        insuranceReqButton.classList.add('hide')
         if (check()) {
             balance.textContent = currentBalance
             currentStake = 0
@@ -221,7 +219,6 @@ function playerBust() {
         disableHitButton()
         disableStandButton()
         restartButton.disabled = false
-        withdrawButton.disabled = false
     }
 }
 
@@ -279,17 +276,8 @@ function winner() {
             stake.textContent = `0`
             potentialWinnings.textContent = `0`
             restartButton.disabled = false
-            withdrawButton.disabled = false
             disableHitButton()
             disableStandButton()
-            if (isThereInsurance()) {
-                currentInsurance = 0
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            } else {
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            }
         } else {
             alert('Error')
         }
@@ -303,17 +291,6 @@ function winner() {
             stake.textContent = `0`
             potentialWinnings.textContent = `0`
             restartButton.disabled = false
-            withdrawButton.disabled = false
-            if (isThereInsurance()) {
-                currentBalance += currentInsurance
-                balance.textContent = Number(balance.textContent) + Number(insuranceStake.textContent)
-                currentInsurance = 0
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            } else {
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            }
         } else {
             alert('Error')
         }
@@ -353,62 +330,6 @@ function blackjack() {
     }
 }
 
-function insurance() {
-    if (dealerBlackjackIsPossible()) {
-        insuranceReqButton.classList.remove('hide')
-    }
-}
-
-insuranceReqButton.addEventListener('click', () => {
-    disableHitButton()
-    disableStandButton()
-    insuranceReqButton.classList.add('hide')
-    insuranceInputContainer.classList.remove('hide')
-    insuranceInputContainer.classList.add('insuranceInputContainer')
-})
-
-insuranceButton.addEventListener('click', () => {
-    currentInsurance = Number(insuranceField.value)
-    if (insuranceIsValid(currentStake, currentInsurance)) {
-        insuranceInputContainer.classList.add('hide')
-        insuranceInputContainer.classList.remove('insuranceInputContainer')
-        insuranceContainer.classList.remove('hide')
-        insuranceStake.textContent = currentInsurance
-        currentBalance -= currentInsurance
-        balance.textContent = Number(balance.textContent) - Number(insuranceStake.textContent)
-        hitButton.disabled = false
-        standButton.disabled = false
-    } else{
-        alert('Error')
-    }
-})
-
-function insuranceIsValid(bet, insurance) {
-    if (check()) {
-        if (insurance*2 <= bet
-            && insurance >= 0
-            && insurance <= currentBalance
-            && Number.isInteger(insurance)) {
-            return true
-        } else {
-            return false
-        }
-    } else {
-        return false
-    }
-}
-
-function isThereInsurance() {
-    if (Number(insuranceStake.textContent) > 0
-    && check()
-    && insuranceIsValid(currentStake, currentInsurance)) {
-        return true
-    } else {
-        return false
-    }
-}
-
-
 restartButton.addEventListener('click', () => {
     for (i = 0; i < playerCards.length; i++) {
         playerCards[i].firstElementChild.textContent = ``
@@ -429,7 +350,7 @@ restartButton.addEventListener('click', () => {
     uncolor()
     betWindow.classList.remove('hide')
     betWindow.classList.add('stakeInputContainer')
-    insuranceReqButton.classList.add('hide')
+    gameTable.classList.add('blur')
     restartButton.disabled = true
 })
 
@@ -439,9 +360,3 @@ function uncolor() {
         dealerCards[i].firstElementChild.nextElementSibling.classList.remove('redColor')
     }
 }
-
-withdrawButton.addEventListener('click', () => {
-    //Pervedimas į banką
-    location.reload()
-    return false
-})
