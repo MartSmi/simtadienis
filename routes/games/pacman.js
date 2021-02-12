@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
     return;
   } else {
     var opts = {
-      name: req.session.fullName,
+      // name: req.session.fullName,
       balance: req.session.balance
     }
     res.render('games/pacman', opts);

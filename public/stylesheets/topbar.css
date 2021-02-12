@@ -8,11 +8,11 @@
   
 .navbar-brand, .nav-link, .navbar-text {
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   font-size: 20px;
   font-weight: 600;
   color: #2f00ff;
-  padding-left: 10px;
+  /* padding-left: 10px; */
   font-style: italic;
   letter-spacing: 1.5px;
 }

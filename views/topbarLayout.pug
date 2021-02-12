@@ -4,12 +4,10 @@ block topbar
   link(rel='stylesheet' href='/stylesheets/topbar.css')
 
   //- .topbar Šimtadienis
-  nav.navbar.navbar-expand-rg
+  nav.navbar.justify-content-between
     a.navbar-brand(href='/') Šimtadienis
-    button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
-    span.navbar-toggler-icon
-    span.navbar-text= balance
-    ul.navbar-nav
-      li.nav-item
-        a.nav-link(href='/account')
-          p= name
+    //- button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
+    //- span.navbar-toggler-icon
+    span.navbar-text.mr-sm-2= balance
+    //- a.nav-link.my-2.my-sm-0(href='/account')
+    //-   p= name
