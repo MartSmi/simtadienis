@@ -120,6 +120,31 @@ function isStakeViable(amount) {
 //   }
 // }
 
+function betRequest(bet) {
+  return new Promise((resolve, reject) => {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', '/games/blackjack/bet', true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        resolve(JSON.parse(this.responseText));
+      } else if (
+        this.readyState == 4 &&
+        this.status == 406 &&
+        JSON.parse(this.response).error == 'Bet too big'
+      ) {
+        alert("You don't have that much money");
+        reject();
+      } else if (this.readyState == 4) {
+        reject();
+      }
+    };
+    xhttp.send(JSON.stringify({ bet }));
+    console.log('sent bet request');
+  });
+}
+
 async function placeBet() {
   console.log('called placeBet');
   let bet = Number(betField.value);
@@ -128,8 +153,8 @@ async function placeBet() {
   // const block = JSON.parse(response).block;
   addPlayerCard(res.playerCards[0]); //{suit, value}
   addPlayerCard(res.playerCards[1]);
-  addPlayerCard(res.dealerCard);
-  // gameLoad();
+  addDealerCard(res.dealerCard);
+  gameLoad();
   potentialGameWinnings();
 
   currentBalance -= currentStake;
@@ -174,13 +199,18 @@ function colorSuit(suit) {
 }
 
 function addPlayerCard(card) {
-  dealerCards.push(card);
+  // playerCards.push(card);
   //TODO: display card on table
 }
 
-// function potentialGameWinnings() {
-//   potentialWinnings.textContent = 2 * Number(stake.textContent);
-// }
+function addDealerCard(card) {
+  // dealerCards.push(card);
+  //TODO: display card on table
+}
+
+function potentialGameWinnings() {
+  potentialWinnings.textContent = 2 * Number(stake.textContent);
+}
 
 betButton.addEventListener('click', () => {
   placeBet();
