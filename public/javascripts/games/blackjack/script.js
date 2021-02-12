@@ -1,447 +1,530 @@
 //import {cardDeck} from './carddeck.js'
+let playerCards = new Array(); //{suit, value}
+let dealerCards = new Array();
+// let playerCards = document.querySelectorAll('[data-player-card]');
+// let dealerCards = document.querySelectorAll('[data-dealer-card]');
+let hitButton = document.querySelector('[data-hit-button]');
+let standButton = document.querySelector('[data-stand-button]');
+let playerPoints = document.querySelector('[data-player-points]');
+let dealerPoints = document.querySelector('[data-dealer-points]');
+let loseScreen = document.querySelector('[data-lose-screen]');
+let winScreen = document.querySelector('[data-win-screen]');
+let tieScreen = document.querySelector('[data-tie-screen]');
+let restartButton = document.querySelector('[data-restart-button]');
+let balance = document.querySelector('[data-balance]');
+let stake = document.querySelector('[data-stake]');
+let potentialWinnings = document.querySelector('[data-potential-winnings]');
+let insuranceContainer = document.querySelector('[data-insurance-container]');
+let insuranceStake = document.querySelector('[data-insurance-stake]');
+let balanceValue = document.querySelector('[data-balance-value]');
+let balanceRequestContainer = document.querySelector(
+  '[data-balance-request-container]'
+);
+let betWindow = document.querySelector('[data-stake-input-container]');
+let betField = document.querySelector('[data-stake-input-field]');
+let betButton = document.querySelector('[data-stake-input-button]');
+let insuranceInputContainer = document.querySelector(
+  '[data-insurance-input-container]'
+);
+let insuranceField = document.querySelector('[data-insurance-input-field]');
+let insuranceButton = document.querySelector('[data-insurance-input-button]');
+let insuranceReqButton = document.querySelector(
+  '[data-insurance-request-button]'
+);
+let withdrawButton = document.querySelector('[data-withdraw-money-button]');
+let currentBalance; // TODO: get on page load
+let currentStake;
+let currentInsurance;
 
-let playerCards = document.querySelectorAll("[data-player-card]")
-let dealerCards = document.querySelectorAll("[data-dealer-card]")
-let hitButton = document.querySelector("[data-hit-button]")
-let standButton = document.querySelector("[data-stand-button]")
-let playerPoints = document.querySelector("[data-player-points]")
-let dealerPoints = document.querySelector("[data-dealer-points]")
-let loseScreen = document.querySelector("[data-lose-screen]")
-let winScreen = document.querySelector("[data-win-screen]")
-let tieScreen = document.querySelector("[data-tie-screen]")
-let restartButton = document.querySelector("[data-restart-button]")
-let balance = document.querySelector("[data-balance]")
-let stake = document.querySelector("[data-stake]")
-let potentialWinnings = document.querySelector("[data-potential-winnings]")
-let insuranceContainer = document.querySelector("[data-insurance-container]")
-let insuranceStake = document.querySelector("[data-insurance-stake]")
-let balanceValue = document.querySelector("[data-balance-value]")
-let balanceRequestButton = document.querySelector("[data-balance-request-button]")
-let balanceRequestContainer = document.querySelector("[data-balance-request-container]")
-let betWindow = document.querySelector("[data-stake-input-container]")
-let betField = document.querySelector("[data-stake-input-field]")
-let betButton = document.querySelector("[data-stake-input-button]")
-let insuranceInputContainer = document.querySelector("[data-insurance-input-container]")
-let insuranceField = document.querySelector("[data-insurance-input-field]")
-let insuranceButton = document.querySelector("[data-insurance-input-button]")
-let insuranceReqButton = document.querySelector("[data-insurance-request-button]")
-let withdrawButton = document.querySelector("[data-withdraw-money-button]")
-let currentBalance
-let currentStake
-let currentInsurance
+playerPoints.textContent = `0`;
+dealerPoints.textContent = `0`;
 
-playerPoints.textContent = `0`
-dealerPoints.textContent = `0`
-
-const timer = ms => new Promise(res => setTimeout(res, ms))
-let suits = ["♠", "♥", "♦", "♣"]
-let cardValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
+const timer = ms => new Promise(res => setTimeout(res, ms));
+let suits = ['♠', '♥', '♦', '♣'];
+let cardValues = [
+  'A',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '10',
+  'J',
+  'Q',
+  'K',
+];
 
 function randomSuit() {
-    return suits[Math.floor(Math.random()*4)]
+  return suits[Math.floor(Math.random() * 4)];
 }
 
 function randomCardValue() {
-    return cardValues[Math.floor(Math.random()*13)]
+  return cardValues[Math.floor(Math.random() * 13)];
 }
 
 function assignCardCombination(container) {
-    container.firstElementChild.textContent = `${randomCardValue()}`
-    container.firstElementChild.nextElementSibling.textContent = `${randomSuit()}`
+  container.firstElementChild.textContent = `${randomCardValue()}`;
+  container.firstElementChild.nextElementSibling.textContent = `${randomSuit()}`;
 
-    colorSuit(container.firstElementChild.nextElementSibling)
+  colorSuit(container.firstElementChild.nextElementSibling);
 }
 
 function gameLoad() {
-    assignCardCombination(playerCards[0])
-    assignCardCombination(playerCards[1])
-    assignCardCombination(dealerCards[0])
-
-    countThePoints(playerCards[0], playerPoints)
-    countThePoints(playerCards[1], playerPoints)
-    countThePoints(dealerCards[0], dealerPoints)
-
-    insurance()
-    blackjack()
+  //   assignCardCombination(playerCards[0]);
+  //   assignCardCombination(playerCards[1]);
+  //   assignCardCombination(dealerCards[0]);
+  //   countThePoints(playerCards[0], playerPoints);
+  //   countThePoints(playerCards[1], playerPoints);
+  //   countThePoints(dealerCards[0], dealerPoints);
+  //   insurance();
+  //   blackjack();
 }
-
-
 /* Ši funkcija nustato, kiek pinigų turės žaidėjas žaidimo pradžioje */
-function setPrimaryBalance() {
-    if (Number.isInteger(Number(balanceValue.value)) && Number(balanceValue.value) > 0) {
-        /* Number(balanceValue.value) yra tiek, kiek žaidėjas įrašo. Čia ir reikėtų GET requesto ir
-        numinusuoti iš žaidėjo Number(balanceValue.value) pinigų. Aišku dar gali prireikt if'o, jeigu neturi pakankamai */
-        currentBalance = Number(balanceValue.value)
-        balance.textContent = balanceValue.value
-        balanceRequestContainer.classList.add('hide')
-        balanceRequestContainer.classList.remove('balanceRequestContainer')
-    } else {
-        alert('Error')
-    }
-}
+// function setPrimaryBalance() {
+//   if (
+//     Number.isInteger(Number(balanceValue.value)) &&
+//     Number(balanceValue.value) > 0
+//   ) {
+//     /* Number(balanceValue.value) yra tiek, kiek žaidėjas įrašo. Čia ir reikėtų GET requesto ir
+//         numinusuoti iš žaidėjo Number(balanceValue.value) pinigų. Aišku dar gali prireikt if'o, jeigu neturi pakankamai */
+//     currentBalance = Number(balanceValue.value);
+//     balance.textContent = balanceValue.value;
+//     balanceRequestContainer.classList.add('hide');
+//     balanceRequestContainer.classList.remove('balanceRequestContainer');
+//   } else {
+//     alert('Error');
+//   }
+// }
 
 function isStakeViable(amount) {
-    if (amount <= Number(balance.textContent)
-    && amount <= currentBalance
-    && Number.isInteger(amount)
-    && amount > 0) {
-        return true
-    } else {
-        return false
-    }
+  if (
+    amount <= Number(balance.textContent) &&
+    amount <= currentBalance &&
+    Number.isInteger(amount) &&
+    amount > 0
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-function placeBet() {
-    if (isStakeViable(Number(betField.value))) {
-        stake.textContent = betField.value
-        currentStake = Number(betField.value)
-        currentBalance -= currentStake
-        balance.textContent = Number(balance.textContent) - Number(stake.textContent)
-        betWindow.classList.add('hide')
-        betWindow.classList.remove('stakeInputContainer')
-        gameLoad()
-        potentialGameWinnings()
-    } else {
-        alert('no')
-    }
+function betRequest(bet) {
+  return new Promise((resolve, reject) => {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', '/games/blackjack/bet', true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        resolve(JSON.parse(this.responseText));
+      } else if (
+        this.readyState == 4 &&
+        this.status == 406 &&
+        JSON.parse(this.response).error == 'Bet too big'
+      ) {
+        alert("You don't have that much money");
+        reject();
+      } else if (this.readyState == 4) {
+        reject();
+      }
+    };
+    xhttp.send(JSON.stringify({ bet }));
+    console.log('sent bet request');
+  });
 }
 
-function potentialGameWinnings() {
-    potentialWinnings.textContent = 2*Number(stake.textContent)
+async function placeBet() {
+  console.log('called placeBet');
+  let bet = Number(betField.value);
+  let res = await betRequest(bet);
+  console.log(res);
+  // const block = JSON.parse(response).block;
+  addPlayerCard(res.playerCards[0]); //{suit, value}
+  addPlayerCard(res.playerCards[1]);
+  addPlayerCard(res.dealerCard);
+  // gameLoad();
+  potentialGameWinnings();
+
+  currentBalance -= currentStake;
+  balance.textContent = Number(balance.textContent) - Number(stake.textContent);
+  betWindow.classList.add('hide');
+  betWindow.classList.remove('stakeInputContainer');
+
+  if (isStakeViable(Number(betField.value))) {
+    stake.textContent = betField.value;
+    withdrawButton.disabled = false;
+  } else {
+    alert('no');
+  }
 }
+
+function addPlayerCard(card) {
+  playerCards.push(card);
+  //TODO: display card on table
+}
+
+function addPlayerCard(card) {
+  dealerCards.push(card);
+  //TODO: display card on table
+}
+
+// function potentialGameWinnings() {
+//   potentialWinnings.textContent = 2 * Number(stake.textContent);
+// }
 
 betButton.addEventListener('click', () => {
-    placeBet()
-    hitButton.disabled = false
-    standButton.disabled = false
-    withdrawButton.disabled = true
-})
-
-balanceRequestButton.addEventListener('click', () => {
-    setPrimaryBalance()
-    withdrawButton.disabled = false
-    betWindow.classList.remove('hide')
-})
+  placeBet();
+  hitButton.disabled = false;
+  standButton.disabled = false;
+  withdrawButton.disabled = true;
+});
 
 window.addEventListener('load', f => {
-    restartButton.disabled = true
-    hitButton.disabled = true
-    standButton.disabled = true
-    withdrawButton.disabled = true
-})
+  restartButton.disabled = true;
+  hitButton.disabled = true;
+  standButton.disabled = true;
+  withdrawButton.disabled = true;
+});
 
-function colorSuit(suit) {
-    if (suit.textContent === "♦" || suit.textContent === "♥") {
-        suit.classList.add('redColor')
-    }
-}
+// function colorSuit(suit) {
+//   if (suit.textContent === '♦' || suit.textContent === '♥') {
+//     suit.classList.add('redColor');
+//   }
+// }
 
-function isFilled(container) {
-    return container.firstElementChild.textContent === ''
-}
+// function isFilled(container) {
+//   return container.firstElementChild.textContent === '';
+// }
 
-function disableHitButton() {
-    hitButton.disabled = true
-}
-function disableStandButton() {
-    standButton.disabled = true
-}
+// function disableHitButton() {
+//   hitButton.disabled = true;
+// }
+// function disableStandButton() {
+//   standButton.disabled = true;
+// }
 
 hitButton.addEventListener('click', f => {
-    for (i = 0; i < 10; i++) {
-        if (isFilled(playerCards[i])) {
-            assignCardCombination(playerCards[i])
-            countThePoints(playerCards[i], playerPoints)
-            break
-        } else continue
-    }
+  for (i = 0; i < 10; i++) {
+    if (isFilled(playerCards[i])) {
+      assignCardCombination(playerCards[i]);
+      countThePoints(playerCards[i], playerPoints);
+      break;
+    } else continue;
+  }
 
-    playerBust()
-})
+  playerBust();
+});
 
 async function dealerMoves() {
-    while (Number(dealerPoints.textContent) < 17
-    && Number(dealerPoints.textContent) <= Number(playerPoints.textContent)) {
-        for (i = 0; i < 10; i++) {
-            if (isFilled(dealerCards[i])) {
-                assignCardCombination(dealerCards[i])
-                countThePoints(dealerCards[i], dealerPoints)
-                break
-            } else continue
-        }
-        await timer(1000)
+  while (
+    Number(dealerPoints.textContent) < 17 &&
+    Number(dealerPoints.textContent) <= Number(playerPoints.textContent)
+  ) {
+    for (i = 0; i < 10; i++) {
+      if (isFilled(dealerCards[i])) {
+        assignCardCombination(dealerCards[i]);
+        countThePoints(dealerCards[i], dealerPoints);
+        break;
+      } else continue;
     }
+    await timer(1000);
+  }
 
-    dealerBust()
-    tie()
-    winner()
+  dealerBust();
+  tie();
+  winner();
 }
 
 standButton.addEventListener('click', f => {
-    disableHitButton()
-    disableStandButton()
+  disableHitButton();
+  disableStandButton();
 
-    dealerMoves()
-})
+  dealerMoves();
+});
 
 function countThePoints(card, target) {
-    let cardValue = card.firstElementChild
-    let points = Number(target.textContent)
+  let cardValue = card.firstElementChild;
+  let points = Number(target.textContent);
 
-    if (cardValue.textContent == 'J'
-    || cardValue.textContent == 'Q'
-    || cardValue.textContent == 'K') {
-        points += 10
-    } else if (cardValue.textContent == 'A') {
-        if (points <= 10) {
-            points += 11
-        } else {
-            points += 1
-        }
+  if (
+    cardValue.textContent == 'J' ||
+    cardValue.textContent == 'Q' ||
+    cardValue.textContent == 'K'
+  ) {
+    points += 10;
+  } else if (cardValue.textContent == 'A') {
+    if (points <= 10) {
+      points += 11;
     } else {
-        points += Number(cardValue.textContent)
+      points += 1;
     }
-    target.textContent = `${points}`
+  } else {
+    points += Number(cardValue.textContent);
+  }
+  target.textContent = `${points}`;
 }
 
 function playerBust() {
-    if (Number(playerPoints.textContent) > 21) {
-        loseScreen.classList.remove('hide')
-        insuranceReqButton.classList.add('hide')
-        if (check()) {
-            balance.textContent = currentBalance
-            currentStake = 0
-            stake.textContent = `0`
-            potentialWinnings.textContent = `0`
-            
-        } else {
-            alert('Error')
-        }
-
-        disableHitButton()
-        disableStandButton()
-        restartButton.disabled = false
-        withdrawButton.disabled = false
+  if (Number(playerPoints.textContent) > 21) {
+    loseScreen.classList.remove('hide');
+    insuranceReqButton.classList.add('hide');
+    if (check()) {
+      balance.textContent = currentBalance;
+      currentStake = 0;
+      stake.textContent = `0`;
+      potentialWinnings.textContent = `0`;
+    } else {
+      alert('Error');
     }
+
+    disableHitButton();
+    disableStandButton();
+    restartButton.disabled = false;
+    withdrawButton.disabled = false;
+  }
 }
 
 function dealerBust() {
-    if (Number(dealerPoints.textContent) > 21) {
-        winScreen.classList.remove('hide')
+  if (Number(dealerPoints.textContent) > 21) {
+    winScreen.classList.remove('hide');
 
-        if (check()) {
-            currentBalance += 2*currentStake
-            balance.textContent = currentBalance
-            currentStake = 0
-            stake.textContent = `0`
-            potentialWinnings.textContent = `0`
-        } else {
-            alert('sup cheat')
-        }
-
-        disableHitButton()
-        disableStandButton()
+    if (check()) {
+      currentBalance += 2 * currentStake;
+      balance.textContent = currentBalance;
+      currentStake = 0;
+      stake.textContent = `0`;
+      potentialWinnings.textContent = `0`;
+    } else {
+      alert('sup cheat');
     }
+
+    disableHitButton();
+    disableStandButton();
+  }
 }
 
 function check() {
-    if (Number(stake.textContent) === currentStake
-        && Number(balance.textContent) === currentBalance) {
-            return true
-        } else {
-            return false
-        }
+  if (
+    Number(stake.textContent) === currentStake &&
+    Number(balance.textContent) === currentBalance
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 function tie() {
-    if (Number(playerPoints.textContent) === Number(dealerPoints.textContent)) {
-        tieScreen.classList.remove('hide')
-        if (check()) {
-            currentBalance += currentStake
-            balance.textContent = currentBalance
-            currentStake = 0
-            stake.textContent = `0`
-            potentialWinnings.textContent = `0`
-            restartButton.disabled = false
-        } else {
-            alert('Error')
-        }
+  if (Number(playerPoints.textContent) === Number(dealerPoints.textContent)) {
+    tieScreen.classList.remove('hide');
+    if (check()) {
+      currentBalance += currentStake;
+      balance.textContent = currentBalance;
+      currentStake = 0;
+      stake.textContent = `0`;
+      potentialWinnings.textContent = `0`;
+      restartButton.disabled = false;
+    } else {
+      alert('Error');
     }
+  }
 }
 
 function winner() {
-    if (Number(playerPoints.textContent) > Number(dealerPoints.textContent)) {
-        winScreen.classList.remove('hide')
-        if (check()) {
-            currentBalance += 2*currentStake
-            balance.textContent = currentBalance
-            currentStake = 0
-            stake.textContent = `0`
-            potentialWinnings.textContent = `0`
-            restartButton.disabled = false
-            withdrawButton.disabled = false
-            disableHitButton()
-            disableStandButton()
-            if (isThereInsurance()) {
-                currentInsurance = 0
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            } else {
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            }
-        } else {
-            alert('Error')
-        }
+  if (Number(playerPoints.textContent) > Number(dealerPoints.textContent)) {
+    winScreen.classList.remove('hide');
+    if (check()) {
+      currentBalance += 2 * currentStake;
+      balance.textContent = currentBalance;
+      currentStake = 0;
+      stake.textContent = `0`;
+      potentialWinnings.textContent = `0`;
+      restartButton.disabled = false;
+      withdrawButton.disabled = false;
+      disableHitButton();
+      disableStandButton();
+      if (isThereInsurance()) {
+        currentInsurance = 0;
+        insuranceReqButton.classList.add('hide');
+        insuranceContainer.classList.add('hide');
+      } else {
+        insuranceReqButton.classList.add('hide');
+        insuranceContainer.classList.add('hide');
+      }
+    } else {
+      alert('Error');
     }
+  }
 
-    if (Number(playerPoints.textContent) < Number(dealerPoints.textContent)) {
-        loseScreen.classList.remove('hide')
-        if (check()) {
-            balance.textContent = currentBalance
-            currentStake = 0
-            stake.textContent = `0`
-            potentialWinnings.textContent = `0`
-            restartButton.disabled = false
-            withdrawButton.disabled = false
-            if (isThereInsurance()) {
-                currentBalance += currentInsurance
-                balance.textContent = Number(balance.textContent) + Number(insuranceStake.textContent)
-                currentInsurance = 0
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            } else {
-                insuranceReqButton.classList.add('hide')
-                insuranceContainer.classList.add('hide')
-            }
-        } else {
-            alert('Error')
-        }
+  if (Number(playerPoints.textContent) < Number(dealerPoints.textContent)) {
+    loseScreen.classList.remove('hide');
+    if (check()) {
+      balance.textContent = currentBalance;
+      currentStake = 0;
+      stake.textContent = `0`;
+      potentialWinnings.textContent = `0`;
+      restartButton.disabled = false;
+      withdrawButton.disabled = false;
+      if (isThereInsurance()) {
+        currentBalance += currentInsurance;
+        balance.textContent =
+          Number(balance.textContent) + Number(insuranceStake.textContent);
+        currentInsurance = 0;
+        insuranceReqButton.classList.add('hide');
+        insuranceContainer.classList.add('hide');
+      } else {
+        insuranceReqButton.classList.add('hide');
+        insuranceContainer.classList.add('hide');
+      }
+    } else {
+      alert('Error');
     }
+  }
 }
 
 function cardValue(target) {
-    switch (target.firstElementChild.textContent) {
-        case 'K': case 'Q': case 'J': case '10':
-            return 10
-            break
-        case 'A':
-            return 11
-            break
-        default: return 0
-    }
+  switch (target.firstElementChild.textContent) {
+    case 'K':
+    case 'Q':
+    case 'J':
+    case '10':
+      return 10;
+      break;
+    case 'A':
+      return 11;
+      break;
+    default:
+      return 0;
+  }
 }
 
 function dealerBlackjackIsPossible() {
-    switch (dealerCards[0].firstElementChild.textContent) {
-        case 'A': case 'K': case 'Q': case 'J': case '10':
-            return true
-            break
-        default: false
-    }
+  switch (dealerCards[0].firstElementChild.textContent) {
+    case 'A':
+    case 'K':
+    case 'Q':
+    case 'J':
+    case '10':
+      return true;
+      break;
+    default:
+      false;
+  }
 }
 
 function blackjack() {
-    if (cardValue(playerCards[0]) + cardValue(playerCards[1]) == 21) {
-        if (dealerBlackjackIsPossible()) {
-            assignCardCombination(dealerCards[1])
-            countThePoints(dealerCards[1], dealerPoints)
-            if (cardValue(dealerCards[0]) + cardValue(dealerCards[1]) === 21) {
-                tie()
-            } else winner()
-        } else winner()
-    }
+  if (cardValue(playerCards[0]) + cardValue(playerCards[1]) == 21) {
+    if (dealerBlackjackIsPossible()) {
+      assignCardCombination(dealerCards[1]);
+      countThePoints(dealerCards[1], dealerPoints);
+      if (cardValue(dealerCards[0]) + cardValue(dealerCards[1]) === 21) {
+        tie();
+      } else winner();
+    } else winner();
+  }
 }
 
 function insurance() {
-    if (dealerBlackjackIsPossible()) {
-        insuranceReqButton.classList.remove('hide')
-    }
+  if (dealerBlackjackIsPossible()) {
+    insuranceReqButton.classList.remove('hide');
+  }
 }
 
 insuranceReqButton.addEventListener('click', () => {
-    disableHitButton()
-    disableStandButton()
-    insuranceReqButton.classList.add('hide')
-    insuranceInputContainer.classList.remove('hide')
-    insuranceInputContainer.classList.add('insuranceInputContainer')
-})
+  disableHitButton();
+  disableStandButton();
+  insuranceReqButton.classList.add('hide');
+  insuranceInputContainer.classList.remove('hide');
+  insuranceInputContainer.classList.add('insuranceInputContainer');
+});
 
 insuranceButton.addEventListener('click', () => {
-    currentInsurance = Number(insuranceField.value)
-    if (insuranceIsValid(currentStake, currentInsurance)) {
-        insuranceInputContainer.classList.add('hide')
-        insuranceInputContainer.classList.remove('insuranceInputContainer')
-        insuranceContainer.classList.remove('hide')
-        insuranceStake.textContent = currentInsurance
-        currentBalance -= currentInsurance
-        balance.textContent = Number(balance.textContent) - Number(insuranceStake.textContent)
-        hitButton.disabled = false
-        standButton.disabled = false
-    } else{
-        alert('Error')
-    }
-})
+  currentInsurance = Number(insuranceField.value);
+  if (insuranceIsValid(currentStake, currentInsurance)) {
+    insuranceInputContainer.classList.add('hide');
+    insuranceInputContainer.classList.remove('insuranceInputContainer');
+    insuranceContainer.classList.remove('hide');
+    insuranceStake.textContent = currentInsurance;
+    currentBalance -= currentInsurance;
+    balance.textContent =
+      Number(balance.textContent) - Number(insuranceStake.textContent);
+    hitButton.disabled = false;
+    standButton.disabled = false;
+  } else {
+    alert('Error');
+  }
+});
 
 function insuranceIsValid(bet, insurance) {
-    if (check()) {
-        if (insurance*2 <= bet
-            && insurance >= 0
-            && insurance <= currentBalance
-            && Number.isInteger(insurance)) {
-            return true
-        } else {
-            return false
-        }
+  if (check()) {
+    if (
+      insurance * 2 <= bet &&
+      insurance >= 0 &&
+      insurance <= currentBalance &&
+      Number.isInteger(insurance)
+    ) {
+      return true;
     } else {
-        return false
+      return false;
     }
+  } else {
+    return false;
+  }
 }
 
 function isThereInsurance() {
-    if (Number(insuranceStake.textContent) > 0
-    && check()
-    && insuranceIsValid(currentStake, currentInsurance)) {
-        return true
-    } else {
-        return false
-    }
+  if (
+    Number(insuranceStake.textContent) > 0 &&
+    check() &&
+    insuranceIsValid(currentStake, currentInsurance)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
-
 restartButton.addEventListener('click', () => {
-    for (i = 0; i < playerCards.length; i++) {
-        playerCards[i].firstElementChild.textContent = ``
-        playerCards[i].firstElementChild.nextElementSibling.textContent = ``
-        dealerCards[i].firstElementChild.textContent = ``
-        dealerCards[i].firstElementChild.nextElementSibling.textContent = ``
-    }
+  for (i = 0; i < playerCards.length; i++) {
+    playerCards[i].firstElementChild.textContent = ``;
+    playerCards[i].firstElementChild.nextElementSibling.textContent = ``;
+    dealerCards[i].firstElementChild.textContent = ``;
+    dealerCards[i].firstElementChild.nextElementSibling.textContent = ``;
+  }
 
-    playerPoints.textContent = `0`
-    dealerPoints.textContent = `0`
+  playerPoints.textContent = `0`;
+  dealerPoints.textContent = `0`;
 
-    winScreen.classList.add('hide')
-    loseScreen.classList.add('hide')
-    tieScreen.classList.add('hide')
-    hitButton.disabled = false
-    standButton.disabled = false
-    
-    uncolor()
-    betWindow.classList.remove('hide')
-    betWindow.classList.add('stakeInputContainer')
-    insuranceReqButton.classList.add('hide')
-    restartButton.disabled = true
-})
+  winScreen.classList.add('hide');
+  loseScreen.classList.add('hide');
+  tieScreen.classList.add('hide');
+  hitButton.disabled = false;
+  standButton.disabled = false;
+
+  uncolor();
+  betWindow.classList.remove('hide');
+  betWindow.classList.add('stakeInputContainer');
+  insuranceReqButton.classList.add('hide');
+  restartButton.disabled = true;
+});
 
 function uncolor() {
-    for (i = 0; i < playerCards.length; i++) {
-        playerCards[i].firstElementChild.nextElementSibling.classList.remove('redColor')
-        dealerCards[i].firstElementChild.nextElementSibling.classList.remove('redColor')
-    }
+  for (i = 0; i < playerCards.length; i++) {
+    playerCards[i].firstElementChild.nextElementSibling.classList.remove(
+      'redColor'
+    );
+    dealerCards[i].firstElementChild.nextElementSibling.classList.remove(
+      'redColor'
+    );
+  }
 }
 
 withdrawButton.addEventListener('click', () => {
-    //Pervedimas į banką
-    location.reload()
-    return false
-})
+  //Pervedimas į banką
+  location.reload();
+  return false;
+});
