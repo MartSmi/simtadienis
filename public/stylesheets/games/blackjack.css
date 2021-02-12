@@ -364,3 +364,15 @@ body {
     font-weight: 600;
     letter-spacing: 0.1em;
 }
+
+.navbar {
+    background-color: #567c45;
+}
+  
+.navbar-brand, .nav-link, .navbar-text {
+    color: #213119;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+    color: #466437;
+}

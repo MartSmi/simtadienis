@@ -248,3 +248,15 @@ input[type='radio'] {
   right: -57%;
   top: 33%;
 }
+
+.navbar {
+  background-color: #2b4220;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  color: #3b5b2c;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+  color: #466437;
+}

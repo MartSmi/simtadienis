@@ -143,3 +143,15 @@ body {
 .a7{
 	background-image: url("../../images/games/slots/7.png");
 }
+
+.navbar {
+	background-color: #64974d;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+	color: #eff3ec;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+	color: #91af82;
+}

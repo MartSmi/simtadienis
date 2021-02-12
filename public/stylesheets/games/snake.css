@@ -2,3 +2,15 @@ canvas{
     display: block;
     margin: 0 auto;
 }
+
+.navbar {
+	background-color: #64974d;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+	color: #eff3ec;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+	color: #91af82;
+}
