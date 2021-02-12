@@ -1,5 +1,13 @@
-let playerCards = document.querySelectorAll('[data-player-card]');
-let dealerCards = document.querySelectorAll('[data-dealer-card]');
+let playerCards = [];
+let dealerCards = [];
+let playerValue = 0;
+let dealerValue = 0;
+let playerAces = 0;
+let dealerAces = 0;
+let hitInProgress = false;
+let gameSessionID;
+let playerCardPlaces = document.querySelectorAll('[data-player-card]');
+let dealerCardPlaces = document.querySelectorAll('[data-dealer-card]');
 let hitButton = document.querySelector('[data-hit-button]');
 let standButton = document.querySelector('[data-stand-button]');
 let playerPoints = document.querySelector('[data-player-points]');
@@ -8,7 +16,7 @@ let loseScreen = document.querySelector('[data-lose-screen]');
 let winScreen = document.querySelector('[data-win-screen]');
 let tieScreen = document.querySelector('[data-tie-screen]');
 let restartButton = document.querySelector('[data-restart-button]');
-let balance = document.querySelector('[data-balance]');
+let balance = 9999; //TODO: Get from top bar, when it will be built
 let stake = document.querySelector('[data-stake]');
 let potentialWinnings = document.querySelector('[data-potential-winnings]');
 let balanceValue = document.querySelector('[data-balance-value]');
@@ -19,7 +27,7 @@ let betWindow = document.querySelector('[data-stake-input-container]');
 let betField = document.querySelector('[data-stake-input-field]');
 let betButton = document.querySelector('[data-stake-input-button]');
 let gameTable = document.querySelector('[data-game-table]');
-let currentBalance;
+// let currentBalance;
 let currentStake;
 let errorOccurred;
 
@@ -44,29 +52,20 @@ let cardValues = [
   'K',
 ];
 
-function randomSuit() {
-  return suits[Math.floor(Math.random() * 4)];
-}
+function placeCardOnTable(card, cardPlace, pos) {
+  cardPlace[pos].firstElementChild.textContent = `${cardValues[card.value]}`;
 
-function randomCardValue() {
-  return cardValues[Math.floor(Math.random() * 13)];
-}
+  cardPlace[pos].firstElementChild.nextElementSibling.textContent = `${
+    suits[card.suit]
+  }`;
 
-function assignCardCombination(container) {
-  container.firstElementChild.textContent = `${randomCardValue()}`;
-  container.firstElementChild.nextElementSibling.textContent = `${randomSuit()}`;
-
-  colorSuit(container.firstElementChild.nextElementSibling);
+  colorSuit(cardPlace[pos].firstElementChild.nextElementSibling);
 }
 
 function gameLoad() {
-  assignCardCombination(playerCards[0]);
-  assignCardCombination(playerCards[1]);
-  assignCardCombination(dealerCards[0]);
-
-  countThePoints(playerCards[0], playerPoints);
-  countThePoints(playerCards[1], playerPoints);
-  countThePoints(dealerCards[0], dealerPoints);
+  countThePoints(playerCardPlaces[0], playerPoints);
+  countThePoints(playerCardPlaces[1], playerPoints);
+  countThePoints(dealerCardPlaces[0], dealerPoints);
 
   blackjack();
 }
@@ -90,12 +89,8 @@ function gameLoad() {
 // }
 
 function isStakeViable(amount) {
-  if (
-    amount <= Number(balance.textContent) &&
-    amount <= currentBalance &&
-    Number.isInteger(amount) &&
-    amount > 0
-  ) {
+  //     amount <= currentBalance &&
+  if (amount <= balance && Number.isInteger(amount) && amount > 0) {
     return true;
   } else {
     return false;
@@ -146,19 +141,18 @@ function betRequest(bet) {
 }
 
 async function placeBet() {
-  console.log('called placeBet');
   let bet = Number(betField.value);
   let res = await betRequest(bet);
-  console.log(res);
   // const block = JSON.parse(response).block;
   addPlayerCard(res.playerCards[0]); //{suit, value}
   addPlayerCard(res.playerCards[1]);
   addDealerCard(res.dealerCard);
-  gameLoad();
-  potentialGameWinnings();
+  gameSessionID = res.game_session_id;
+  // gameLoad();
+  // potentialGameWinnings();
 
-  currentBalance -= currentStake;
-  balance.textContent = Number(balance.textContent) - Number(stake.textContent);
+  // currentBalance -= currentStake;
+  // balance.textContent = Number(balance.textContent) - Number(stake.textContent);
   betWindow.classList.add('hide');
   betWindow.classList.remove('stakeInputContainer');
 
@@ -198,13 +192,48 @@ function colorSuit(suit) {
   }
 }
 
+function cardPoints(value) {
+  if (value > 9) return 10;
+  else return value + 1;
+}
+
 function addPlayerCard(card) {
-  // playerCards.push(card);
+  playerCards.push(card);
+  playerValue += cardPoints(card.value);
+    if (card.value == 0) playerAces++;
+  placeCardOnTable(card, playerCardPlaces, playerCards.length - 1);
+  if (playerValue > 21) {
+    lost();
+  } else if (playerValue == 21 || (playerAces > 0 && playerValue == 11)) {
+    blackjack();
+  } else {
+    hitButton.disabled = false;
+  }
   //TODO: display card on table
 }
 
+function lost() {
+  loseScreen.classList.remove('hide');
+  alert('lost');
+  hitButton.disabled = true;
+  restartButton.disabled = false;
+}
+
+function blackjack() {
+  winScreen.classList.remove('hide');
+  alert('blackjack');
+  hitButton.disabled = true;
+  restartButton.disabled = false;
+}
+
 function addDealerCard(card) {
-  // dealerCards.push(card);
+  dealerCards.push(card);
+  placeCardOnTable(card, dealerCardPlaces, dealerCards.length - 1);
+  if (dealerValue > 21) {
+    lost();
+  } else if (dealerValue == 21 || (dealerAces > 0 && dealerValue == 11)) {
+    blackjack();
+  }
   //TODO: display card on table
 }
 
@@ -212,12 +241,12 @@ function potentialGameWinnings() {
   potentialWinnings.textContent = 2 * Number(stake.textContent);
 }
 
-betButton.addEventListener('click', () => {
-  placeBet();
-  hitButton.disabled = false;
-  standButton.disabled = false;
-  standButton.disabled = true;
-});
+// betButton.addEventListener('click', () => {
+//   placeBet();
+//   hitButton.disabled = false;
+//   standButton.disabled = false;
+//   standButton.disabled = true;
+// });
 
 window.addEventListener('load', f => {
   restartButton.disabled = true;
@@ -243,16 +272,53 @@ window.addEventListener('load', f => {
 //   standButton.disabled = true;
 // }
 
-hitButton.addEventListener('click', f => {
-  for (i = 0; i < 10; i++) {
-    if (isFilled(playerCards[i])) {
-      assignCardCombination(playerCards[i]);
-      countThePoints(playerCards[i], playerPoints);
-      break;
-    } else continue;
-  }
+function hitRequest() {
+  return new Promise((resolve, reject) => {
+    if (hitInProgress) reject('already called');
+    hitInProgress = true;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', '/games/blackjack/hit', true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        hitInProgress = false;
+        resolve(JSON.parse(this.responseText).card);
+      } else if (
+        this.readyState == 4 &&
+        this.status == 406 &&
+        JSON.parse(this.response).error == 'Bet too big'
+      ) {
+        //TODO
+        hitInProgress = false;
+        alert("You don't have that much money");
+        reject("You don't have that much money");
+      } else if (this.readyState == 4) {
+        hitInProgress = false;
+        reject('this.readyState == 4');
+      }
+    };
+    xhttp.send(JSON.stringify({ gameSessionID }));
+  }).catch(e => console.log(e));
+}
 
-  playerBust();
+function hit() {
+  hitRequest().then(card => {
+    addPlayerCard(card);
+  });
+}
+
+hitButton.addEventListener('click', () => {
+  hit();
+  // for (i = 0; i < 10; i++) {
+  //   if (isFilled(playerCardPlaces[i])) {
+  //     assignCardCombination(playerCardPlaces[i]);
+  //     countThePoints(playerCardPlaces[i], playerPoints);
+  //     break;
+  //   } else continue;
+  // }
+
+  // playerBust();
 });
 
 async function dealerMoves() {
@@ -261,9 +327,9 @@ async function dealerMoves() {
     Number(dealerPoints.textContent) <= Number(playerPoints.textContent)
   ) {
     for (i = 0; i < 10; i++) {
-      if (isFilled(dealerCards[i])) {
-        assignCardCombination(dealerCards[i]);
-        countThePoints(dealerCards[i], dealerPoints);
+      if (isFilled(dealerCardPlaces[i])) {
+        assignCardCombination(dealerCardPlaces[i]);
+        countThePoints(dealerCardPlaces[i], dealerPoints);
         break;
       } else continue;
     }
@@ -276,39 +342,22 @@ async function dealerMoves() {
 }
 
 standButton.addEventListener('click', f => {
-  disableHitButton();
-  disableStandButton();
+  hitButton.disabled = true;
+  standButton.disabled = true;
 
   dealerMoves();
 });
 
-function countThePoints(card, target) {
-  let cardValue = card.firstElementChild;
-  let points = Number(target.textContent);
-
-  if (
-    cardValue.textContent == 'J' ||
-    cardValue.textContent == 'Q' ||
-    cardValue.textContent == 'K'
-  ) {
-    points += 10;
-  } else if (cardValue.textContent == 'A') {
-    if (points <= 10) {
-      points += 11;
-    } else {
-      points += 1;
-    }
-  } else {
-    points += Number(cardValue.textContent);
-  }
-  target.textContent = `${points}`;
+function updatePoints() {
+  playerPoints.textContent = `${points}`;
+  dealerPoints.textContent = `${points}`;
 }
 
 function playerBust() {
   if (Number(playerPoints.textContent) > 21) {
     loseScreen.classList.remove('hide');
     if (check()) {
-      balance.textContent = currentBalance;
+      // balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
@@ -333,7 +382,7 @@ function dealerBust() {
 
     if (check()) {
       currentBalance += 2 * currentStake;
-      balance.textContent = currentBalance;
+      // balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
@@ -346,23 +395,23 @@ function dealerBust() {
   }
 }
 
-function check() {
-  if (
-    Number(stake.textContent) === currentStake &&
-    Number(balance.textContent) === currentBalance
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
+// function check() {
+//   if (
+//     Number(stake.textContent) === currentStake &&
+//     Number(balance.textContent) === currentBalance
+//   ) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// }
 
 function tie() {
   if (Number(playerPoints.textContent) === Number(dealerPoints.textContent)) {
     tieScreen.classList.remove('hide');
     if (check()) {
       currentBalance += currentStake;
-      balance.textContent = currentBalance;
+      // balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
@@ -378,13 +427,13 @@ function winner() {
     winScreen.classList.remove('hide');
     if (check()) {
       currentBalance += 2 * currentStake;
-      balance.textContent = currentBalance;
+      // balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
       restartButton.disabled = false;
-      disableHitButton();
-      disableStandButton();
+      hitButton.disabled = true;
+      standButton.disabled = true;
     } else {
       alert('Error');
     }
@@ -393,7 +442,7 @@ function winner() {
   if (Number(playerPoints.textContent) < Number(dealerPoints.textContent)) {
     loseScreen.classList.remove('hide');
     if (check()) {
-      balance.textContent = currentBalance;
+      // balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
@@ -421,7 +470,7 @@ function cardValue(target) {
 }
 
 function dealerBlackjackIsPossible() {
-  switch (dealerCards[0].firstElementChild.textContent) {
+  switch (dealerCardPlaces[0].firstElementChild.textContent) {
     case 'A':
     case 'K':
     case 'Q':
@@ -434,24 +483,33 @@ function dealerBlackjackIsPossible() {
   }
 }
 
-function blackjack() {
-  if (cardValue(playerCards[0]) + cardValue(playerCards[1]) == 21) {
-    if (dealerBlackjackIsPossible()) {
-      assignCardCombination(dealerCards[1]);
-      countThePoints(dealerCards[1], dealerPoints);
-      if (cardValue(dealerCards[0]) + cardValue(dealerCards[1]) === 21) {
-        tie();
-      } else winner();
-    } else winner();
-  }
-}
+// function blackjack() {
+//   if (cardValue(playerCardPlaces[0]) + cardValue(playerCardPlaces[1]) == 21) {
+//     if (dealerBlackjackIsPossible()) {
+//       assignCardCombination(dealerCardPlaces[1]);
+//       countThePoints(dealerCardPlaces[1], dealerPoints);
+//       if (
+//         cardValue(dealerCardPlaces[0]) + cardValue(dealerCardPlaces[1]) ===
+//         21
+//       ) {
+//         tie();
+//       } else winner();
+//     } else winner();
+//   }
+// }
 
 restartButton.addEventListener('click', () => {
-  for (i = 0; i < playerCards.length; i++) {
-    playerCards[i].firstElementChild.textContent = ``;
-    playerCards[i].firstElementChild.nextElementSibling.textContent = ``;
-    dealerCards[i].firstElementChild.textContent = ``;
-    dealerCards[i].firstElementChild.nextElementSibling.textContent = ``;
+  playerCards = [];
+  dealerCards = [];
+  playerValue = 0;
+  dealerValue = 0;
+  playerAces = 0;
+  dealerAces = 0;
+  for (i = 0; i < playerCardPlaces.length; i++) {
+    playerCardPlaces[i].firstElementChild.textContent = ``;
+    playerCardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
+    dealerCardPlaces[i].firstElementChild.textContent = ``;
+    dealerCardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
   }
 
   playerPoints.textContent = `0`;
@@ -463,7 +521,7 @@ restartButton.addEventListener('click', () => {
   hitButton.disabled = false;
   standButton.disabled = false;
 
-  uncolor();
+  // uncolor();
   betWindow.classList.remove('hide');
   betWindow.classList.add('stakeInputContainer');
   gameTable.classList.add('blur');
@@ -471,11 +529,11 @@ restartButton.addEventListener('click', () => {
 });
 
 function uncolor() {
-  for (i = 0; i < playerCards.length; i++) {
-    playerCards[i].firstElementChild.nextElementSibling.classList.remove(
+  for (i = 0; i < playerCardPlaces.length; i++) {
+    playerCardPlaces[i].firstElementChild.nextElementSibling.classList.remove(
       'redColor'
     );
-    dealerCards[i].firstElementChild.nextElementSibling.classList.remove(
+    dealerCardPlaces[i].firstElementChild.nextElementSibling.classList.remove(
       'redColor'
     );
   }

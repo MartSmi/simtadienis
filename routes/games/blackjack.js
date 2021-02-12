@@ -66,7 +66,6 @@ router.post('/bet', function (req, res, next) {
                 next(err);
                 return;
               }
-              console.log(row.insertId);
               resolve(row.insertId);
             }
           );
@@ -83,9 +82,10 @@ router.post('/bet', function (req, res, next) {
         dealerCard,
       });
 
-      player_value = playerCard1.value + playerCard2.value + 2;
+      player_value =
+        calCardValue(playerCard1.value) + calCardValue(playerCard2.value);
       player_aces = (playerCard1.value == 0) + (playerCard2.value == 0);
-      dealer_value = dealerCard.value + 1;
+      dealer_value = calCardValue(dealerCard.value);
       dealer_aces = dealerCard.value == 0;
 
       dbPool.query(
@@ -128,7 +128,30 @@ router.post('/hit', function (req, res, next) {
     res.redirect(303, '/');
     return;
   }
+  card = drawCard();
+  let game_session_id = req.body.game_session_id;
+  res.send({ card });
+
+  card_value = calCardValue(card.value);
+  card_aces = card.value == 0;
+
+  dbPool.query(
+    'UPDATE blackjack SET player_value = player_value + ?, player_aces = player_aces + ? WHERE game_session_id = ?',
+    [card_value, card_aces, game_session_id],
+    (err, rows) => {
+      if (err) {
+        logger.error(`DB error on /blackjack (${req.ip}):`);
+        next(err);
+        return;
+      }
+    }
+  );
 });
+
+function calCardValue(val) {
+  if (val > 9) return 10;
+  else return val + 1;
+}
 
 function drawCard() {
   return {
