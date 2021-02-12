@@ -6,7 +6,7 @@
   background-color: #f81546;
 }
   
-.navbar-brand, .nav-link {
+.navbar-brand, .nav-link, .navbar-text {
   display: flex;
   align-items: center;
   font-size: 20px;

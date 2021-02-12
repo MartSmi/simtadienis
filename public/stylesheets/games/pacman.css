@@ -30,7 +30,7 @@ img {
   background-color: #567c45;
 }
 
-.navbar-brand, .nav-link {
+.navbar-brand, .nav-link, .navbar-text {
   color: #213119;
 }
 

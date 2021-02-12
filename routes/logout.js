@@ -8,6 +8,7 @@ router.post('/', function(req, res, next) {
 	req.session.userID = undefined;
 	req.session.fullName = undefined;
 	req.session.klase = undefined;
+	req.session.balance = undefined;
 	res.redirect(303, '/login?logout=true');
 });
 
