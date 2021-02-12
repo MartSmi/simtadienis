@@ -1,0 +1,23 @@
+extends layout
+
+block topbar 
+  link(rel='stylesheet' href='/stylesheets/topbar.css')
+
+  //- .topbar Šimtadienis
+  nav.navbar.navbar-expand-rg
+    a.navbar-brand(href='/') Šimtadienis
+    button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
+    span.navbar-toggler-icon
+    ul.navbar-nav
+      li.nav-item
+        a.nav-link(href='/account') Vardenis Pavardenis
+
+  main.container.pt-2.pt-sm-4
+    div.mainHeader Banko sąskaita
+
+    p.lead.mt-3
+      | Vartotojo vardas: 
+      strong= username
+    p.lead.mt-3
+      | Balansas: 
+      strong#balance= balance

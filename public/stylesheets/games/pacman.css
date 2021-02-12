@@ -10,3 +10,30 @@ img {
 #start_stop_btn, #quit_btn {
   font-size: 75%;
 }
+
+/* .topbar {
+  margin-top: 0;
+  width: 100vw;
+  height: 50px;
+  background-color: #567c45;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  color: #213119;
+  padding-left: 10px;
+  font-style: italic;
+  letter-spacing: 1.5px;
+} */
+
+.navbar {
+  background-color: #567c45;
+}
+
+.navbar-brand, .nav-link {
+  color: #213119;
+}
+
+.navbar-brand:hover, .nav-link:hover {
+  color: #466437;
+}
