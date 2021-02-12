@@ -46,7 +46,7 @@ router.post('/spin', (req, res, next) => {
           return;
         }
         if (rows[0].balance < bet) {
-          logger.warn(`User bet more than he has (${req.ip}):`);
+          logger.warn(`User bet more than he has (${req.ip}) /roulette :`);
           res.status(406).json({ error: 'Bet too big' });
           reject();
           // reject({ message: 'You cannot bet more than you have', status: 406 });
@@ -69,7 +69,7 @@ router.post('/spin', (req, res, next) => {
         winnings *= 2;
       } else {
         // Lost
-        winnings *= -1;
+        winnings *= -2;
       }
 
       res.send({ block });

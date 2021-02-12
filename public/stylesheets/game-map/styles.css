@@ -30,6 +30,11 @@ body {
     width: 88.9vw;
 }
 
+.icon:hover {
+    filter: drop-shadow(0 0 15px #f9f753ba);
+  }
+  
+  
 .mapImage {
     position: absolute;
     height: 100%;

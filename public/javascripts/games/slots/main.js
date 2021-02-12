@@ -10,11 +10,9 @@ var coin = [new Audio("res/sounds/coin.mp3"),new Audio("res/sounds/coin.mp3"),ne
 var win = new Audio("res/sounds/win.mp3");
 var lose = new Audio("res/sounds/lose.mp3");
 var audio = false;
-let status = document.getElementById("status")
 var info = true;
 
 function doSlot(){
-	costImage.classList.add('hide')
 	if (doing){return null;}
 	doing = true;
 	var numChanges = randomInt(1,4)*7
@@ -26,7 +24,7 @@ function doSlot(){
 	var i2 = 0;
 	var i3 = 0;
 	var sound = 0
-	status.innerHTML = "..."
+	costImage.src = '/images/games/slots/transparent.svg'
 	slot1 = setInterval(spin1, 50);
 	slot2 = setInterval(spin2, 50);
 	slot3 = setInterval(spin3, 50);
@@ -89,12 +87,10 @@ function testWin(){
 		(slot1 == slot2 && slot1 == "a7") ||
 		(slot1 == slot3 && slot1 == "a7") ||
 		(slot2 == slot3 && slot2 == "a7") ) && !(slot1 == slot2 && slot2 == slot3 && slot1=="a7")){
-		winImage.classList.remove('hide')
-		status.innerHTML = 'LAIMEJAI!'
+		costImage.src = '/images/games/slots/laimejai.png'
 		//win.play();
 	}else{
-		loseImage.classList.remove('hide')
-		status.innerHTML = 'PRALAIMEJAI!'
+		costImage.src = '/images/games/slots/pralaimejai.png'
 		//lose.play();
 	}
 	doing = false;

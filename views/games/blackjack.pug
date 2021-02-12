@@ -4,14 +4,10 @@ block content
   link(rel="stylesheet", href="/stylesheets/games/blackjack.css", type="text/css")
 
   .topbar Šimtadienis
-  .stakeInputContainer.hide(data-stake-input-container='')
+  .stakeInputContainer(data-stake-input-container='')
     .stakeInputText Įveskite statymą
     input.stakeInputField(type='text' data-stake-input-field='')
     button.stakeInputButton(type='button' data-stake-input-button='') Statyti
-  .balanceRequestContainer(data-balance-request-container='')
-    .balanceRequestText Kiek persivedate iš banko sąskaitos?
-    input.balanceRequestInputField(type='text' data-balance-value='')
-    button.balanceRequestButton(type='button' data-balance-request-button='') Pervesti
   .stakeField
   .loseScreen.hide(data-lose-screen='')
   .winScreen.hide(data-win-screen='')
