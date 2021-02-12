@@ -12,7 +12,11 @@ router.get('/', (req, res, next) => {
     res.redirect(303, '/');
     return;
   }
-  res.render('games/roulette');
+  var opts = {
+    // name: req.session.fullName,
+    balance: req.session.balance
+  }
+  res.render('games/roulette', opts);
 });
 
 router.post('/spin', (req, res, next) => {
