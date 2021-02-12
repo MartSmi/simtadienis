@@ -1,5 +1,3 @@
-//import {cardDeck} from './carddeck.js'
-
 let playerCards = document.querySelectorAll('[data-player-card]');
 let dealerCards = document.querySelectorAll('[data-dealer-card]');
 let hitButton = document.querySelector('[data-hit-button]');
@@ -14,9 +12,6 @@ let balance = document.querySelector('[data-balance]');
 let stake = document.querySelector('[data-stake]');
 let potentialWinnings = document.querySelector('[data-potential-winnings]');
 let balanceValue = document.querySelector('[data-balance-value]');
-let balanceRequestButton = document.querySelector(
-  '[data-balance-request-button]'
-);
 let balanceRequestContainer = document.querySelector(
   '[data-balance-request-container]'
 );
@@ -76,23 +71,23 @@ function gameLoad() {
   blackjack();
 }
 /* Ši funkcija nustato, kiek pinigų turės žaidėjas žaidimo pradžioje */
-function setPrimaryBalance() {
-  if (
-    Number.isInteger(Number(balanceValue.value)) &&
-    Number(balanceValue.value) > 0
-  ) {
-    /* Number(balanceValue.value) yra tiek, kiek žaidėjas įrašo. Čia ir reikėtų GET requesto ir
-        numinusuoti iš žaidėjo Number(balanceValue.value) pinigų. Aišku dar gali prireikt if'o, jeigu neturi pakankamai */
-    currentBalance = Number(balanceValue.value);
-    balance.textContent = balanceValue.value;
-    balanceRequestContainer.classList.add('hide');
-    balanceRequestContainer.classList.remove('balanceRequestContainer');
-    errorOccurred = false;
-  } else {
-    alert('Error');
-    errorOccurred = true;
-  }
-}
+// function setPrimaryBalance() {
+//   if (
+//     Number.isInteger(Number(balanceValue.value)) &&
+//     Number(balanceValue.value) > 0
+//   ) {
+//     /* Number(balanceValue.value) yra tiek, kiek žaidėjas įrašo. Čia ir reikėtų GET requesto ir
+//         numinusuoti iš žaidėjo Number(balanceValue.value) pinigų. Aišku dar gali prireikt if'o, jeigu neturi pakankamai */
+//     currentBalance = Number(balanceValue.value);
+//     balance.textContent = balanceValue.value;
+//     balanceRequestContainer.classList.add('hide');
+//     balanceRequestContainer.classList.remove('balanceRequestContainer');
+//     errorOccurred = false;
+//   } else {
+//     alert('Error');
+//     errorOccurred = true;
+//   }
+// }
 
 function isStakeViable(amount) {
   if (
@@ -107,23 +102,23 @@ function isStakeViable(amount) {
   }
 }
 
-function placeBet() {
-  if (isStakeViable(Number(betField.value))) {
-    stake.textContent = betField.value;
-    currentStake = Number(betField.value);
-    currentBalance -= currentStake;
-    balance.textContent =
-      Number(balance.textContent) - Number(stake.textContent);
-    betWindow.classList.add('hide');
-    betWindow.classList.remove('stakeInputContainer');
-    gameLoad();
-    potentialGameWinnings();
-    errorOccurred = false;
-  } else {
-    alert('no');
-    errorOccurred = true;
-  }
-}
+// function placeBet() {
+//   if (isStakeViable(Number(betField.value))) {
+//     stake.textContent = betField.value;
+//     currentStake = Number(betField.value);
+//     currentBalance -= currentStake;
+//     balance.textContent =
+//       Number(balance.textContent) - Number(stake.textContent);
+//     betWindow.classList.add('hide');
+//     betWindow.classList.remove('stakeInputContainer');
+//     gameLoad();
+//     potentialGameWinnings();
+//     errorOccurred = false;
+//   } else {
+//     alert('no');
+//     errorOccurred = true;
+//   }
+// }
 
 async function placeBet() {
   console.log('called placeBet');
@@ -144,7 +139,7 @@ async function placeBet() {
 
   if (isStakeViable(Number(betField.value))) {
     stake.textContent = betField.value;
-    withdrawButton.disabled = false;
+    standButton.disabled = false;
   } else {
     alert('no');
   }
@@ -159,12 +154,12 @@ betButton.addEventListener('click', () => {
   }
 });
 
-balanceRequestButton.addEventListener('click', () => {
-  setPrimaryBalance();
-  if (!errorOccurred) {
-    betWindow.classList.remove('hide');
-  }
-});
+// balanceRequestButton.addEventListener('click', () => {
+//   setPrimaryBalance();
+//   if (!errorOccurred) {
+//     betWindow.classList.remove('hide');
+//   }
+// });
 
 window.addEventListener('load', f => {
   restartButton.disabled = true;
@@ -191,14 +186,14 @@ betButton.addEventListener('click', () => {
   placeBet();
   hitButton.disabled = false;
   standButton.disabled = false;
-  withdrawButton.disabled = true;
+  standButton.disabled = true;
 });
 
 window.addEventListener('load', f => {
   restartButton.disabled = true;
   hitButton.disabled = true;
   standButton.disabled = true;
-  withdrawButton.disabled = true;
+  standButton.disabled = true;
 });
 
 // function colorSuit(suit) {
@@ -299,7 +294,7 @@ function playerBust() {
   disableHitButton();
   disableStandButton();
   restartButton.disabled = false;
-  withdrawButton.disabled = false;
+  standButton.disabled = false;
 }
 
 function dealerBust() {
