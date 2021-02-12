@@ -1,0 +1,8 @@
+extends ../layout
+
+block content
+  link(rel="stylesheet", href="/stylesheets/games/snake.css", type="text/css")
+
+  canvas#snake(width='608' height='608')
+
+  script(src='/javascripts/games/snake/snake.js')
