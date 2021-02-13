@@ -13,7 +13,7 @@ const pathToImg = "../../../images/games/snake/img/";
 const pathToAudio = "../../../images/audio/snake/audio/";
 
 // create the unit
-const box = 32;
+const box = 28;
 
 // load images
 
@@ -151,7 +151,8 @@ function collision(head,array){
 function mirtis(ar){
     clearInterval(game);
     ctx.fillStyle = "black";
-    ctx.font = "45px Acherus Grotesque";
+    let fontSize = Math.round(45 * box/32);
+    ctx.font = fontSize + "px Acherus Grotesque";
 
     const siena = new Image();
     siena.src = pathToImg + "siena.png";
@@ -159,9 +160,9 @@ function mirtis(ar){
     save.src = pathToImg + "save.png";
 
     //kokia pabaiga
-    ctx.drawImage(fonas,60,270, 490 ,80);
-    if(ar) ctx.fillText("Deja, atsitrenkėte į save",84,325);
-    else  ctx.fillText("Deja, atsitrenkėte į sieną",84,325);
+    ctx.drawImage(fonas,60 * box/32,270 * box/32, 490 * box/32,80 * box/32);
+    if(ar) ctx.fillText("Deja, atsitrenkėte į save",84 * box/32,325 * box/32);
+    else  ctx.fillText("Deja, atsitrenkėte į sieną",84 * box/32,325 * box/32);
     dead.play();
 
 
@@ -181,25 +182,26 @@ let segmentai =[];
 function draw(){
 
     if(veikia ==1){
-    ctx.drawImage(ground,0,0);
-    ctx.drawImage(icon,20,17, 40 ,40);
+    //ctx.drawImage(ground,0,0);
+    ctx.drawImage(ground,0,0,608/32*box,608/32*box);
+    ctx.drawImage(icon,20* box/32,17* box/32, 40 * box/32 ,40 * box/32);
 
     
     for( let i = 1; i < snake.length ; i++){
         ctx.fillStyle = ( i == 0 )? "green" : "white";
       
-        ctx.drawImage(maistas[segmentai[i-1]], snake[i].x, snake[i].y, 32,32);
-        ctx.drawImage(zalia, snake[i].x, snake[i].y,32,32);
+        ctx.drawImage(maistas[segmentai[i-1]], snake[i].x, snake[i].y, box ,box);
+        ctx.drawImage(zalia, snake[i].x, snake[i].y,box,box);
     }
-    ctx.drawImage(oboulys, food.x, food.y,32,32);
-    ctx.drawImage(maistas[naujas], food.x+7, food.y+10,18,18);
-    ctx.drawImage(raudona, food.x+7, food.y+10,18,18);
+    ctx.drawImage(oboulys, food.x, food.y,box,box);
+    ctx.drawImage(maistas[naujas], food.x+7* box/32, food.y+10* box/32,18* box/32,18* box/32);
+    ctx.drawImage(raudona, food.x+7* box/32, food.y+10* box/32,18* box/32,18* box/32);
 
     
     // old head position
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
-    ctx.drawImage(galva, snakeX, snakeY,32,32);
+    ctx.drawImage(galva, snakeX, snakeY,box,box);
     // which direction
     if( d == "LEFT") snakeX -= box;
     if( d == "UP") snakeY -= box;
