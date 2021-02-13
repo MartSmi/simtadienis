@@ -251,6 +251,7 @@ input[type='radio'] {
 
 .navbar {
   background-color: #202e19;
+  position: absolute;
 }
 
 .navbar-brand, .nav-link, .navbar-text {
