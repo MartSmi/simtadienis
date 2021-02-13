@@ -77,32 +77,24 @@ body {
 
 .slotsImage {
     position: absolute;
-    height: 9vw;
-    width: 14.67vw;
-    top: 25%;
-    left: 55%;
+    height: 12vw;
+    width: 12vw;
+    top: 22%;
+    left: 56%;
 }
 
 .blackjackImage {
     position: absolute;
     height: 9vw;
     width: 8.16vw;
-    top: 37%;
+    top: 40%;
     left: 48%;
 }
 
 .bankImage {
     position: absolute;
-    height: 15vw;
-    width: 18.41vw;
-    top: 55%;
-    left: 63%;
-}
-
-.navbar {
-  background-color: #1d6487;
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-  color: #c1dfd2;
+    height: 10vw;
+    width: 15vw;
+    top: 58%;
+    left: 65%;
 }
