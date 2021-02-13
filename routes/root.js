@@ -5,7 +5,11 @@ router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     res.redirect(303, '/login');
   } else {
-    res.render('root');
+    var opts = {
+      // name: req.session.fullName,
+      balance: req.session.balance
+    }
+    res.render('root', opts);
   }
 });
 module.exports = router;

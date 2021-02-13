@@ -97,3 +97,11 @@ body {
     top: 55%;
     left: 63%;
 }
+
+.navbar {
+  background-color: #1d6487;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  color: #c1dfd2;
+}
