@@ -295,4 +295,4 @@ function draw(){
 
 // žaidimo greitis
 
-let game = setInterval(draw,120-(score/3));
+let game = setInterval(draw,180-(score/2));
