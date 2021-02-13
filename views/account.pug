@@ -1,4 +1,4 @@
-extends layout
+extends topbarLayout
 
 append scripts
   script(src='/javascripts/account.js')
@@ -7,16 +7,16 @@ block content
   link(rel="stylesheet", href="/stylesheets/account.css", type="text/css")
   link(rel="stylesheet" href="/stylesheets/misc/alerts.css" type="text/css")
 
-  a.buttonToMap(href='/root.pug') Žemėlapis
+  //- a.buttonToMap(href='/root.pug') Žemėlapis
   main.container.pt-2.pt-sm-4
     div.mainHeader Banko sąskaita
 
     p.lead.mt-3
       | Vartotojo vardas: 
       strong= username
-    p.lead.mt-3
-      | Balansas: 
-      strong#balance= balance
+    //- p.lead.mt-3
+    //-   | Balansas: 
+    //-   strong#balance= balance
 
     form.formLogout(method='post' action='/logout')
       button(type='submit')#logout-btn.btn.btn-sm.btn-outline-danger Atsijungti

@@ -135,3 +135,11 @@ input[type=number] {
 .tableText {
     color: white;
 }
+
+.navbar {
+    background-color: #085f8a;
+  }
+  
+  .navbar-brand, .nav-link, .navbar-text {
+    color: #65B3DB;
+  }
