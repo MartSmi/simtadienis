@@ -13,7 +13,21 @@ const pathToImg = "../../../images/games/snake/img/";
 const pathToAudio = "../../../images/audio/snake/audio/";
 
 // create the unit
-const box = 28;
+var box = 28;
+
+
+window.onload = window.onresize = function() {
+    var canvas = document.getElementById('snake');
+    let scaleConstant = 532 / 610;
+    let canvasSize = window.innerHeight * scaleConstant;
+    box = canvasSize / 19;
+    // console.log(box);
+    // console.log(window.innerHeight);
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
+}
+
+
 
 // load images
 
@@ -183,7 +197,7 @@ function draw(){
 
     if(veikia ==1){
     //ctx.drawImage(ground,0,0);
-    ctx.drawImage(ground,0,0,608/32*box,608/32*box);
+    ctx.drawImage(ground,0,0,608 *box/32,608 *box/32);
     ctx.drawImage(icon,20* box/32,17* box/32, 40 * box/32 ,40 * box/32);
 
     

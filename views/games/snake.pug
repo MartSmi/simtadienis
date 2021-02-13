@@ -3,7 +3,8 @@ extends ../topbarLayout
 block content
   link(rel="stylesheet", href="/stylesheets/games/snake.css", type="text/css")
 
-  canvas#snake(width='532' height='532') 
-  //- 19 * box=28
+  div#canvasCointainer
+    canvas#snake
+    //- 19 * box=28
 
   script(src='/javascripts/games/snake/snake.js')
