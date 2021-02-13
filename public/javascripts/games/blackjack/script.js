@@ -44,29 +44,29 @@ let currentStake;
 let errorOccurred;
 
 const cardDeck = [
-  ['/images/games/blackjack/cards/AS.svg', '/images/games/blackjack/cards/2S.svg', '/images/games/blackjack/cards/3S.svg', 
+  ['/images/games/blackjack/cards/A S.jpeg', '/images/games/blackjack/cards/2S.svg', '/images/games/blackjack/cards/3S.svg', 
   '/images/games/blackjack/cards/4S.svg', '/images/games/blackjack/cards/5S.svg', '/images/games/blackjack/cards/6S.svg', 
   '/images/games/blackjack/cards/7S.svg', '/images/games/blackjack/cards/8S.svg', '/images/games/blackjack/cards/9S.svg', 
-  '/images/games/blackjack/cards/10S.svg', '/images/games/blackjack/cards/JS.svg', '/images/games/blackjack/cards/QS.svg', 
-  '/images/games/blackjack/cards/KS.svg'],
+  '/images/games/blackjack/cards/10S.svg', '/images/games/blackjack/cards/J S.jpeg', '/images/games/blackjack/cards/Q S.jpeg', 
+  '/images/games/blackjack/cards/K S.jpeg'],
 
-  ['/images/games/blackjack/cards/AV.svg', '/images/games/blackjack/cards/2V.svg', '/images/games/blackjack/cards/3V.svg', 
+  ['/images/games/blackjack/cards/A V.jpeg', '/images/games/blackjack/cards/2V.svg', '/images/games/blackjack/cards/3V.svg', 
   '/images/games/blackjack/cards/4V.svg', '/images/games/blackjack/cards/5V.svg', '/images/games/blackjack/cards/6V.svg', 
   '/images/games/blackjack/cards/7V.svg', '/images/games/blackjack/cards/8V.svg', '/images/games/blackjack/cards/9V.svg', 
-  '/images/games/blackjack/cards/10V.svg', '/images/games/blackjack/cards/JV.svg', '/images/games/blackjack/cards/QV.svg', 
-  '/images/games/blackjack/cards/KV.svg'],
+  '/images/games/blackjack/cards/10V.svg', '/images/games/blackjack/cards/J V.jpeg', '/images/games/blackjack/cards/Q V.jpeg', 
+  '/images/games/blackjack/cards/K V.jpeg'],
 
-  ['/images/games/blackjack/cards/AB.svg', '/images/games/blackjack/cards/2B.svg', '/images/games/blackjack/cards/3B.svg', 
+  ['/images/games/blackjack/cards/AB.jpeg', '/images/games/blackjack/cards/2B.svg', '/images/games/blackjack/cards/3B.svg', 
   '/images/games/blackjack/cards/4B.svg', '/images/games/blackjack/cards/5B.svg', '/images/games/blackjack/cards/6B.svg', 
   '/images/games/blackjack/cards/7B.svg', '/images/games/blackjack/cards/8B.svg', '/images/games/blackjack/cards/9B.svg', 
-  '/images/games/blackjack/cards/10B.svg', '/images/games/blackjack/cards/JB.svg', '/images/games/blackjack/cards/QB.svg', 
-  '/images/games/blackjack/cards/KB.svg'],
+  '/images/games/blackjack/cards/10B.svg', '/images/games/blackjack/cards/J B.jpeg', '/images/games/blackjack/cards/Q B.jpeg', 
+  '/images/games/blackjack/cards/K B.jpeg'],
 
-  ['/images/games/blackjack/cards/AK.svg', '/images/games/blackjack/cards/2K.svg', '/images/games/blackjack/cards/3K.svg', 
+  ['/images/games/blackjack/cards/A K.jpeg', '/images/games/blackjack/cards/2K.svg', '/images/games/blackjack/cards/3K.svg', 
   '/images/games/blackjack/cards/4K.svg', '/images/games/blackjack/cards/5K.svg', '/images/games/blackjack/cards/6K.svg', 
   '/images/games/blackjack/cards/7K.svg', '/images/games/blackjack/cards/8K.svg', '/images/games/blackjack/cards/9K.svg', 
-  '/images/games/blackjack/cards/10K.svg', '/images/games/blackjack/cards/JK.svg', '/images/games/blackjack/cards/QK.svg', 
-  '/images/games/blackjack/cards/KK.svg']
+  '/images/games/blackjack/cards/10K.svg', '/images/games/blackjack/cards/J K.jpeg', '/images/games/blackjack/cards/Q K.jpeg', 
+  '/images/games/blackjack/cards/K K.jpeg']
 ]
 
 player.pointsPlace.textContent = `0`;
