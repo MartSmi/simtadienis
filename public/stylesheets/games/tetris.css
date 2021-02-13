@@ -83,11 +83,11 @@ body {
 }
 #bdy{
   position: absolute;
-  height: 88vh;
-  width: 88vw;
-  top: 55%;
+  height: 90vh;
+  width: 90vw;
+  bottom: 0;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
 }
 img{
   display: none;
