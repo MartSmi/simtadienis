@@ -1,16 +1,37 @@
-let playerCards = document.querySelectorAll('[data-player-card]');
-let dealerCards = document.querySelectorAll('[data-dealer-card]');
+let player = {
+  cards: [],
+  aces: 0,
+  usedAces: 0,
+  cardPlaces: document.querySelectorAll('[data-player-card]'),
+  pointsPlace: document.querySelector('[data-player-points]'),
+  points: 0,
+  updatePoints: () => {
+    player.pointsPlace.textContent = player.points;
+  },
+};
+let dealer = {
+  cards: [],
+  aces: 0,
+  usedAces: 0,
+  cardPlaces: document.querySelectorAll('[data-dealer-card]'),
+  pointsPlace: document.querySelector('[data-dealer-points]'),
+  points: 0,
+  updatePoints: () => {
+    dealer.pointsPlace.textContent = dealer.points;
+  },
+};
+let hitInProgress = false; //TODO: maybe do bet in progress
+let standInProgress = false;
+let gameSessionID;
 let hitButton = document.querySelector('[data-hit-button]');
 let standButton = document.querySelector('[data-stand-button]');
-let playerPoints = document.querySelector('[data-player-points]');
-let dealerPoints = document.querySelector('[data-dealer-points]');
 let loseScreen = document.querySelector('[data-lose-screen]');
 let winScreen = document.querySelector('[data-win-screen]');
 let tieScreen = document.querySelector('[data-tie-screen]');
 let restartButton = document.querySelector('[data-restart-button]');
-let balance = document.querySelector('[data-balance]');
+let balance = 9999; //TODO: Get from top bar, when it will be built
 let stake = document.querySelector('[data-stake]');
-let potentialWinnings = document.querySelector('[data-potential-winnings]');
+let potentialWinnings = document.querySelector('[data-potential-winnings]'); //TODO: maybe remove
 let balanceValue = document.querySelector('[data-balance-value]');
 let balanceRequestContainer = document.querySelector(
   '[data-balance-request-container]'
@@ -19,12 +40,13 @@ let betWindow = document.querySelector('[data-stake-input-container]');
 let betField = document.querySelector('[data-stake-input-field]');
 let betButton = document.querySelector('[data-stake-input-button]');
 let gameTable = document.querySelector('[data-game-table]');
-let currentBalance;
 let currentStake;
 let errorOccurred;
 
-playerPoints.textContent = `0`;
-dealerPoints.textContent = `0`;
+player.pointsPlace.textContent = `0`;
+dealer.pointsPlace.textContent = `0`;
+
+//TODO: after game ends stand button should be disabled
 
 const timer = ms => new Promise(res => setTimeout(res, ms));
 let suits = ['♠', '♥', '♦', '♣'];
@@ -44,122 +66,69 @@ let cardValues = [
   'K',
 ];
 
-function randomSuit() {
-  return suits[Math.floor(Math.random() * 4)];
+function placeCardOnTable(target, card) {
+  let n = target.cards.length - 1;
+  target.cardPlaces[n].firstElementChild.textContent = `${
+    cardValues[card.value]
+  }`;
+
+  target.cardPlaces[n].firstElementChild.nextElementSibling.textContent = `${
+    suits[card.suit]
+  }`;
+
+  colorSuit(target.cardPlaces[n].firstElementChild.nextElementSibling);
 }
-
-function randomCardValue() {
-  return cardValues[Math.floor(Math.random() * 13)];
-}
-
-function assignCardCombination(container) {
-  container.firstElementChild.textContent = `${randomCardValue()}`;
-  container.firstElementChild.nextElementSibling.textContent = `${randomSuit()}`;
-
-  colorSuit(container.firstElementChild.nextElementSibling);
-}
-
-function gameLoad() {
-  assignCardCombination(playerCards[0]);
-  assignCardCombination(playerCards[1]);
-  assignCardCombination(dealerCards[0]);
-
-  countThePoints(playerCards[0], playerPoints);
-  countThePoints(playerCards[1], playerPoints);
-  countThePoints(dealerCards[0], dealerPoints);
-
-  blackjack();
-}
-/* Ši funkcija nustato, kiek pinigų turės žaidėjas žaidimo pradžioje */
-// function setPrimaryBalance() {
-//   if (
-//     Number.isInteger(Number(balanceValue.value)) &&
-//     Number(balanceValue.value) > 0
-//   ) {
-//     /* Number(balanceValue.value) yra tiek, kiek žaidėjas įrašo. Čia ir reikėtų GET requesto ir
-//         numinusuoti iš žaidėjo Number(balanceValue.value) pinigų. Aišku dar gali prireikt if'o, jeigu neturi pakankamai */
-//     currentBalance = Number(balanceValue.value);
-//     balance.textContent = balanceValue.value;
-//     balanceRequestContainer.classList.add('hide');
-//     balanceRequestContainer.classList.remove('balanceRequestContainer');
-//     errorOccurred = false;
-//   } else {
-//     alert('Error');
-//     errorOccurred = true;
-//   }
-// }
 
 function isStakeViable(amount) {
-  if (
-    amount <= Number(balance.textContent) &&
-    amount <= currentBalance &&
-    Number.isInteger(amount) &&
-    amount > 0
-  ) {
+  //     amount <= currentBalance &&
+  if (amount <= balance && Number.isInteger(amount) && amount > 0) {
     return true;
   } else {
     return false;
   }
 }
 
-// function placeBet() {
-//   if (isStakeViable(Number(betField.value))) {
-//     stake.textContent = betField.value;
-//     currentStake = Number(betField.value);
-//     currentBalance -= currentStake;
-//     balance.textContent =
-//       Number(balance.textContent) - Number(stake.textContent);
-//     betWindow.classList.add('hide');
-//     betWindow.classList.remove('stakeInputContainer');
-//     gameLoad();
-//     potentialGameWinnings();
-//     errorOccurred = false;
-//   } else {
-//     alert('no');
-//     errorOccurred = true;
-//   }
-// }
-
-async function placeBet() {
-  console.log('called placeBet');
-  let bet = Number(betField.value);
-  let res = await betRequest(bet);
-  console.log(res);
-  // const block = JSON.parse(response).block;
-  addPlayerCard(res.playerCards[0]); //{suit, value}
-  addPlayerCard(res.playerCards[1]);
-  addPlayerCard(res.dealerCard);
-  // gameLoad();
-  potentialGameWinnings();
-
-  currentBalance -= currentStake;
-  balance.textContent = Number(balance.textContent) - Number(stake.textContent);
-  betWindow.classList.add('hide');
-  betWindow.classList.remove('stakeInputContainer');
-
-  if (isStakeViable(Number(betField.value))) {
-    stake.textContent = betField.value;
-    standButton.disabled = false;
-  } else {
-    alert('no');
-  }
+function betRequest(bet) {
+  return new Promise((resolve, reject) => {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', '/games/blackjack/bet', true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        resolve(JSON.parse(this.responseText));
+      } else if (
+        this.readyState == 4 &&
+        this.status == 406 &&
+        JSON.parse(this.response).error == 'Bet too big'
+      ) {
+        alert("You don't have that much money");
+        reject();
+      } else if (this.readyState == 4) {
+        reject();
+      }
+    };
+    xhttp.send(JSON.stringify({ bet }));
+  });
 }
 
-betButton.addEventListener('click', () => {
-  placeBet();
-  if (!errorOccurred) {
-    hitButton.disabled = false;
+betButton.addEventListener('click', async function placeBet() {
+  if (isStakeViable(Number(betField.value))) {
+    let bet = Number(betField.value);
+    let res = await betRequest(bet);
+    // const block = JSON.parse(response).block;
+    res.playerCards.forEach(card => addPlayerCard(card));
+    res.dealerCards.forEach(card => addDealerCard(card));
+    gameSessionID = res.gameSessionID;
+    betWindow.classList.add('hide');
+    betWindow.classList.remove('stakeInputContainer');
+    stake.textContent = betField.value;
     standButton.disabled = false;
     gameTable.classList.remove('blur');
+  } else {
+    alert('Bad bet');
   }
 });
-
-// balanceRequestButton.addEventListener('click', () => {
-//   setPrimaryBalance();
-//   if (!errorOccurred) {
-//     betWindow.classList.remove('hide');
-//   }
-// });
 
 window.addEventListener('load', f => {
   restartButton.disabled = true;
@@ -173,21 +142,84 @@ function colorSuit(suit) {
   }
 }
 
-function addPlayerCard(card) {
-  dealerCards.push(card);
-  //TODO: display card on table
+function getPoints(value) {
+  if (value > 9) return 10;
+  else return value + 1;
 }
 
-// function potentialGameWinnings() {
-//   potentialWinnings.textContent = 2 * Number(stake.textContent);
-// }
+function addPlayerCard(card) {
+  player.cards.push(card);
+  if (card.value == 0) player.aces++;
+  let cardPoint = getPoints(card.value);
+  if (player.points + cardPoint <= 11 && player.aces > 0) {
+    player.points += 10;
+    player.usedAces++;
+  } else if (player.points + cardPoint > 21 && player.usedAces > 0) {
+    player.points -= 10;
+    player.usedAces--;
+  }
+  player.points += cardPoint;
 
-betButton.addEventListener('click', () => {
-  placeBet();
-  hitButton.disabled = false;
-  standButton.disabled = false;
-  standButton.disabled = true;
-});
+  placeCardOnTable(player, card);
+  player.updatePoints();
+  if (player.points > 21) {
+    lost();
+  } else if (
+    (player.points == 21 || (player.aces > 0 && player.points == 11)) &&
+    player.cards.length == 2
+  ) {
+    blackjack();
+  } else {
+    hitButton.disabled = false;
+  }
+}
+
+async function addDealerCard(card) {
+  dealer.cards.push(card);
+  if (card.value == 0) dealer.aces++;
+  let cardPoint = getPoints(card.value);
+  if (dealer.points + cardPoint <= 11 && dealer.aces > 0) {
+    dealer.points += 10;
+    dealer.usedAces++;
+  } else if (dealer.points + cardPoint > 21 && dealer.usedAces > 0) {
+    dealer.points -= 10;
+    dealer.usedAces--;
+  }
+  dealer.points += cardPoint;
+
+  if (dealer.cards.length > 1) {
+    await timer(1000);
+    placeCardOnTable(dealer, card);
+  } else {
+    placeCardOnTable(dealer, card);
+  }
+  dealer.updatePoints();
+  if (dealer.points > 21) {
+    lost();
+  } else if (dealer.points == 21 || (dealer.aces > 0 && dealer.points == 11)) {
+    if (player.points == 21) {
+      tie();
+    }
+  }
+}
+
+function lost() {
+  loseScreen.classList.remove('hide');
+  alert('lost');
+  hitButton.disabled = true;
+  restartButton.disabled = false;
+  loseScreen.classList.remove('hide');
+  currentStake = 0;
+  stake.textContent = `0`;
+  potentialWinnings.textContent = `0`;
+}
+
+function blackjack() {
+  winScreen.classList.remove('hide');
+  alert('blackjack');
+  hitButton.disabled = true;
+  restartButton.disabled = false;
+}
 
 window.addEventListener('load', f => {
   restartButton.disabled = true;
@@ -196,16 +228,6 @@ window.addEventListener('load', f => {
   standButton.disabled = true;
 });
 
-// function colorSuit(suit) {
-//   if (suit.textContent === '♦' || suit.textContent === '♥') {
-//     suit.classList.add('redColor');
-//   }
-// }
-
-// function isFilled(container) {
-//   return container.firstElementChild.textContent === '';
-// }
-
 // function disableHitButton() {
 //   hitButton.disabled = true;
 // }
@@ -213,72 +235,111 @@ window.addEventListener('load', f => {
 //   standButton.disabled = true;
 // }
 
-hitButton.addEventListener('click', f => {
-  for (i = 0; i < 10; i++) {
-    if (isFilled(playerCards[i])) {
-      assignCardCombination(playerCards[i]);
-      countThePoints(playerCards[i], playerPoints);
-      break;
-    } else continue;
-  }
-
-  playerBust();
-});
-
-async function dealerMoves() {
-  while (
-    Number(dealerPoints.textContent) < 17 &&
-    Number(dealerPoints.textContent) <= Number(playerPoints.textContent)
-  ) {
-    for (i = 0; i < 10; i++) {
-      if (isFilled(dealerCards[i])) {
-        assignCardCombination(dealerCards[i]);
-        countThePoints(dealerCards[i], dealerPoints);
-        break;
-      } else continue;
-    }
-    await timer(1000);
-  }
-
-  dealerBust();
-  tie();
-  winner();
+function hitRequest() {
+  return new Promise((resolve, reject) => {
+    if (hitInProgress) reject('already called');
+    hitInProgress = true;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', '/games/blackjack/hit', true);
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        hitInProgress = false;
+        resolve(JSON.parse(this.responseText));
+      } else if (
+        this.readyState == 4 &&
+        this.status == 406 &&
+        JSON.parse(this.response).error == 'Bet too big'
+      ) {
+        //TODO
+        hitInProgress = false;
+        alert("You don't have that much money");
+        reject("You don't have that much money");
+      } else if (this.readyState == 4) {
+        hitInProgress = false;
+        reject('this.readyState == 4');
+      }
+    };
+    xhttp.send(
+      JSON.stringify({
+        gameSessionID,
+        playerCards: player.cards,
+        dealerCard: dealer.cards[0],
+      })
+    );
+  }).catch(e => console.log(e));
 }
 
-standButton.addEventListener('click', f => {
-  disableHitButton();
-  disableStandButton();
-
-  dealerMoves();
+hitButton.addEventListener('click', function hit() {
+  hitRequest().then(res => {
+    addPlayerCard(res.playerCard);
+    if (res.dealerCards.length > 0) {
+      //Only happens if player.points = 21
+      res.dealerCards.forEach(card => {
+        addDealerCard(card);
+      });
+      if (dealer.points == 21) {
+        tie();
+      } else {
+        won();
+      }
+    }
+  });
 });
 
-function countThePoints(card, target) {
-  let cardValue = card.firstElementChild;
-  let points = Number(target.textContent);
+function standRequest() {
+  return new Promise((resolve, reject) => {
+    if (standInProgress) reject('already called');
+    standInProgress = true;
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('POST', '/games/blackjack/stand', true); //TODO: maybe change to sync?
+    xhttp.setRequestHeader('Content-Type', 'application/json');
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        standInProgress = false;
+        resolve(JSON.parse(this.responseText).cards);
+      } else if (
+        this.readyState == 4 &&
+        this.status == 406 &&
+        JSON.parse(this.response).error == 'Bet too big'
+      ) {
+        //TODO
+        standInProgress = false;
+        alert("You don't have that much money");
+        reject("You don't have that much money");
+      } else if (this.readyState == 4) {
+        standInProgress = false;
+        reject('this.readyState == 4');
+      }
+    };
+    xhttp.send(JSON.stringify({ gameSessionID }));
+  }).catch(e => console.log(e));
+}
 
-  if (
-    cardValue.textContent == 'J' ||
-    cardValue.textContent == 'Q' ||
-    cardValue.textContent == 'K'
-  ) {
-    points += 10;
-  } else if (cardValue.textContent == 'A') {
-    if (points <= 10) {
-      points += 11;
+standButton.addEventListener('click', function stand() {
+  standRequest().then(async cards => {
+    for (let i = 0; i < cards.length; i++) {
+      const card = cards[i];
+      await addDealerCard(card);
+    }
+    if (dealer.points == player.points) {
+      tie();
+    } else if (dealer.points > 21 || player.points > dealer.points) {
+      won();
     } else {
-      points += 1;
+      lost();
     }
-  } else {
-    points += Number(cardValue.textContent);
-  }
-  target.textContent = `${points}`;
-}
+  });
+  hitButton.disabled = true;
+  standButton.disabled = true;
+});
 
 function playerBust() {
-  if (Number(playerPoints.textContent) > 21) {
+  if (Number(player.points.textContent) > 21) {
     loseScreen.classList.remove('hide');
     if (check()) {
-      balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
@@ -297,42 +358,10 @@ function playerBust() {
   standButton.disabled = false;
 }
 
-function dealerBust() {
-  if (Number(dealerPoints.textContent) > 21) {
-    winScreen.classList.remove('hide');
-
-    if (check()) {
-      currentBalance += 2 * currentStake;
-      balance.textContent = currentBalance;
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-    } else {
-      alert('sup cheat');
-    }
-
-    disableHitButton();
-    disableStandButton();
-  }
-}
-
-function check() {
-  if (
-    Number(stake.textContent) === currentStake &&
-    Number(balance.textContent) === currentBalance
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 function tie() {
-  if (Number(playerPoints.textContent) === Number(dealerPoints.textContent)) {
+  if (Number(player.points.textContent) === Number(dealer.points.textContent)) {
     tieScreen.classList.remove('hide');
     if (check()) {
-      currentBalance += currentStake;
-      balance.textContent = currentBalance;
       currentStake = 0;
       stake.textContent = `0`;
       potentialWinnings.textContent = `0`;
@@ -343,89 +372,34 @@ function tie() {
   }
 }
 
-function winner() {
-  if (Number(playerPoints.textContent) > Number(dealerPoints.textContent)) {
-    winScreen.classList.remove('hide');
-    if (check()) {
-      currentBalance += 2 * currentStake;
-      balance.textContent = currentBalance;
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-      restartButton.disabled = false;
-      disableHitButton();
-      disableStandButton();
-    } else {
-      alert('Error');
-    }
-  }
-
-  if (Number(playerPoints.textContent) < Number(dealerPoints.textContent)) {
-    loseScreen.classList.remove('hide');
-    if (check()) {
-      balance.textContent = currentBalance;
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-      restartButton.disabled = false;
-    } else {
-      alert('Error');
-    }
-  }
-}
-
-function cardValue(target) {
-  switch (target.firstElementChild.textContent) {
-    case 'K':
-    case 'Q':
-    case 'J':
-    case '10':
-      return 10;
-      break;
-    case 'A':
-      return 11;
-      break;
-    default:
-      return 0;
-  }
-}
-
-function dealerBlackjackIsPossible() {
-  switch (dealerCards[0].firstElementChild.textContent) {
-    case 'A':
-    case 'K':
-    case 'Q':
-    case 'J':
-    case '10':
-      return true;
-      break;
-    default:
-      false;
-  }
-}
-
-function blackjack() {
-  if (cardValue(playerCards[0]) + cardValue(playerCards[1]) == 21) {
-    if (dealerBlackjackIsPossible()) {
-      assignCardCombination(dealerCards[1]);
-      countThePoints(dealerCards[1], dealerPoints);
-      if (cardValue(dealerCards[0]) + cardValue(dealerCards[1]) === 21) {
-        tie();
-      } else winner();
-    } else winner();
-  }
+function won() {
+  alert('won');
+  winScreen.classList.remove('hide');
+  currentStake = 0;
+  stake.textContent = `0`;
+  potentialWinnings.textContent = `0`;
+  restartButton.disabled = false;
+  hitButton.disabled = true;
+  standButton.disabled = true;
 }
 
 restartButton.addEventListener('click', () => {
-  for (i = 0; i < playerCards.length; i++) {
-    playerCards[i].firstElementChild.textContent = ``;
-    playerCards[i].firstElementChild.nextElementSibling.textContent = ``;
-    dealerCards[i].firstElementChild.textContent = ``;
-    dealerCards[i].firstElementChild.nextElementSibling.textContent = ``;
+  player.cards = [];
+  dealer.cards = [];
+  player.points = 0;
+  dealer.points = 0;
+  player.aces = 0;
+  dealer.aces = 0;
+  player.points = 0;
+  dealer.points = 0;
+  player.updatePoints();
+  dealer.updatePoints();
+  for (i = 0; i < player.cardPlaces.length; i++) {
+    player.cardPlaces[i].firstElementChild.textContent = ``;
+    player.cardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
+    dealer.cardPlaces[i].firstElementChild.textContent = ``;
+    dealer.cardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
   }
-
-  playerPoints.textContent = `0`;
-  dealerPoints.textContent = `0`;
 
   winScreen.classList.add('hide');
   loseScreen.classList.add('hide');
@@ -433,7 +407,7 @@ restartButton.addEventListener('click', () => {
   hitButton.disabled = false;
   standButton.disabled = false;
 
-  uncolor();
+  // uncolor();
   betWindow.classList.remove('hide');
   betWindow.classList.add('stakeInputContainer');
   gameTable.classList.add('blur');
@@ -441,11 +415,11 @@ restartButton.addEventListener('click', () => {
 });
 
 function uncolor() {
-  for (i = 0; i < playerCards.length; i++) {
-    playerCards[i].firstElementChild.nextElementSibling.classList.remove(
+  for (i = 0; i < player.cardPlaces.length; i++) {
+    player.cardPlaces[i].firstElementChild.nextElementSibling.classList.remove(
       'redColor'
     );
-    dealerCards[i].firstElementChild.nextElementSibling.classList.remove(
+    dealer.cardPlaces[i].firstElementChild.nextElementSibling.classList.remove(
       'redColor'
     );
   }

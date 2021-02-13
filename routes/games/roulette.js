@@ -5,6 +5,7 @@ var mysql = require('mysql');
 const { log } = require('../../logger');
 var logger = require(appRoot + '/logger');
 var router = express.Router();
+let gameID = 0; //Roulette's game id
 
 router.get('/', (req, res, next) => {
   if (!req.session.loggedIn) {
@@ -77,7 +78,7 @@ router.post('/spin', (req, res, next) => {
       }
 
       res.send({ block });
-      let gameID = 0; //Roulette's game id
+
       dbPool.query(
         'INSERT INTO play_history (user_id, game_id, winnings, time) VALUES(?, ?, ?, CURRENT_TIME())',
         [userID, gameID, winnings],
