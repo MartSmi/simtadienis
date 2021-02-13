@@ -43,6 +43,32 @@ let gameTable = document.querySelector('[data-game-table]');
 let currentStake;
 let errorOccurred;
 
+const cardDeck = [
+  ['/images/games/blackjack/cards/AS.svg', '/images/games/blackjack/cards/2S.svg', '/images/games/blackjack/cards/3S.svg', 
+  '/images/games/blackjack/cards/4S.svg', '/images/games/blackjack/cards/5S.svg', '/images/games/blackjack/cards/6S.svg', 
+  '/images/games/blackjack/cards/7S.svg', '/images/games/blackjack/cards/8S.svg', '/images/games/blackjack/cards/9S.svg', 
+  '/images/games/blackjack/cards/10S.svg', '/images/games/blackjack/cards/JS.svg', '/images/games/blackjack/cards/QS.svg', 
+  '/images/games/blackjack/cards/KS.svg'],
+
+  ['/images/games/blackjack/cards/AV.svg', '/images/games/blackjack/cards/2V.svg', '/images/games/blackjack/cards/3V.svg', 
+  '/images/games/blackjack/cards/4V.svg', '/images/games/blackjack/cards/5V.svg', '/images/games/blackjack/cards/6V.svg', 
+  '/images/games/blackjack/cards/7V.svg', '/images/games/blackjack/cards/8V.svg', '/images/games/blackjack/cards/9V.svg', 
+  '/images/games/blackjack/cards/10V.svg', '/images/games/blackjack/cards/JV.svg', '/images/games/blackjack/cards/QV.svg', 
+  '/images/games/blackjack/cards/KV.svg'],
+
+  ['/images/games/blackjack/cards/AB.svg', '/images/games/blackjack/cards/2B.svg', '/images/games/blackjack/cards/3B.svg', 
+  '/images/games/blackjack/cards/4B.svg', '/images/games/blackjack/cards/5B.svg', '/images/games/blackjack/cards/6B.svg', 
+  '/images/games/blackjack/cards/7B.svg', '/images/games/blackjack/cards/8B.svg', '/images/games/blackjack/cards/9B.svg', 
+  '/images/games/blackjack/cards/10B.svg', '/images/games/blackjack/cards/JB.svg', '/images/games/blackjack/cards/QB.svg', 
+  '/images/games/blackjack/cards/KB.svg'],
+
+  ['/images/games/blackjack/cards/AK.svg', '/images/games/blackjack/cards/2K.svg', '/images/games/blackjack/cards/3K.svg', 
+  '/images/games/blackjack/cards/4K.svg', '/images/games/blackjack/cards/5K.svg', '/images/games/blackjack/cards/6K.svg', 
+  '/images/games/blackjack/cards/7K.svg', '/images/games/blackjack/cards/8K.svg', '/images/games/blackjack/cards/9K.svg', 
+  '/images/games/blackjack/cards/10K.svg', '/images/games/blackjack/cards/JK.svg', '/images/games/blackjack/cards/QK.svg', 
+  '/images/games/blackjack/cards/KK.svg']
+]
+
 player.pointsPlace.textContent = `0`;
 dealer.pointsPlace.textContent = `0`;
 
@@ -77,6 +103,7 @@ function placeCardOnTable(target, card) {
   }`;
 
   colorSuit(target.cardPlaces[n].firstElementChild.nextElementSibling);
+  placeCardImage(target.cardPlaces[n].firstElementChild.nextElementSibling.nextElementSibling.src, card.value, card.suit)
 }
 
 function isStakeViable(amount) {
@@ -397,8 +424,10 @@ restartButton.addEventListener('click', () => {
   for (i = 0; i < player.cardPlaces.length; i++) {
     player.cardPlaces[i].firstElementChild.textContent = ``;
     player.cardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
+    player.cardPlaces[i].firstElementChild.nextElementSibling.nextElementSibling.src = '/images/games/blackjack/transparent.svg'
     dealer.cardPlaces[i].firstElementChild.textContent = ``;
     dealer.cardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
+    dealer.cardPlaces[i].firstElementChild.nextElementSibling.nextElementSibling.src = '/images/games/blackjack/transparent.svg'
   }
 
   winScreen.classList.add('hide');
@@ -422,5 +451,181 @@ function uncolor() {
     dealer.cardPlaces[i].firstElementChild.nextElementSibling.classList.remove(
       'redColor'
     );
+  }
+}
+
+function placeCardImage(card, value, suit) {
+  switch (suit) {
+    case '♥':
+      switch (value) {
+        case 'A':
+          card.src = cardDeck[0][0]
+          break
+        case '2':
+          card.src = cardDeck[0][1]
+          break
+        case '3':
+          card.src = cardDeck[0][2]
+          break
+        case '4':
+          card.src = cardDeck[0][3]
+          break
+        case '5':
+          card.src = cardDeck[0][4]
+          break
+        case '6':
+          card.src = cardDeck[0][5]
+          break
+        case '7':
+          card.src = cardDeck[0][6]
+          break
+        case '8':
+          card.src = cardDeck[0][7]
+          break
+        case '9':
+          card.src = cardDeck[0][8]
+          break
+        case '10':
+          card.src = cardDeck[0][9]
+          break
+        case 'J':
+          card.src = cardDeck[0][10]
+          break
+        case 'Q':
+          card.src = cardDeck[0][11]
+          break
+        case 'K':
+          card.src = cardDeck[0][12]
+          break
+      }
+      break
+    case '♠':
+      switch (value) {
+        case 'A':
+          card.src = cardDeck[1][0]
+          break
+        case '2':
+          card.src = cardDeck[1][1]
+          break
+        case '3':
+          card.src = cardDeck[1][2]
+          break
+        case '4':
+          card.src = cardDeck[1][3]
+          break
+        case '5':
+          card.src = cardDeck[1][4]
+          break
+        case '6':
+          card.src = cardDeck[1][5]
+          break
+        case '7':
+          card.src = cardDeck[1][6]
+          break
+        case '8':
+          card.src = cardDeck[1][7]
+          break
+        case '9':
+          card.src = cardDeck[1][8]
+          break
+        case '10':
+          card.src = cardDeck[1][9]
+          break
+        case 'J':
+          card.src = cardDeck[1][10]
+          break
+        case 'Q':
+          card.src = cardDeck[1][11]
+          break
+        case 'K':
+          card.src = cardDeck[1][12]
+          break
+      }
+      break
+    case '♦':
+      switch (value) {
+        case 'A':
+          card.src = cardDeck[2][0]
+          break
+        case '2':
+          card.src = cardDeck[2][1]
+          break
+        case '3':
+          card.src = cardDeck[2][2]
+          break
+        case '4':
+          card.src = cardDeck[2][3]
+          break
+        case '5':
+          card.src = cardDeck[2][4]
+          break
+        case '6':
+          card.src = cardDeck[2][5]
+          break
+        case '7':
+          card.src = cardDeck[2][6]
+          break
+        case '8':
+          card.src = cardDeck[2][7]
+          break
+        case '9':
+          card.src = cardDeck[2][8]
+          break
+        case '10':
+          card.src = cardDeck[2][9]
+          break
+        case 'J':
+          card.src = cardDeck[2][10]
+          break
+        case 'Q':
+          card.src = cardDeck[2][11]
+          break
+        case 'K':
+          card.src = cardDeck[2][12]
+          break
+      }
+      break
+    case '♣':switch (value) {
+      case 'A':
+        card.src = cardDeck[3][0]
+        break
+      case '2':
+        card.src = cardDeck[3][1]
+        break
+      case '3':
+        card.src = cardDeck[3][2]
+        break
+      case '4':
+        card.src = cardDeck[3][3]
+        break
+      case '5':
+        card.src = cardDeck[3][4]
+        break
+      case '6':
+        card.src = cardDeck[3][5]
+        break
+      case '7':
+        card.src = cardDeck[3][6]
+        break
+      case '8':
+        card.src = cardDeck[3][7]
+        break
+      case '9':
+        card.src = cardDeck[3][8]
+        break
+      case '10':
+        card.src = cardDeck[3][9]
+        break
+      case 'J':
+        card.src = cardDeck[3][10]
+        break
+      case 'Q':
+        card.src = cardDeck[3][11]
+        break
+      case 'K':
+        card.src = cardDeck[3][12]
+        break
+    }
+      break
   }
 }
