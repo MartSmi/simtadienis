@@ -83,8 +83,8 @@ body {
 }
 #bdy{
   position: absolute;
-  height: 80vh;
-  width: 80vw;
+  height: 88vh;
+  width: 88vw;
   top: 55%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -97,6 +97,7 @@ img{
 
 .navbar {
   background-color: #5c463d;
+  z-index: 1;
 }
 
 .navbar-brand, .nav-link, .navbar-text {
