@@ -370,9 +370,5 @@ body {
 }
   
 .navbar-brand, .nav-link, .navbar-text {
-    color: #213119;
-}
-
-.navbar-brand:hover, .nav-link:hover {
-    color: #466437;
+    color: #bfeca9;
 }

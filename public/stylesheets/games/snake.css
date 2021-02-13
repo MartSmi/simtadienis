@@ -3,14 +3,14 @@ canvas{
     margin: 0 auto;
 }
 
+body {
+	background-color: #c8f177;
+}
+
 .navbar {
 	background-color: #64974d;
 }
 
 .navbar-brand, .nav-link, .navbar-text {
-	color: #eff3ec;
-}
-
-.navbar-brand:hover, .nav-link:hover {
-	color: #91af82;
+	color: #c8f177;
 }

@@ -250,13 +250,9 @@ input[type='radio'] {
 }
 
 .navbar {
-  background-color: #2b4220;
+  background-color: #202e19;
 }
 
 .navbar-brand, .nav-link, .navbar-text {
-  color: #3b5b2c;
-}
-
-.navbar-brand:hover, .nav-link:hover {
-  color: #466437;
+  color: #768d6c;
 }

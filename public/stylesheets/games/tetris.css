@@ -85,3 +85,11 @@ img{
   width: 2vw;
   height: 2vw;
 }
+
+.navbar {
+  background-color: #5c463d;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  color: #a79a90;
+}
