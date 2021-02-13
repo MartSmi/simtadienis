@@ -24,8 +24,8 @@ var textFont = fontSize + "px Acherus Grotesque";
 
 window.onload = window.onresize = function() {
     var canvas = document.getElementById('snake');
-    let scaleConstant = 532 / 610;
-    let canvasSize = window.innerHeight * scaleConstant;
+    scaleConstant = 532 / 610;
+    canvasSize = window.innerHeight * scaleConstant;
     box = canvasSize / 19;
     // console.log(box);
     // console.log(window.innerHeight);
@@ -112,15 +112,15 @@ left.volume = garsas;
 let snake = [];
 
 snake[0] = {
-    x : 9 * box,
-    y : 10 * box
+    x : 9,
+    y : 10
 };
 
 // create the food
 
 let food = {
-    x : Math.floor(Math.random()*17+1) * box,
-    y : Math.floor(Math.random()*15+3) * box
+    x : Math.floor(Math.random()*17+1),
+    y : Math.floor(Math.random()*15+3)
 }
 
 // create the score var
@@ -212,23 +212,23 @@ function draw(){
     for( let i = 1; i < snake.length ; i++){
         ctx.fillStyle = ( i == 0 )? "green" : "white";
       
-        ctx.drawImage(maistas[segmentai[i-1]], snake[i].x, snake[i].y, box ,box);
-        ctx.drawImage(zalia, snake[i].x, snake[i].y,box,box);
+        ctx.drawImage(maistas[segmentai[i-1]], snake[i].x*box, snake[i].y*box, box ,box);
+        ctx.drawImage(zalia, snake[i].x*box, snake[i].y*box,box,box);
     }
-    ctx.drawImage(oboulys, food.x, food.y,box,box);
-    ctx.drawImage(maistas[naujas], food.x+7* box/32, food.y+10* box/32,18* box/32,18* box/32);
-    ctx.drawImage(raudona, food.x+7* box/32, food.y+10* box/32,18* box/32,18* box/32);
+    ctx.drawImage(oboulys, food.x*box, food.y*box,box,box);
+    ctx.drawImage(maistas[naujas], box*food.x+7* box/32, box*food.y+10* box/32,18* box/32,18* box/32);
+    ctx.drawImage(raudona, box*food.x+7* box/32, box*food.y+10* box/32,18* box/32,18* box/32);
 
     
     // old head position
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
-    ctx.drawImage(galva, snakeX, snakeY,box,box);
+    ctx.drawImage(galva, snakeX*box, snakeY*box,box,box);
     // which direction
-    if( d == "LEFT") snakeX -= box;
-    if( d == "UP") snakeY -= box;
-    if( d == "RIGHT") snakeX += box;
-    if( d == "DOWN") snakeY += box;
+    if( d == "LEFT") snakeX -= 1;
+    if( d == "UP") snakeY -= 1;
+    if( d == "RIGHT") snakeX += 1;
+    if( d == "DOWN") snakeY += 1;
     
     // if the snake eats the food
     if(snakeX == food.x && snakeY == food.y){
@@ -237,8 +237,8 @@ function draw(){
         naujas = Math.floor(Math.random() * kiek);
         eat.play();
         food = {
-            x : Math.floor(Math.random()*17+1) * box,
-            y : Math.floor(Math.random()*15+3) * box
+            x : Math.floor(Math.random()*17+1),
+            y : Math.floor(Math.random()*15+3)
         }
         let uzimta =1;
         while(uzimta){
@@ -253,8 +253,8 @@ function draw(){
              if(uzimta==1) {
                    food = {
                        
-                        x : Math.floor(Math.random()*17+1) * box,
-                        y : Math.floor(Math.random()*15+3) * box
+                        x : Math.floor(Math.random()*17+1),
+                        y : Math.floor(Math.random()*15+3)
                     }
                 }
             
@@ -273,7 +273,7 @@ function draw(){
         y : snakeY
     }
     
-    if(snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17*box || collision(newHead,snake)){
+    if(snakeX < 1 || snakeX > 17 || snakeY < 3 || snakeY > 17 || collision(newHead,snake)){
         mirtis(collision(newHead,snake));
 
     }
