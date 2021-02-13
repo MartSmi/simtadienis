@@ -15,6 +15,12 @@ const pathToAudio = "../../../images/audio/snake/audio/";
 // create the unit
 var box = 28;
 
+let scaleConstant = 532 / 610;
+let canvasSize = window.innerHeight * scaleConstant;
+box = canvasSize / 19;
+
+var fontSize = Math.round(45 * box/32);
+var textFont = fontSize + "px Acherus Grotesque";
 
 window.onload = window.onresize = function() {
     var canvas = document.getElementById('snake');
@@ -25,6 +31,9 @@ window.onload = window.onresize = function() {
     // console.log(window.innerHeight);
     canvas.width = canvasSize;
     canvas.height = canvasSize;
+
+    fontSize = Math.round(45 * box/32);
+    textFont = fontSize + "px Acherus Grotesque";
 }
 
 
@@ -165,8 +174,7 @@ function collision(head,array){
 function mirtis(ar){
     clearInterval(game);
     ctx.fillStyle = "black";
-    let fontSize = Math.round(45 * box/32);
-    ctx.font = fontSize + "px Acherus Grotesque";
+    ctx.font = textFont;
 
     const siena = new Image();
     siena.src = pathToImg + "siena.png";
@@ -277,7 +285,7 @@ function draw(){
     snake.unshift(newHead);
     
     ctx.fillStyle = "black";
-    ctx.font = "45px Acherus Grotesque";
+    ctx.font = textFont;
     ctx.fillText(score,2*box,1.6*box);
 
 

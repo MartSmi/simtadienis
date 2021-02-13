@@ -12,12 +12,6 @@ body {
     overflow: hidden;
 }
 
-.navbar {
-    position: relative;
-    width: 100vw;
-    height: 10vw;
-}
-
 .content-div {
     position: relative;
 }
@@ -97,4 +91,13 @@ body {
     width: 15vw;
     top: 58%;
     left: 65%;
+}
+
+.navbar {
+    background-color: #1d6487;
+    position: absolute;
+}
+  
+.navbar-brand, .nav-link, .navbar-text {
+    color: #c1dfd2;
 }
