@@ -372,3 +372,31 @@ body {
 .navbar-brand, .nav-link, .navbar-text {
     color: #bfeca9;
 }
+
+.cardImg {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
+.winScreen {
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    background-color: green;
+}
+
+.tieScreen {
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    background-color: grey;
+}
+
+.loseScreen {
+    height: 100vh;
+    width: 100vw;
+    z-index: -1;
+    background-color: red;
+}
