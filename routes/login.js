@@ -31,7 +31,7 @@ router.post(
   [v.body('username').isString(), v.body('password').isString()],
   function (req, res, next) {
     var query =
-      'SELECT id, full_name, klase, password, is_station FROM users WHERE username = ?';
+      'SELECT id, full_name, klase, password, is_station, balance FROM users WHERE username = ?';
     dbPool.query(query, req.body.username, function (error, rows, fields) {
       if (error || rows.length > 1) {
         console.log(rows);
@@ -64,6 +64,10 @@ router.post(
             req.session.userID = rows[0].id;
             req.session.fullName = rows[0].full_name;
             req.session.klase = rows[0].klase;
+            req.session.balance = rows[0].balance;
+            // console.log(req.session.fullName);
+            // console.log(req.session.balance);
+            // console.log(rows);
             res.redirect(303, '/');
           }
         }

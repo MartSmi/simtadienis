@@ -1,16 +1,34 @@
-extends ../layout
+extends ../topbarLayout
 
 block content
-  link(rel="stylesheet", href="/stylesheets/games/tetris.css", type="text/css")
-
-  div#div1
-    div#div2
-      canvas#tetris-canvas.canvas(width='520' height='600')
-      div#div3
-        label(for='level-input') Start level:
-        input#level-input(name='level-input' type='number' min='0' max='19' value='5')
+  head
+    title Tetris
+    link(rel='stylesheet' type='text/css' href='/stylesheets/games/tetris.css')
+    script(src='/javascripts/games/tetris/classic-tetris.js')
+    script(src='/javascripts/games/tetris/loader.js')
+    script(src='/javascripts/games/tetris/hat.js')
+  div#bdy
+    #k.hat
+      .s2
+      #p.hat1
+        canvas#canvas
+      #shadow
+        #shadow-top
+        #shadow-bottom
+      .s2
+    .side
+    .wall
+    #area.playArea
+      canvas#tetris-canvas.canvas
+      div
         button#start-stop-btn Play/Pause
         button#quit-btn Quit
-
-  script(src='/javascripts/games/tetris/classic-tetris.js')
-  script(src='/javascripts/games/tetris/index.js')
+    #wall.wall
+    .side
+    img#i1(src='/images/games/tetris/geltona.jpg')
+    img#i2(src='/images/games/tetris/melyna.jpg')
+    img#i3(src='/images/games/tetris/oranzine.jpg')
+    img#i4(src='/images/games/tetris/raudona.jpg')
+    img#i5(src='/images/games/tetris/violetine.jpg')
+    img#i6(src='/images/games/tetris/zalia.jpg')
+    img#i7(src='/images/games/tetris/zydra.jpg')

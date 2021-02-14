@@ -2,7 +2,7 @@ class Pickup {
   constructor(game, position) {
     this.game = game;
     this.position = position;
-    this.radius = 10;
+    this.radius = game.level.cellSizeX / 4;
     this.position = position;
     this.picked = false;
     this.points = 10;
@@ -21,17 +21,44 @@ class Pickup {
 
   pick() {
     this.picked = true;
-    this.game.addScore(this.points);
+    this.game.addScore(this.points, true);
+  }
+
+  checkForCollision () {
+    let pacmanPos = this.game.getPacmanPos();
+    let dx = this.position.x - pacmanPos.x;
+    let dy = this.position.y - pacmanPos.y;
+    let sqDist = dx * dx + dy * dy;
+    let sumRadius = this.radius + this.game.player.radius;
+    let doPick = sqDist <= (sumRadius * sumRadius);
+
+    if (doPick) this.pick();
   }
 
   update(deltaTime) {
     if (this.picked) return;
-    let dx = this.position.x - this.game.player.position.x;
-    let dy = this.position.y - this.game.player.position.y;
-    let sqDist = dx * dx + dy * dy;
-    let sumRadius = this.radius + this.game.player.radius;
-    let doPick = sqDist <= sumRadius * sumRadius;
+    this.checkForCollision();
+  }
+}
 
-    if (doPick) this.pick();
+class PowerPickup extends Pickup {
+  constructor (game, position) {
+    super (game, position);
+    this.radius = this.radius * 3 / 2;
+  }
+
+  pick () {
+    super.pick();
+    //console.log("supered");
+    this.game.ghostsToFrightened();
+  }
+}
+
+class FruitPickup extends Pickup {
+  constructor (game, position) {
+    super (game, position);
+    this.points = 100;
+    this.img = document.getElementById('img_fruit');
+    this.radius = this.radius * 2;
   }
 }

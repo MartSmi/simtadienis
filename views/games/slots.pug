@@ -1,13 +1,17 @@
-extends ../layout
+extends ../topbarLayout
 
 block content
   link(rel="stylesheet", href="/stylesheets/games/slots.css", type="text/css")
 
-  section#status WELCOME!
+  
+  //- .topbar  
   section#Slots
+    .textContainer
+      img.costImage(src='/images/games/slots/kaina.png' data-cost-image='')
+    img.slotsImage(src='/images/games/slots/slots2.svg')
     #slot1.a1
     #slot2.a1
     #slot3.a1
-  section#Gira TAKE A SPIN!
+  section#Gira SUKTI!
 
   script(src='/javascripts/games/slots/main.js')

@@ -1,3 +1,7 @@
+let costImage = document.querySelector('[data-cost-image]');
+let loseImage = document.querySelector('[data-lose-image]');
+let winImage = document.querySelector('[data-win-image]');
+
 document.getElementById('Gira').addEventListener('click', doSlot);
 
 var doing = false;
@@ -18,7 +22,6 @@ var coin = [
 var win = new Audio('res/sounds/win.mp3');
 var lose = new Audio('res/sounds/lose.mp3');
 var audio = false;
-let status = document.getElementById('status');
 var info = true;
 
 function doSlot() {
@@ -35,7 +38,7 @@ function doSlot() {
   var i2 = 0;
   var i3 = 0;
   var sound = 0;
-  status.innerHTML = 'SPINNING';
+  costImage.src = '/images/games/slots/transparent.svg';
   slot1 = setInterval(spin1, 50);
   slot2 = setInterval(spin2, 50);
   slot3 = setInterval(spin3, 50);
@@ -101,14 +104,11 @@ function testWin() {
       (slot2 == slot3 && slot2 == 'a7')) &&
     !(slot1 == slot2 && slot2 == slot3 && slot1 == 'a7')
   ) {
-    status.innerHTML = 'YOU WIN!';
+    costImage.src = '/images/games/slots/laimejai.png';
     //win.play();
   } else {
-    status.innerHTML = 'YOU LOSE!';
+    costImage.src = '/images/games/slots/pralaimejai.png';
     //lose.play();
   }
   doing = false;
-}
-function randomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
 }

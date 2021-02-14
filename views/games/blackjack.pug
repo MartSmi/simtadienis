@@ -1,107 +1,122 @@
-extends ../layout
+extends ../topbarLayout
 
 block content
   link(rel="stylesheet", href="/stylesheets/games/blackjack.css", type="text/css")
 
-  .insuranceInputContainer.hide(data-insurance-input-container='')
-    .insuranceInputText Įveskite draudimo sumą;
-    input.insuranceInputField(type='text' data-insurance-input-field='')
-    button.insuranceInputButton(type='button' data-insurance-input-button='') Drausti
-  button.insuranceRequestButton.hide(type='button' data-insurance-request-button='') Drausti
-  .stakeInputContainer.hide(data-stake-input-container='')
-    .stakeInputText Įveskite statymą;
+  //- .topbar Šimtadienis
+  .stakeInputContainer(data-stake-input-container='')
+    .stakeInputText Įveskite statymą
     input.stakeInputField(type='text' data-stake-input-field='')
     button.stakeInputButton(type='button' data-stake-input-button='') Statyti
-  .balanceRequestContainer(data-balance-request-container='')
-   .balanceRequestText Kiek persivedate iš banko sąskaitos?
-    input.balanceRequestInputField(type='text' data-balance-value='')
-    button.balanceRequestButton(type='button' data-balance-request-button='') Pervesti
   .stakeField
   .loseScreen.hide(data-lose-screen='')
   .winScreen.hide(data-win-screen='')
   .tieScreen.hide(data-tie-screen='')
-  .gameTable
-    button.withdrawMoneyButton(type='button' data-withdraw-money-button='') Atsiimti
-    .playerPoints(data-player-points='')
+  .gameTable.blur(data-game-table)
+    img.gameTableImg(src='/images/games/blackjack/stalas.svg')
+    .playerTag ŽAIDĖJAS
+    .playerPointsBar
+      .playerPoints(data-player-points='')
     .topRow
-      .playerCard(data-player-card='')
+      .playerCard.playerCard1(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard2(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard3(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard4(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard5(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard6(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard7(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard8(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard9(data-player-card='')
         .cardValue
         .cardSuit
-      .playerCard(data-player-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .playerCard.playerCard10(data-player-card='')
         .cardValue
         .cardSuit
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
     .middleRow
-      .balanceContainer
-        .balanceText Bankas:
-        .balance(data-balance='')
-      .stakeContainer
-        .stakeText Statymas:
-        .stake(data-stake='')
-      .potentialWinningsContainer
-        .potentialWinningsText Galimas laimėjimas:
-        .potentialWinnings(data-potential-winnings='')
-      .insuranceContainer.hide(data-insurance-container='')
-        .insuranceStakeText Draudimas:
-        .insuranceStake(data-insurance-stake='')
+      .buttonRow
+        button.hitButton(type='button' data-hit-button='') Imti
+        button.standButton(type='button' data-stand-button='') Sustoti
+      .moneyContainer
+        .moneyTextContainer
+          .balanceText Bankas:
+          .stakeText Statymas:
+          .potentialWinningsText Galimas laimėjimas:
+        .moneyAmountContainer 
+          .balance(data-balance='') 0
+          .stake(data-stake='') 0
+          .potentialWinnings(data-potential-winnings='') 0
+      .scndButtonRow
+        button.restartButton(type='button' data-restart-button='') Iš naujo
     .bottomRow
-      .dealerCard(data-dealer-card='')
+      .dealerCard.dealerCard1(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard2(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard3(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard4(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard5(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard6(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard7(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard8(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard9(data-dealer-card='')
         .cardValue
         .cardSuit
-      .dealerCard(data-dealer-card='')
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+      .dealerCard.dealerCard10(data-dealer-card='')
         .cardValue
         .cardSuit
-    .dealerPoints(data-dealer-points='')
-  button.hitButton(type='button' data-hit-button='') Imti
-  button.restartButton(type='button' data-restart-button='') Iš naujo
-  button.standButton(type='button' data-stand-button='') Sustoti
+        img.cardImg(src='/images/games/blackjack/transparent.svg')
+    .dealerPointsBar
+      .dealerPoints(data-dealer-points='')
+    .dealerTag DALINTOJAS
 
-  script(src='/javascripts/games/blackjack/carddeck.js')
   script(src='/javascripts/games/blackjack/script.js')
+  script(src='/javascripts/games/blackjack/carddeck.js')

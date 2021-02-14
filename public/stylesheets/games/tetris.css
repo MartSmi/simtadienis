@@ -1,38 +1,105 @@
-#div1 {
-    user-select:none; 
-    color:#fff; 
-    background-image:url("/images/games/tetris/siena.jpg");
-    background-repeat: no-repeat; 
-    background-attachment: fixed; 
-    background-position: 38% 85%; 
-    background-size: 50%; 
-    font:17px georgia;
-}
-#div2 {
-    display:table; 
-    margin:0 auto;
-}
-#div3 {
-    padding: 0px 30px 15px 30px;
+* {
+  box-sizing: border-box;
+  font-family: arial;
+  color: black;
+  margin: auto;
+  float: left;
 }
 
-#gameScreen {
-    border: 1px solid black;
+.hat {
+  height: 30%;
+  width: 100%;
 }
-img {
-    display: none;
-}
-  
 
-<div >
-    <div style=''>
-      <canvas id='tetris-canvas' class='canvas' width='520' height='600'></canvas>
-      <div style=''>
-        <label for='level-input'>Start level:</label>
-        <input id='level-input' name='level-input' type='number' min='0' max='19' value='5'></input>
-        <button id='start-stop-btn'>Play/Pause</button>
-        <button id='quit-btn'>Quit</button>
-      </div>
-    </div>
-  </div>
-</body>
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+.wall {
+  height: 70%;
+  width: 10%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/games/tetris/siena.jpg");
+  background-size: 60%;
+  box-shadow: 2vw 0vw #332210;
+
+}
+
+.playArea {
+  height: 70%;
+  width: 15%;
+  background-color: black;
+
+}
+
+.side {
+  height: 70%;
+  width: 32.5%;
+  /*background-image: url("sd.png");*/
+
+}
+
+.s2 {
+  height: 100%;
+  width: 32.5%;
+  /* background-color: white;*/
+}
+
+
+.hat1 {
+
+
+  height: 100%;
+  width: 35%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/games/tetris/siena.jpg");
+  background-size: 15%;
+  /*box-shadow: 1vw 2vw dimgray;*/
+}
+
+#shadow {
+  width: 2vw;
+  height: 100%;
+}
+
+#shadow-top {
+  width: 100%;
+  height: 10%;
+}
+
+#shadow-bottom {
+  background-color: #332210;
+  transform: skewY(35deg);
+  width: 100%;
+  height: 90%;
+  box-shadow: 0vw 2vw #332210;
+}
+#start-stop-btn{
+  width: 65%; 
+  height: 100%;
+}
+#quit-btn{
+  width: 34%; 
+  height: 100%;
+}
+#bdy{
+  position: absolute;
+  height: 90vh;
+  width: 90vw;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+img{
+  display: none;
+  width: 2vw;
+  height: 2vw;
+}
+
+.navbar {
+  background-color: #5c463d;
+  z-index: 1;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  color: #a79a90;
+}
