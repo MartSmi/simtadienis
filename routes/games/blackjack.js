@@ -275,9 +275,9 @@ function playDealer(points, usedAces) {
 }
 
 async function blackjack(ip, userID, gameSessionID, next) {
-  //Ratio - 3:2, round-down
+  //Ratio - 3:2, round-up
   let bet = await getBet(gameSessionID, next);
-  let winnings = Math.floor(bet * 2.5);
+  let winnings = Math.ceil(bet * 2.5);
   updateBalance(winnings, ip, userID, next);
 
   dbPool.query(
