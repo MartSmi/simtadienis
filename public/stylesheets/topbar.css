@@ -21,3 +21,8 @@
 .navbar-brand:hover, .nav-link:hover {
   color: #ffffff;
 }
+
+#topbarCoinImg {
+  width: 3%;
+  height: auto;
+}

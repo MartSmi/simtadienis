@@ -287,6 +287,14 @@ class ClassicTetris {
     gameTheme = undefined
 
   } = {}) {
+    this.image0 = document.getElementById('i1');
+    this.image1 = document.getElementById('i2');
+    this.image2 = document.getElementById('i3');
+    this.image3 = document.getElementById('i4');
+    this.image4 = document.getElementById('i5');
+    this.image5 = document.getElementById('i6');
+    this.image6 = document.getElementById('i7');
+
     this.oImg = document.getElementById('i1');
     //this.oImg.src = 'data:image/jpeg;base64,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';
     // game canvas
@@ -1779,25 +1787,25 @@ class ClassicTetris {
   _drawSquare(x, y, color, border) {
     switch (color) {
       case this.oColor[0]:
-        this.context.drawImage(document.images[0], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image0, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
       case this.lColor[0]:
-        this.context.drawImage(document.images[2], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image2, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
       case this.iColor[0]:
-        this.context.drawImage(document.images[6], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image6, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
       case this.sColor[0]:
-        this.context.drawImage(document.images[5], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image5, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
       case this.zColor[0]:
-        this.context.drawImage(document.images[3], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image3, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
       case this.jColor[0]:
-        this.context.drawImage(document.images[1], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image1, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
       case this.tColor[0]:
-        this.context.drawImage(document.images[4], x + 1, y + 1, this.squareSide, this.squareSide);
+        this.context.drawImage(this.image4, x + 1, y + 1, this.squareSide, this.squareSide);
         break;
 
       default:
