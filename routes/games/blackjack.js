@@ -16,7 +16,11 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     return;
   } else {
-    res.render('games/blackjack');
+    var opts = {
+      // name: req.session.fullName,
+      balance: req.session.balance
+    }
+    res.render('games/blackjack', opts);
   }
 });
 

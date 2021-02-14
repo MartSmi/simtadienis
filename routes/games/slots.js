@@ -11,7 +11,11 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     return;
   } else {
-    res.render('games/slots');
+    var opts = {
+      // name: req.session.fullName,
+      balance: req.session.balance
+    }
+    res.render('games/slots', opts);
   }
 });
 

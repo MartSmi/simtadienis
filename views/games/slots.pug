@@ -1,13 +1,13 @@
-extends ../layout
+extends ../topbarLayout
 
 block content
   link(rel="stylesheet", href="/stylesheets/games/slots.css", type="text/css")
 
-  section#status
-    img.winImage.hide(src='/images/games/slots/laimejai.png' data-win-image='')
-    img.loseImage.hide(src='/images/games/slots/pralaimejai.png' data-lose-image='')
-    img.costImage(src='/images/games/slots/kaina.png' data-cost-image='')
+  
+  //- .topbar  
   section#Slots
+    .textContainer
+      img.costImage(src='/images/games/slots/kaina.png' data-cost-image='')
     img.slotsImage(src='/images/games/slots/slots2.svg')
     #slot1.a1
     #slot2.a1

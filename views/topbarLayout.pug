@@ -1,0 +1,13 @@
+extends layout
+
+block topbar 
+  link(rel='stylesheet' href='/stylesheets/topbar.css')
+
+  //- .topbar Šimtadienis
+  nav.navbar.navbar-expand-lg
+    a.navbar-brand.mx-auto.ml-sm-2(href='/') Šimtadienis
+    //- button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
+    //- span.navbar-toggler-icon
+    span.navbar-text.mx-auto.mr-sm-2= balance
+    //- a.nav-link.my-2.my-sm-0(href='/account')
+    //-   p= name

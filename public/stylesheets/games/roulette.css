@@ -248,3 +248,12 @@ input[type='radio'] {
   right: -57%;
   top: 33%;
 }
+
+.navbar {
+  background-color: #202e19;
+  position: absolute;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  color: #768d6c;
+}

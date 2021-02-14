@@ -20,7 +20,7 @@ body {
     top: 50px;
 }
 
-#logout-btn {
+#logout-btn, .buttonToMap {
     height: 40px;
     background-color: #2D789E;
     width: 11vw;
@@ -35,11 +35,22 @@ body {
     box-shadow: 4px 5px rgba(255, 255, 255, 0.3);
 }
 
-#logout-btn:hover {
+#logout-btn:hover, .buttonToMap:hover {
     background-color: white;
     color: #2D789E;
     transition-duration: 0.3s;
     border-color: white;
+    text-decoration: none;
+}
+
+.buttonToMap {
+    position: absolute;
+    top: 1%;
+    left: 0.5%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn-primary {
@@ -124,3 +135,11 @@ input[type=number] {
 .tableText {
     color: white;
 }
+
+.navbar {
+    background-color: #085f8a;
+  }
+  
+  .navbar-brand, .nav-link, .navbar-text {
+    color: #65B3DB;
+  }

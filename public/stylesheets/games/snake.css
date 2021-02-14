@@ -1,4 +1,25 @@
-canvas{
-    display: block;
-    margin: 0 auto;
+canvas {
+    position: relative;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:auto;
+	display: block;
+}
+
+#canvasCointainer {
+	align-items: center;
+}
+
+body {
+	background-color: #c8f177;
+}
+
+.navbar {
+	background-color: #64974d;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+	color: #c8f177;
 }
