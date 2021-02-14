@@ -39,26 +39,27 @@ body {
 
 .pacmanImage {
     position: absolute;
-    height: 9vw;
-    width: 10.47vw;
-    top: 15%;
-    left: 18%;
+    height: 6.79vw;
+    width: 7.9vw;
+    top: 16%;
+    left: 29%;
+    transform: rotate(-15deg);
 }
 
 .tetrisImage {
     position: absolute;
-    height: 9vw;
-    width: 10.47vw;
-    top: 35%;
-    left: 25%;
+    height: 10.32vw;
+    width: 12vw;
+    top: 50%;
+    left: 22%;
 }
 
 .snakeImage {
     position: absolute;
     height: 9vw;
     width: 10.47vw;
-    top: 50%;
-    left: 12.5%;
+    top: 38%;
+    left: 9.5%;
 }
 
 .rouletteImage {
@@ -71,26 +72,27 @@ body {
 
 .slotsImage {
     position: absolute;
-    height: 12vw;
-    width: 12vw;
+    height: 9.8vw;
+    width: 9.8vw;
     top: 22%;
-    left: 56%;
+    left: 61%;
 }
 
 .blackjackImage {
     position: absolute;
     height: 9vw;
     width: 8.16vw;
-    top: 40%;
+    top: 27%;
     left: 48%;
+    z-index: 2;
 }
 
 .bankImage {
     position: absolute;
     height: 10vw;
     width: 15vw;
-    top: 58%;
-    left: 65%;
+    top: 62%;
+    left: 64%;
 }
 
 .navbar {
@@ -100,4 +102,13 @@ body {
   
 .navbar-brand, .nav-link, .navbar-text {
     color: #c1dfd2;
+}
+
+.dune {
+    position: absolute;
+    z-index: 1;
+    height: 12vw;
+    width: 14.14vw;
+    top: 22%;
+    left: 44%;
 }
