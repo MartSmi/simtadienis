@@ -5,6 +5,7 @@ USE `bankas`;
 --
 -- Table structure for table `sessions`
 --
+DROP TABLE IF EXISTS `blackjack`;
 DROP TABLE IF EXISTS `play_history`;
 DROP TABLE IF EXISTS `transactions`;
 DROP TABLE IF EXISTS `sessions`;
@@ -72,13 +73,32 @@ CREATE TABLE `transactions` (
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `play_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
   `game_id` tinyint(1) NOT NULL,
-  `winnings` int(11) NOT NULL,
+  `bet` int DEFAULT NULL,
+  `winnings` int DEFAULT NULL,
+  `ended` tinyint(1) NOT NULL DEFAULT '0',
   `time` time NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `play_history_uid_fk` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1205 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=831 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `blackjack` (
+  `user_id` int NOT NULL,
+  `game_session_id` int NOT NULL,
+  `player_points` tinyint NOT NULL,
+  `player_aces` tinyint NOT NULL,
+  `dealer_points` tinyint NOT NULL,
+  `dealer_aces` tinyint NOT NULL,
+  `time` time NOT NULL,
+  KEY `user_id` (`user_id`),
+  KEY `game_session_id` (`game_session_id`),
+  CONSTRAINT `game_session_id` FOREIGN KEY (`game_session_id`) REFERENCES `play_history` (`id`),
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
