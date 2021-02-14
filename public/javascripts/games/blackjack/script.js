@@ -103,7 +103,7 @@ function placeCardOnTable(target, card) {
   }`;
 
   colorSuit(target.cardPlaces[n].firstElementChild.nextElementSibling);
-  placeCardImage(target.cardPlaces[n].firstElementChild.nextElementSibling.nextElementSibling.src, card.value, card.suit)
+  placeCardImage(target.cardPlaces[n].firstElementChild.nextElementSibling.nextElementSibling, card.value, card.suit)
 }
 
 function isStakeViable(amount) {
