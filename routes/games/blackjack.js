@@ -18,8 +18,8 @@ router.get('/', function (req, res, next) {
   } else {
     var opts = {
       // name: req.session.fullName,
-      balance: req.session.balance
-    }
+      balance: req.session.balance,
+    };
     res.render('games/blackjack', opts);
   }
 });
@@ -279,9 +279,9 @@ function playDealer(points, usedAces) {
 }
 
 async function blackjack(ip, userID, gameSessionID, next) {
-  //Ratio - 3:2, round-down
+  //Ratio - 3:2, round-up
   let bet = await getBet(gameSessionID, next);
-  let winnings = Math.floor(bet * 2.5);
+  let winnings = Math.ceil(bet * 2.5);
   updateBalance(winnings, ip, userID, next);
 
   dbPool.query(
@@ -376,18 +376,10 @@ function calCardValue(val) {
   else return val + 1;
 }
 
-let n = 0;
-let vals = [1, 0, 8, 9];
-
 function drawCard() {
   return {
-    value: vals[n++ % 4],
-    suit: Math.floor(Math.random() * 4), // 1 - ♠, 2 - ♥, 3 - ♦, 4 - ♣
-  };
-
-  return {
     value: Math.floor(Math.random() * 13), // A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
-    suit: Math.floor(Math.random() * 4), // 1 - ♠, 2 - ♥, 3 - ♦, 4 - ♣
+    suit: Math.floor(Math.random() * 4), // 0 - ♠, 1 - ♥, 2- ♦, 3 - ♣
   };
 }
 
