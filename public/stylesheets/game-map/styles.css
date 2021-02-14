@@ -82,9 +82,14 @@ body {
     position: absolute;
     height: 9vw;
     width: 8.16vw;
-    top: 27%;
-    left: 48%;
+    top: 34%;
+    left: 52%;
     z-index: 2;
+    transform: translate(-50%, -50%);
+}
+.blackjackImage:hover {
+    height: 8.05vw;
+    width: 7.3vw;
 }
 
 .bankImage {
