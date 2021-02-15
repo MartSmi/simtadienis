@@ -35,7 +35,6 @@ let restartButton = document.querySelector('[data-restart-button]');
 let balance = 9999; //TODO: Get from top bar, when it will be built
 let stake = document.querySelector('[data-stake]');
 let potentialWinnings = document.querySelector('[data-potential-winnings]'); //TODO: maybe remove
-let balanceValue = document.querySelector('[data-balance-value]');
 let balanceRequestContainer = document.querySelector(
   '[data-balance-request-container]'
 );
@@ -183,6 +182,7 @@ betButton.addEventListener('click', async function placeBet() {
     stake.textContent = betField.value;
     standButton.disabled = false;
     gameTable.classList.remove('blur');
+    potentialWinnings.textContent = `${2*Number(stake.textContent)}`
   } else {
     alert('Bad bet');
   }
