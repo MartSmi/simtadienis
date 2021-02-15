@@ -78,6 +78,15 @@ class GridSetup {
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     ];
 
+    this.firstPortalId = {
+      i: 13,
+      j: -1
+    };
+    this.secondPortalId = {
+      i: 13,
+      j: 21
+    };
+
     this.levelHeight = this.levelGrid.length;
     this.levelWidth = this.levelGrid[0].length;
 
@@ -206,6 +215,15 @@ class Level {
   getNearIntersections (i, j) {
     var ids = [];
 
+    if (j < 0) {
+      ids.push({x: i, j: 0});
+      return ids;
+    } 
+    if (j >= this.levelWidth) {
+      ids.push({x: i, j: this.levelWidth-1});
+      return ids;
+    }
+
     for (var ni = i-1; ni >= 0; ni--) {
       if (this.intersections[ni][j]) {
         ids.push({x: ni, y: j});
@@ -296,7 +314,17 @@ class Level {
   }
 
   canPacmanGo (i, j) {
-    return this.setup.canWalk(i,j);
+    //return this.setup.canWalk(i,j);
+    if (i == this.setup.firstPortalId.i && j == this.setup.firstPortalId.j)
+      return true;
+    else if (i == this.setup.secondPortalId.i && j == this.setup.secondPortalId.j)
+      return true;
+    else if ((j < 0 || j >= this.levelWidth) && i != this.setup.firstPortalId.i)
+      return false;
+    else if (j < -1 || j > this.levelWidth)
+      return false;
+    else
+      return this.setup.canWalk(i, j);
   }
 
   isPosIntersection (pos) {

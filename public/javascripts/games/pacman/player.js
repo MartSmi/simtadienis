@@ -142,6 +142,32 @@ class Player {
     return this.atSomePlace(this.targetPos);
   }
 
+  atFirstPortal () {
+    let firstPortalId = this.game.level.setup.firstPortalId;
+    let firstPortalPos = this.game.level.idToPos (firstPortalId);
+    return (this.atSomePlace(firstPortalPos));
+  }
+
+  atSecondPortal () {
+    let secondPortalId = this.game.level.setup.secondPortalId;
+    let secondPortalPos = this.game.level.idToPos (secondPortalId);
+    return (this.atSomePlace(secondPortalPos));
+  }
+
+  moveToFirstPortal () {
+    let firstPortalId = this.game.level.setup.firstPortalId;
+    let firstPortalPos = this.game.level.idToPos (firstPortalId);
+    this.position = firstPortalPos;
+    this.updateTargetPos();
+  }
+
+  moveToSecondPortal () {
+    let secondPortalId = this.game.level.setup.secondPortalId;
+    let secondPortalPos = this.game.level.idToPos (secondPortalId);
+    this.position = secondPortalPos;
+    this.updateTargetPos();
+  }
+
   updateDir(newDir) {
     // this.dir = newDir;
     this.savedDir = newDir;
@@ -252,8 +278,13 @@ class Player {
 
     this.moveToTarget (deltaTime);
     if (this.atPlace()) {
-      console.log("Pacman at place");
-      this.updateTargetPos();
+      //console.log("Pacman at place");
+      if (this.atFirstPortal())
+        this.moveToSecondPortal();
+      else if (this.atSecondPortal()) 
+        this.moveToFirstPortal();
+      else 
+        this.updateTargetPos();
     }
 
     // console.log("pacman pos: " + this.position.x + ", " + this.position.y);
