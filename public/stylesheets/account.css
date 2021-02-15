@@ -6,7 +6,7 @@
 
 body {
     background-color: #2D789E;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .container {
@@ -139,8 +139,9 @@ input[type=number] {
 
 .navbar {
     background-color: #085f8a;
-  }
+    max-width: 100%;
+}
   
-  .navbar-brand, .nav-link, .navbar-text {
+.navbar-brand, .nav-link, .navbar-text {
     color: #65B3DB;
-  }
+}
