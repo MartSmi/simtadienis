@@ -4,11 +4,7 @@ block content
   link(rel="stylesheet", href="/stylesheets/games/blackjack.css", type="text/css")
 
   //- .topbar Šimtadienis
-  .stakeInputContainer(data-stake-input-container='')
-    .stakeInputText Įveskite statymą
-    input.stakeInputField(type='text' data-stake-input-field='')
-    button.stakeInputButton(type='button' data-stake-input-button='') Statyti
-  .stakeField
+
   .loseScreen.hide(data-lose-screen='')
   .winScreen.hide(data-win-screen='')
   .tieScreen.hide(data-tie-screen='')
@@ -33,10 +29,14 @@ block content
         button.hitButton(type='button' data-hit-button='') Imti
         button.standButton(type='button' data-stand-button='') Sustoti
       .moneyContainer
-        .moneyTextContainer
+        .betInputContainer(data-bet-input-container)
+          label.stakeInputLabel Įveskite statymą:
+          input.stakeInputField(type='text' data-stake-input-field='')
+          button.stakeInputButton(type='button' data-stake-input-button='') Statyti
+        .moneyTextContainer(data-money-text-container)
           .stakeText Statymas:
           .potentialWinningsText Galimas laimėjimas:
-        .moneyAmountContainer
+        .moneyAmountContainer(data-money-container)
           .stake(data-stake='') 0
           .potentialWinnings(data-potential-winnings='') 0
       .scndButtonRow
