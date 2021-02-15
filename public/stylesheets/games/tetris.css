@@ -2,7 +2,7 @@
   box-sizing: border-box;
   font-family: arial;
   color: black;
-  margin: auto;
+  /* margin: auto; */
   float: left;
 }
 
@@ -89,7 +89,7 @@ body {
   left: 50%;
   transform: translate(-50%, 0);
 }
-img{
+img:not(#topbarCoinImg){
   display: none;
   width: 2vw;
   height: 2vw;

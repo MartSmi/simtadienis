@@ -5,9 +5,10 @@ block topbar
 
   //- .topbar Šimtadienis
   nav.navbar.navbar-expand-lg
-    a.navbar-brand.mx-auto.ml-sm-2(href='/') Šimtadienis
+    a.navbar-brand(href='/') Šimtadienis
     //- button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
     //- span.navbar-toggler-icon
-    span.navbar-text.mx-auto.mr-sm-2= balance
+    img.mx-auto.mr-sm-2#topbarCoinImg(src='/images/topbar/moneta.svg')
+    span.navbar-text= balance
     //- a.nav-link.my-2.my-sm-0(href='/account')
     //-   p= name
