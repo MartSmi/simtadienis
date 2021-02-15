@@ -295,6 +295,10 @@ class Level {
     return ret;
   }
 
+  canPacmanGo (i, j) {
+    return this.setup.canWalk(i,j);
+  }
+
   isPosIntersection (pos) {
     let id = this.posToId(pos);
     return this.intersections[id.i][id.j];
