@@ -177,6 +177,18 @@ betButton.addEventListener('click', async function placeBet() {
     // const block = JSON.parse(response).block;
     res.playerCards.forEach(card => addPlayerCard(card));
     res.dealerCards.forEach(card => addDealerCard(card));
+    if (player.points > 21) {
+      lost();
+    } else if (dealer.cards.length > 1) {
+      if (dealer.points == 21) {
+        tie();
+      } else {
+        blackjack();
+      }
+    } else {
+      hitButton.disabled = false;
+    }
+
     gameSessionID = res.gameSessionID;
     betWindow.classList.add('hide');
     betWindow.classList.remove('stakeInputContainer');
@@ -214,16 +226,6 @@ function addPlayerCard(card) {
 
   placeCardOnTable(player, card);
   player.updatePoints();
-  if (player.points > 21) {
-    lost();
-  } else if (
-    (player.points == 21 || (player.aces > 0 && player.points == 11)) &&
-    player.cards.length == 2
-  ) {
-    blackjack();
-  } else {
-    hitButton.disabled = false;
-  }
 }
 
 async function addDealerCard(card) {
@@ -246,11 +248,13 @@ async function addDealerCard(card) {
     placeCardOnTable(dealer, card);
   }
   dealer.updatePoints();
-  if (dealer.points > 21) {
-    lost();
-  } else if (dealer.points == 21 || (dealer.aces > 0 && dealer.points == 11)) {
-    if (player.points == 21) {
-      tie();
+}
+
+function check() {
+  if (dealer.points == 21 || (dealer.aces > 0 && dealer.points == 11)) {
+    if (player.points == 21 || (player.aces > 0 && player.points == 11)) {
+    }
+    if (dealer.cards.length == 2) {
     }
   }
 }
@@ -323,18 +327,24 @@ function hitRequest() {
 }
 
 hitButton.addEventListener('click', function hit() {
-  hitRequest().then(res => {
+  hitRequest().then(async res => {
     addPlayerCard(res.playerCard);
     if (res.dealerCards.length > 0) {
       //Only happens if player.points = 21
-      res.dealerCards.forEach(card => {
-        addDealerCard(card);
-      });
+      for (let i = 0; i < res.dealerCards.length; i++) {
+        await addDealerCard(res.dealerCards[i]);
+      }
       if (dealer.points == 21) {
-        tie();
+        if (dealer.cards.length == 2) {
+          lost();
+        } else {
+          tie();
+        }
       } else {
         won();
       }
+    } else if (player.points > 21) {
+      lost();
     }
   });
 });
@@ -386,40 +396,13 @@ standButton.addEventListener('click', function stand() {
   standButton.disabled = true;
 });
 
-function playerBust() {
-  if (Number(player.points.textContent) > 21) {
-    loseScreen.classList.remove('hide');
-    if (check()) {
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-    } else {
-      alert('Error');
-    }
-
-    disableHitButton();
-    disableStandButton();
-    restartButton.disabled = false;
-  }
-
-  disableHitButton();
-  disableStandButton();
-  restartButton.disabled = false;
-  standButton.disabled = false;
-}
-
 function tie() {
-  if (Number(player.points.textContent) === Number(dealer.points.textContent)) {
-    tieScreen.classList.remove('hide');
-    if (check()) {
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-      restartButton.disabled = false;
-    } else {
-      alert('Error');
-    }
-  }
+  alert('tie');
+  tieScreen.classList.remove('hide');
+  // currentStake = 0;
+  // stake.textContent = `0`;
+  // potentialWinnings.textContent = `0`;
+  // restartButton.disabled = false;
 }
 
 function won() {
