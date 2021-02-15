@@ -20,6 +20,7 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
     position: relative;
     height: 50vw;
     width: 88.9vw;
@@ -44,6 +45,7 @@ body {
     top: 16%;
     left: 29%;
     transform: rotate(-15deg);
+    -webkit-transform: rotate(-15deg);
 }
 
 .tetrisImage {
@@ -86,6 +88,7 @@ body {
     left: 52%;
     z-index: 2;
     transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
 }
 .blackjackImage:hover {
     height: 8.05vw;
