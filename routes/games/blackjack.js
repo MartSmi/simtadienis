@@ -370,13 +370,21 @@ function updateBalance(amount, ip, userID, next) {
       }
     }
   );
+  let i = 0;
+  let c = [9, 1, 0, 8, 9, 1, 0, 8, 9];
 }
 function calCardValue(val) {
   if (val > 9) return 10;
   else return val + 1;
 }
 
+let i = 0;
+let c = [9, 4, 5, 9, 9, 1, 0, 8, 9];
 function drawCard() {
+  // return {
+  //   value: c[i++ % 9],
+  //   suit: 0,
+  // };
   return {
     value: Math.floor(Math.random() * 13), // A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
     suit: Math.floor(Math.random() * 4), // 0 - ♠, 1 - ♥, 2- ♦, 3 - ♣
