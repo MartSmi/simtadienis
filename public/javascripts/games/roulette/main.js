@@ -59,7 +59,7 @@ function spin() {
         won(winnings);
       } else {
         // Lost
-        winnings *= -2;
+        winnings *= -1;
         lost(winnings);
       }
     } else if (

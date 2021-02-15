@@ -15,8 +15,8 @@ router.get('/', (req, res, next) => {
   }
   var opts = {
     // name: req.session.fullName,
-    balance: req.session.balance
-  }
+    balance: req.session.balance,
+  };
   res.render('games/roulette', opts);
 });
 
@@ -74,7 +74,7 @@ router.post('/spin', (req, res, next) => {
         winnings *= 2;
       } else {
         // Lost
-        winnings *= -2;
+        winnings *= -1;
       }
 
       res.send({ block });
