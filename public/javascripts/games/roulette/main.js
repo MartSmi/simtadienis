@@ -86,7 +86,7 @@ function won(winnings) {
 
 function lost(winnings) {
   setTimeout(function () {
-    alert('You lost ' + winnings);
+    alert('You lost ' + winnings * -1);
     spinning = false;
   }, 5000);
 }
