@@ -18,15 +18,62 @@ class Player {
       y: this.position.y,
     };
 
-    this.img = document.getElementById('img_pacman');
+    this.imgList = [document.getElementById('img_pacman1'),
+                    document.getElementById('img_pacman2'),
+                    document.getElementById('img_pacman3')];
+    this.currentSpriteId = 0;
+    this.spriteAnimationTime = 0.05;
+    this.timeLeftUntilNextSprite = this.spriteAnimationTime;
 
     this.game = game;
   }
 
+  getRotation () {  
+    var angle = 0;
+    switch (this.dir) {
+      case 0:
+        angle = 3 * Math.PI / 2;
+        break;
+      case 1:
+        angle = Math.PI;
+        break;
+      case 2:
+        angle = Math.PI / 2;
+        break;
+      case 3:
+        angle = 2 * Math.PI;
+        break;
+      default:
+        console.log('unknown direction');
+        break;
+    }
+    return angle;
+  }
+
   draw(ctx) {
-    let posX = this.position.x - this.sizeX / 2;
-    let posY = this.position.y - this.sizeY / 2;
-    ctx.drawImage(this.img, posX, posY, this.sizeX, this.sizeY);
+    if (this.timeLeftUntilNextSprite <= 0) {
+      this.timeLeftUntilNextSprite = this.spriteAnimationTime;
+      this.currentSpriteId++;
+      this.currentSpriteId %= this.imgList.length;
+    }
+
+    let currentImg = this.imgList[this.currentSpriteId];
+    var x = this.position.x;
+    var y = this.position.y;
+    var width = this.sizeX;
+    var height = this.sizeY;
+
+    var rotation = this.getRotation();
+
+    ctx.translate(x, y);
+    ctx.rotate(rotation);
+    ctx.drawImage(currentImg, -width / 2, -height / 2, width, height);
+    ctx.rotate(-rotation);
+    ctx.translate(-x, -y);
+    // let posX = this.position.x - this.sizeX / 2;
+    // let posY = this.position.y - this.sizeY / 2;
+    
+    // ctx.drawImage(currentImg, posX, posY, this.sizeX, this.sizeY);
   }
 
   getDeltas (direction) {
@@ -52,9 +99,6 @@ class Player {
         break;
     }
 
-    // console.log("Checked direction: " + direction + " Deltas got:");
-    // console.log(deltas);
-
     return deltas;
   }
 
@@ -62,7 +106,6 @@ class Player {
     let eps = 1e-9;
     if (Math.abs(this.position.x - placePos.x) < eps
        && Math.abs(this.position.y - placePos.y) < eps)
-   // if (this.position.x == this.targetPosition.x && this.position.y == this.targetPosition.y)
         return true;
     else 
         return false;
@@ -88,15 +131,6 @@ class Player {
       if (this.game.level.canPacmanGo(idAfterSavedDir.i, idAfterSavedDir.j)) {
         this.targetPos = this.game.level.idToPos (idAfterSavedDir);
 
-        // console.log("Updating pacman target. Cur pos:");
-        // console.log(this.position);
-        // console.log("Target Pos:");
-        // console.log(this.targetPos);
-        // console.log("Current index: ");
-        // console.log(currentId);
-        // console.log("Target ID: ");
-        // console.log(idAfterSavedDir);
-
         this.dir = this.savedDir;
 
         return;
@@ -113,29 +147,11 @@ class Player {
     if (this.game.level.canPacmanGo(idAfterDir.i, idAfterDir.j)) {
       this.targetPos = this.game.level.idToPos (idAfterDir);
 
-      // console.log("Updating pacman target. Cur pos:");
-      // console.log(this.position);
-      // console.log("Target Pos:");
-      // console.log(this.targetPos);
-      // console.log("Current index: ");
-      // console.log(currentId);
-      // console.log("Target ID: ");
-      // console.log(idAfterDir);
-
       return;
     }
 
     // cannot go anywhere
     this.targetPos = this.game.level.idToPos (currentId);
-
-    // console.log("Updating pacman target. Cur pos:");
-    // console.log(this.position);
-    // console.log("Target Pos:");
-    // console.log(this.targetPos);
-    // console.log("Current index: ");
-    // console.log(currentId);
-    // console.log("Target ID: ");
-    // console.log(currentId);
   }
 
   atPlace () {
@@ -180,78 +196,6 @@ class Player {
     console.log("Saved dir: " + this.savedDir);
   }
 
-  // moveLeft(deltaTime, isTurn) {
-  //   let newPosition = {
-  //     x: this.position.x + this.speed * deltaTime,
-  //     y: this.position.y,
-  //   };
-  //   if (this.game.level.canMove(this.position, 0, 1, isTurn)) {
-  //     this.position = newPosition;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // moveRight(deltaTime, isTurn) {
-  //   let newPosition = {
-  //     x: this.position.x - this.speed * deltaTime,
-  //     y: this.position.y,
-  //   };
-  //   if (this.game.level.canMove(this.position, 0, -1, isTurn)) {
-  //     this.position = newPosition;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // moveUp(deltaTime, isTurn) {
-  //   let newPosition = {
-  //     x: this.position.x,
-  //     y: this.position.y - this.speed * deltaTime,
-  //   };
-  //   if (this.game.level.canMove(this.position, -1, 0, isTurn)) {
-  //     this.position = newPosition;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // moveDown(deltaTime, isTurn) {
-  //   let newPosition = {
-  //     x: this.position.x,
-  //     y: this.position.y + this.speed * deltaTime,
-  //   };
-  //   if (this.game.level.canMove(this.position, 1, 0, isTurn)) {
-  //     this.position = newPosition;
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // move(direction, deltaTime, isTurn) {
-  //   switch (direction) {
-  //     case 0:
-  //       return this.moveUp(deltaTime, isTurn);
-  //     case 1:
-  //       return this.moveRight(deltaTime, isTurn);
-  //     case 2:
-  //       return this.moveDown(deltaTime, isTurn);
-  //     case 3:
-  //       return this.moveLeft(deltaTime, isTurn);
-  //     default:
-  //       console.log('unknown direction');
-  //       return false;
-  //   }
-  // }
-
-  // atIntersection () {
-  //   return this.game.level.isPosIntersection(this.position);
-  // }
-
   moveToTarget (deltaTime) {
     let deltaMove = this.speed * deltaTime;
 
@@ -287,28 +231,6 @@ class Player {
         this.updateTargetPos();
     }
 
-    // console.log("pacman pos: " + this.position.x + ", " + this.position.y);
-    // let moved;
-    
-    // if ((8 + this.dir - this.savedDir) % 4 == 2 || this.atIntersection())
-    //   moved = this.move(this.savedDir, deltaTime, true);
-    // else 
-    //   moved = false;
-
-
-    // if (moved) {
-    //   this.dir = this.savedDir;
-    // } else {
-    //   this.move(this.dir, deltaTime, false);
-    // }
-    
-    /*let eps = 1e-3;
-    let id = this.game.level.posToId(this.position);
-    let cellPos = this.game.level.idToPos(id);
-    if (Math.abs(this.position.x - cellPos.x) < eps && Math.abs(this.position.y - cellPos.y) < eps) {
-      this.position = cellPos;
-    } */
-
-    // console.log("pacman pos: " + this.position.x + ", " + this.position.y);
+    this.timeLeftUntilNextSprite -= deltaTime;
   }
 }
