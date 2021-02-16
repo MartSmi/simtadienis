@@ -41,9 +41,9 @@ let balanceRequestContainer = document.querySelector(
 let betField = document.querySelector('[data-stake-input-field]');
 let betButton = document.querySelector('[data-stake-input-button]');
 let gameTable = document.querySelector('[data-game-table]');
-let moneyAmountText = document.querySelector('[data-money-text-container]')
-let moneyAmount = document.querySelector('[data-money-container]')
-let betContainer = document.querySelector('[data-bet-input-container]')
+let moneyAmountText = document.querySelector('[data-money-text-container]');
+let moneyAmount = document.querySelector('[data-money-container]');
+let betContainer = document.querySelector('[data-bet-input-container]');
 let currentStake;
 let errorOccurred;
 
@@ -175,12 +175,11 @@ betButton.addEventListener('click', async function placeBet() {
   if (isStakeViable(Number(betField.value))) {
     let bet = Number(betField.value);
     let res = await betRequest(bet);
-    // const block = JSON.parse(response).block;
     res.playerCards.forEach(card => addPlayerCard(card));
     res.dealerCards.forEach(card => addDealerCard(card));
     if (player.points > 21) {
       lost();
-    } else if (dealer.cards.length > 1) {
+    } else if (player.points == 21) {
       if (dealer.points == 21) {
         tie();
       } else {
@@ -193,10 +192,10 @@ betButton.addEventListener('click', async function placeBet() {
     gameSessionID = res.gameSessionID;
     stake.textContent = betField.value;
     standButton.disabled = false;
-    potentialWinnings.textContent = `${2*Number(stake.textContent)}`
-    betContainer.classList.add('hide')
-    moneyAmount.classList.remove('hide')
-    moneyAmountText.classList.remove('hide')
+    potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
+    betContainer.classList.add('hide');
+    moneyAmount.classList.remove('hide');
+    moneyAmountText.classList.remove('hide');
   } else {
     alert('Bad bet');
   }
@@ -206,8 +205,8 @@ window.addEventListener('load', f => {
   restartButton.disabled = true;
   hitButton.disabled = true;
   standButton.disabled = true;
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
 });
 
 function getPoints(value) {
@@ -441,9 +440,9 @@ restartButton.addEventListener('click', function restart() {
   winScreen.classList.add('hide');
   loseScreen.classList.add('hide');
   tieScreen.classList.add('hide');
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
-  betContainer.classList.remove('hide')
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
+  betContainer.classList.remove('hide');
   hitButton.disabled = false;
   standButton.disabled = false;
 
