@@ -220,8 +220,11 @@ class Player {
 
   update(deltaTime) {
 
+    var moving = true;
+
     this.moveToTarget (deltaTime);
     if (this.atPlace()) {
+      var moving = false;
       //console.log("Pacman at place");
       if (this.atFirstPortal())
         this.moveToSecondPortal();
@@ -231,6 +234,7 @@ class Player {
         this.updateTargetPos();
     }
 
-    this.timeLeftUntilNextSprite -= deltaTime;
+    if (moving)
+      this.timeLeftUntilNextSprite -= deltaTime;
   }
 }
