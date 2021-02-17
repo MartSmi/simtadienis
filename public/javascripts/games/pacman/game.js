@@ -66,6 +66,10 @@ class Game {
     this.score = 0;
     this.scoreText = document.getElementById('score_text');
     this.scoreText.innerHTML = 'Score: ' + ("0000" + this.score).slice(-4);
+
+    this.player.playLose = false;
+    this.player.timeLeftUntilNextDeathSprite = this.player.deathAnimTime;
+    this.player.currentDeathSpriteId = 0;
   }
 
   ghostsToChase () {
@@ -89,7 +93,15 @@ class Game {
   update(deltaTime, playing) {
     //console.log(deltaTime);
 
-    if (!playing) return;
+    if (!playing) {
+
+      if (this.lost) {
+        this.player.playLose = true;
+        this.player.updateLoseAnim(deltaTime);
+      }
+
+      return;
+    };
 
     if (deltaTime > 0.1) return;
 
@@ -129,7 +141,7 @@ class Game {
 
     if (isPickup) {
       this.pickupCount--;
-      console.log(this.pickupCount);
+      
       if (this.pickupCount == 0) {
         this.score += this.winScore;
         this.won = true;

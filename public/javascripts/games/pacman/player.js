@@ -20,12 +20,23 @@ class Player {
 
     this.imgList = [document.getElementById('img_pacman1'),
                     document.getElementById('img_pacman2'),
-                    document.getElementById('img_pacman3')];
+                    document.getElementById('img_pacman3'),
+                    document.getElementById('img_pacman2')];
     this.currentSpriteId = 0;
-    this.spriteAnimationTime = 0.05;
+    this.spriteAnimationTime = 0.03;
     this.timeLeftUntilNextSprite = this.spriteAnimationTime;
 
     this.game = game;
+
+    this.playLose = false;
+
+    this.deathAnimList = [document.getElementById('img_pacman_death1'),
+                          document.getElementById('img_pacman_death2'),
+                          document.getElementById('img_pacman_death3'),
+                          document.getElementById('img_pacman_death4')];
+    this.currentDeathSpriteId = 0;
+    this.deathAnimTime = 0.1;
+    this.timeLeftUntilNextDeathSprite = this.deathAnimTime;
   }
 
   getRotation () {  
@@ -51,13 +62,27 @@ class Player {
   }
 
   draw(ctx) {
-    if (this.timeLeftUntilNextSprite <= 0) {
-      this.timeLeftUntilNextSprite = this.spriteAnimationTime;
-      this.currentSpriteId++;
-      this.currentSpriteId %= this.imgList.length;
+    var currentImg;
+    if (this.playLose) {
+      if (this.timeLeftUntilNextDeathSprite <= 0) {
+        this.currentDeathSpriteId++;
+        if (this.currentDeathSpriteId >= this.deathAnimList.length) {
+          return;
+        }
+        this.timeLeftUntilNextDeathSprite = this.deathAnimTime;
+      }
+      
+      currentImg = this.deathAnimList[this.currentDeathSpriteId];
+    } else {
+      if (this.timeLeftUntilNextSprite <= 0) {
+        this.timeLeftUntilNextSprite = this.spriteAnimationTime;
+        this.currentSpriteId++;
+        this.currentSpriteId %= this.imgList.length;
+      }
+
+      currentImg = this.imgList[this.currentSpriteId];
     }
 
-    let currentImg = this.imgList[this.currentSpriteId];
     var x = this.position.x;
     var y = this.position.y;
     var width = this.sizeX;
@@ -70,10 +95,6 @@ class Player {
     ctx.drawImage(currentImg, -width / 2, -height / 2, width, height);
     ctx.rotate(-rotation);
     ctx.translate(-x, -y);
-    // let posX = this.position.x - this.sizeX / 2;
-    // let posY = this.position.y - this.sizeY / 2;
-    
-    // ctx.drawImage(currentImg, posX, posY, this.sizeX, this.sizeY);
   }
 
   getDeltas (direction) {
@@ -191,9 +212,6 @@ class Player {
      this.dir = this.savedDir;
 
     this.updateTargetPos ();
-
-    console.log("Dir: " + this.dir);
-    console.log("Saved dir: " + this.savedDir);
   }
 
   moveToTarget (deltaTime) {
@@ -236,5 +254,9 @@ class Player {
 
     if (moving)
       this.timeLeftUntilNextSprite -= deltaTime;
+  }
+
+  updateLoseAnim (deltaTime) {
+    this.timeLeftUntilNextDeathSprite -= deltaTime;
   }
 }
