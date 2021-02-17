@@ -348,6 +348,10 @@ body {
   align-items: center;
 }
 
+.endingMessage {
+  position: relative;
+}
+
 .betInputContainer > * {
   margin: auto;
 }

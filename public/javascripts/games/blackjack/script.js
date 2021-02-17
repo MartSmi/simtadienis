@@ -28,9 +28,6 @@ let standInProgress = false;
 let gameSessionID;
 let hitButton = document.querySelector('[data-hit-button]');
 let standButton = document.querySelector('[data-stand-button]');
-let loseScreen = document.querySelector('[data-lose-screen]');
-let winScreen = document.querySelector('[data-win-screen]');
-let tieScreen = document.querySelector('[data-tie-screen]');
 let restartButton = document.querySelector('[data-restart-button]');
 let balance = 9999; //TODO: Get from top bar, when it will be built
 let stake = document.querySelector('[data-stake]');
@@ -41,9 +38,10 @@ let balanceRequestContainer = document.querySelector(
 let betField = document.querySelector('[data-stake-input-field]');
 let betButton = document.querySelector('[data-stake-input-button]');
 let gameTable = document.querySelector('[data-game-table]');
-let moneyAmountText = document.querySelector('[data-money-text-container]');
-let moneyAmount = document.querySelector('[data-money-container]');
-let betContainer = document.querySelector('[data-bet-input-container]');
+let moneyAmountText = document.querySelector('[data-money-text-container]')
+let moneyAmount = document.querySelector('[data-money-container]')
+let betContainer = document.querySelector('[data-bet-input-container]')
+let ending = document.querySelector('[data-ending-message]')
 let currentStake;
 let errorOccurred;
 
@@ -263,19 +261,22 @@ function check() {
 }
 
 function lost() {
-  loseScreen.classList.remove('hide');
-  alert('lost');
+  ending.classList.remove('hide')
+  ending.textContent = `Pralaimėjai`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   hitButton.disabled = true;
   restartButton.disabled = false;
-  loseScreen.classList.remove('hide');
   currentStake = 0;
   stake.textContent = `0`;
   potentialWinnings.textContent = `0`;
 }
 
 function blackjack() {
-  winScreen.classList.remove('hide');
-  alert('blackjack');
+  ending.classList.remove('hide')
+  ending.textContent = `Juodasis Džekas!`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   hitButton.disabled = true;
   restartButton.disabled = false;
 }
@@ -400,8 +401,10 @@ standButton.addEventListener('click', function stand() {
 });
 
 function tie() {
-  alert('tie');
-  tieScreen.classList.remove('hide');
+  ending.classList.remove('hide')
+  ending.textContent = `Lygiosios`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   // currentStake = 0;
   // stake.textContent = `0`;
   // potentialWinnings.textContent = `0`;
@@ -409,8 +412,10 @@ function tie() {
 }
 
 function won() {
-  alert('won');
-  winScreen.classList.remove('hide');
+  ending.classList.remove('hide')
+  ending.textContent = `Laimėjai`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   currentStake = 0;
   stake.textContent = `0`;
   potentialWinnings.textContent = `0`;
@@ -437,12 +442,11 @@ restartButton.addEventListener('click', function restart() {
     cardPlace.style.backgroundImage = '';
   });
 
-  winScreen.classList.add('hide');
-  loseScreen.classList.add('hide');
-  tieScreen.classList.add('hide');
-  moneyAmount.classList.add('hide');
-  moneyAmountText.classList.add('hide');
-  betContainer.classList.remove('hide');
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
+  ending.textContent = ``
+  ending.classList.add('hide')
+  betContainer.classList.remove('hide')
   hitButton.disabled = false;
   standButton.disabled = false;
 

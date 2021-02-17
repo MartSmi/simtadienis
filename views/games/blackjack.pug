@@ -5,9 +5,6 @@ block content
 
   //- .topbar Šimtadienis
 
-  .loseScreen.hide(data-lose-screen='')
-  .winScreen.hide(data-win-screen='')
-  .tieScreen.hide(data-tie-screen='')
   .gameTable.blur(data-game-table)
     img.gameTableImg(src='/images/games/blackjack/stalas.svg')
     .playerTag ŽAIDĖJAS
@@ -29,6 +26,7 @@ block content
         button.hitButton(type='button' data-hit-button='') Imti
         button.standButton(type='button' data-stand-button='') Sustoti
       .moneyContainer
+        .endingMessage.hide(data-ending-message)
         .betInputContainer(data-bet-input-container)
           label.stakeInputLabel Įveskite statymą:
           input.stakeInputField(type='text' data-stake-input-field='')
