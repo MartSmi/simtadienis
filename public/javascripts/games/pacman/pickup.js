@@ -59,6 +59,26 @@ class FruitPickup extends Pickup {
     super (game, position);
     this.points = 100;
     this.img = document.getElementById('img_fruit');
-    this.radius = this.radius * 2;
+    this.radius = this.radius * 4;
+
+    this.pickedImg = document.getElementById('img_fruitPicked');
+    this.pickedImgShowTime = 1.5;
+    this.timeLeft = this.pickedImgShowTime;
+  }
+
+  update (deltaTime) {
+    super.update (deltaTime);
+    if (this.picked && this.timeLeft >= 0) {
+      this.timeLeft -= deltaTime;
+    }
+  }
+
+  draw(ctx) {
+    super.draw (ctx);
+    if (!this.picked || this.timeLeft < 0) return;
+    let posX = this.position.x - this.radius / 2;
+    let posY = this.position.y - this.radius / 2;
+    ctx.drawImage(this.pickedImg, posX, posY, this.radius, this.radius);
+    // console.log("pickup: posx: " + posX + " posy: " + posY + " radius: " + this.radius);
   }
 }

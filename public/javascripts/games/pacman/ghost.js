@@ -13,7 +13,7 @@ class Ghost {
         let smallOfset = 5;
         this.sizeX = game.level.cellSizeX - smallOfset;
         this.sizeY = game.level.cellSizeY - smallOfset;
-        this.radius = this.sizeX / 2;
+        this.radius = this.sizeX;
 
         this.chaseSpeed = 75;
         this.scatterSpeed = 70;
@@ -53,6 +53,25 @@ class Ghost {
         this.leftBeingEaten = 10;
 
         this.ghostEatingScore = 50;
+
+        this.currentMoveBodySpriteId = 0;
+        this.moveBodyAnimTime = 0.3;
+        this.timeLeftUntilNextMoveBodySprite = this.moveBodyAnimTime;
+
+        this.eyesSpriteList = [document.getElementById('img_ghost_eyes0'),
+                               document.getElementById('img_ghost_eyes1'),
+                               document.getElementById('img_ghost_eyes2'),
+                               document.getElementById('img_ghost_eyes3')];
+        this.eyesSpriteDelta = {
+            x: this.sizeX / 4,
+            y: this.sizeY / 4
+        };
+        this.eyesSize = {
+            x: this.sizeX / 2,
+            y: this.sizeY / 2
+        };
+
+        this.moveDir = 0;
     }
 
     updateFrame (deltaTime) {
@@ -72,9 +91,16 @@ class Ghost {
                 this.currentImage = this.frightenedBlinkImg;
 
         } else if (this.mode == GhostMode.EATEN) {
-            this.currentImage = this.eatenImg;
+            this.currentImage = this.eyesSpriteList[this.dir];
         } else {
-            this.currentImage = this.img;
+            // this.currentImage = this.img;
+            this.timeLeftUntilNextMoveBodySprite -= deltaTime;
+            if (this.timeLeftUntilNextMoveBodySprite <= 0) {
+                this.timeLeftUntilNextMoveBodySprite = this.moveBodyAnimTime;
+                this.currentMoveBodySpriteId++;
+                this.currentMoveBodySpriteId %= this.bodyAnimList.length;
+            }
+            this.currentImage = this.bodyAnimList[this.currentMoveBodySpriteId];
         }
     }
 
@@ -84,6 +110,12 @@ class Ghost {
 
         ctx.drawImage(this.currentImage, posX, posY, this.sizeX, this.sizeY);
         
+        if (this.mode == GhostMode.CHASE || this.mode == GhostMode.SCATTER) {
+            // drawing eyes also
+            let eyesPosX = posX + this.eyesSpriteDelta.x;
+            let eyesPosY = posY + this.eyesSpriteDelta.y;
+            ctx.drawImage(this.eyesSpriteList[this.dir], posX, posY, this.sizeX, this.sizeY);
+        }
 
         // let targetX = this.targetPosition.x - this.sizeX / 2;
         // let targetY = this.targetPosition.y - this.sizeY / 2;
@@ -235,6 +267,12 @@ class Ghost {
             this.collisionWithPacman();
     }
 
+    updateDir () {
+        if (this.targetPosition.y < this.position.y) this.dir = 0;
+        else if (this.targetPosition.x < this.position.x) this.dir = 1;
+        else if (this.targetPosition.y > this.position.y) this.dir = 2;
+        else if (this.targetPosition.x > this.position.x) this.dir = 3;
+    }
 
     update (deltaTime) {
         if (this.mode == GhostMode.EATEN) {
@@ -243,7 +281,7 @@ class Ghost {
                 this.mode = GhostMode.SCATTER;
                 this.switchToMode(GhostMode.SCATTER);
             }
-        }
+        } 
 
 
         this.updateFrame (deltaTime);
@@ -253,6 +291,7 @@ class Ghost {
         if (this.atPlace()) {
              //console.log("at place");
             this.calculateNewTarget ();
+            this.updateDir();
             // HERE: update animations/sprite to look to correct direction
         }
 
@@ -267,7 +306,8 @@ class Ghost {
 class RedGhost extends Ghost {
     constructor (game) {
         super(game);
-        this.img = document.getElementById('img_red_ghost');
+        this.bodyAnimList = [document.getElementById('img_red_ghost_body1'),
+                             document.getElementById('img_red_ghost_body2')];
 
         this.position = {
             x: game.level.cellSizeX,
@@ -286,7 +326,8 @@ class RedGhost extends Ghost {
 class PinkGhost extends Ghost {
     constructor (game) {
         super(game);
-        this.img = document.getElementById('img_pink_ghost');
+        this.bodyAnimList = [document.getElementById('img_pink_ghost_body1'),
+                             document.getElementById('img_pink_ghost_body2')];
     
         this.position = {
             x: game.gameWidth - 2*game.level.cellSizeX,
@@ -305,7 +346,8 @@ class PinkGhost extends Ghost {
 class YellowGhost extends Ghost {
     constructor (game) {
         super(game);
-        this.img = document.getElementById('img_yellow_ghost');
+        this.bodyAnimList = [document.getElementById('img_orange_ghost_body1'),
+                             document.getElementById('img_orange_ghost_body2')];
         this.updateEveryIntersection = false;
 
         this.position = {
@@ -326,7 +368,8 @@ class YellowGhost extends Ghost {
 class CyanGhost extends Ghost {
     constructor (game) {
         super(game);
-        this.img = document.getElementById('img_cyan_ghost');
+        this.bodyAnimList = [document.getElementById('img_cyan_ghost_body1'),
+                             document.getElementById('img_cyan_ghost_body2')];
 
         this.position = {
             x: game.gameWidth - 2*game.level.cellSizeX,

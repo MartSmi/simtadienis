@@ -128,7 +128,7 @@ class Game {
   }
 
   draw(ctx) {
-    ctx.clearRect(0, 0, this.gameWidth, this.gameWidth);
+    //ctx.clearRect(0, 0, this.gameWidth, this.gameWidth);
     this.gameObjects.forEach(object => object.draw(ctx));
 
     //let graph = new Graph (this, this.level, this.redGhost.position, this.player.position);

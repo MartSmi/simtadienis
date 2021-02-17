@@ -35,7 +35,7 @@ class Player {
                           document.getElementById('img_pacman_death3'),
                           document.getElementById('img_pacman_death4')];
     this.currentDeathSpriteId = 0;
-    this.deathAnimTime = 0.1;
+    this.deathAnimTime = 0.25;
     this.timeLeftUntilNextDeathSprite = this.deathAnimTime;
   }
 
