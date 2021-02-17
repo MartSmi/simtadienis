@@ -1,8 +1,11 @@
+// card.value: A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
+// card.suit: ♠, ♥, ♦, ♣
+// TODO: don't show disabled buttons //TODO: maybe do bet in progress
 let player = {
   cards: [],
   aces: 0,
   usedAces: 0,
-  cardPlaces: document.querySelectorAll('[data-player-card]'),
+  cardPlaces: document.querySelectorAll('.playerCard'),
   pointsPlace: document.querySelector('[data-player-points]'),
   points: 0,
   updatePoints: () => {
@@ -13,61 +16,97 @@ let dealer = {
   cards: [],
   aces: 0,
   usedAces: 0,
-  cardPlaces: document.querySelectorAll('[data-dealer-card]'),
+  cardPlaces: document.querySelectorAll('.dealerCard'),
   pointsPlace: document.querySelector('[data-dealer-points]'),
   points: 0,
   updatePoints: () => {
     dealer.pointsPlace.textContent = dealer.points;
   },
 };
-let hitInProgress = false; //TODO: maybe do bet in progress
+let hitInProgress = false;
 let standInProgress = false;
 let gameSessionID;
 let hitButton = document.querySelector('[data-hit-button]');
 let standButton = document.querySelector('[data-stand-button]');
-let loseScreen = document.querySelector('[data-lose-screen]');
-let winScreen = document.querySelector('[data-win-screen]');
-let tieScreen = document.querySelector('[data-tie-screen]');
 let restartButton = document.querySelector('[data-restart-button]');
 let balance = 9999; //TODO: Get from top bar, when it will be built
 let stake = document.querySelector('[data-stake]');
 let potentialWinnings = document.querySelector('[data-potential-winnings]'); //TODO: maybe remove
-let balanceValue = document.querySelector('[data-balance-value]');
 let balanceRequestContainer = document.querySelector(
   '[data-balance-request-container]'
 );
-let betWindow = document.querySelector('[data-stake-input-container]');
 let betField = document.querySelector('[data-stake-input-field]');
 let betButton = document.querySelector('[data-stake-input-button]');
 let gameTable = document.querySelector('[data-game-table]');
+let moneyAmountText = document.querySelector('[data-money-text-container]')
+let moneyAmount = document.querySelector('[data-money-container]')
+let betContainer = document.querySelector('[data-bet-input-container]')
+let ending = document.querySelector('[data-ending-message]')
 let currentStake;
 let errorOccurred;
 
 const cardDeck = [
-  ['/images/games/blackjack/cards/A S.jpeg', '/images/games/blackjack/cards/2S.svg', '/images/games/blackjack/cards/3S.svg', 
-  '/images/games/blackjack/cards/4S.svg', '/images/games/blackjack/cards/5S.svg', '/images/games/blackjack/cards/6S.svg', 
-  '/images/games/blackjack/cards/7S.svg', '/images/games/blackjack/cards/8S.svg', '/images/games/blackjack/cards/9S.svg', 
-  '/images/games/blackjack/cards/10S.svg', '/images/games/blackjack/cards/J S.jpeg', '/images/games/blackjack/cards/Q S.jpeg', 
-  '/images/games/blackjack/cards/K S.jpeg'],
-
-  ['/images/games/blackjack/cards/A V.jpeg', '/images/games/blackjack/cards/2V.svg', '/images/games/blackjack/cards/3V.svg', 
-  '/images/games/blackjack/cards/4V.svg', '/images/games/blackjack/cards/5V.svg', '/images/games/blackjack/cards/6V.svg', 
-  '/images/games/blackjack/cards/7V.svg', '/images/games/blackjack/cards/8V.svg', '/images/games/blackjack/cards/9V.svg', 
-  '/images/games/blackjack/cards/10V.svg', '/images/games/blackjack/cards/J V.jpeg', '/images/games/blackjack/cards/Q V.jpeg', 
-  '/images/games/blackjack/cards/K V.jpeg'],
-
-  ['/images/games/blackjack/cards/AB.jpeg', '/images/games/blackjack/cards/2B.svg', '/images/games/blackjack/cards/3B.svg', 
-  '/images/games/blackjack/cards/4B.svg', '/images/games/blackjack/cards/5B.svg', '/images/games/blackjack/cards/6B.svg', 
-  '/images/games/blackjack/cards/7B.svg', '/images/games/blackjack/cards/8B.svg', '/images/games/blackjack/cards/9B.svg', 
-  '/images/games/blackjack/cards/10B.svg', '/images/games/blackjack/cards/J B.jpeg', '/images/games/blackjack/cards/Q B.jpeg', 
-  '/images/games/blackjack/cards/K B.jpeg'],
-
-  ['/images/games/blackjack/cards/A K.jpeg', '/images/games/blackjack/cards/2K.svg', '/images/games/blackjack/cards/3K.svg', 
-  '/images/games/blackjack/cards/4K.svg', '/images/games/blackjack/cards/5K.svg', '/images/games/blackjack/cards/6K.svg', 
-  '/images/games/blackjack/cards/7K.svg', '/images/games/blackjack/cards/8K.svg', '/images/games/blackjack/cards/9K.svg', 
-  '/images/games/blackjack/cards/10K.svg', '/images/games/blackjack/cards/J K.jpeg', '/images/games/blackjack/cards/Q K.jpeg', 
-  '/images/games/blackjack/cards/K K.jpeg']
-]
+  [
+    '/images/games/blackjack/cards/AV.jpeg',
+    '/images/games/blackjack/cards/2V.svg',
+    '/images/games/blackjack/cards/3V.svg',
+    '/images/games/blackjack/cards/4V.svg',
+    '/images/games/blackjack/cards/5V.svg',
+    '/images/games/blackjack/cards/6V.svg',
+    '/images/games/blackjack/cards/7V.svg',
+    '/images/games/blackjack/cards/8V.svg',
+    '/images/games/blackjack/cards/9V.svg',
+    '/images/games/blackjack/cards/10V.svg',
+    '/images/games/blackjack/cards/JV.jpeg',
+    '/images/games/blackjack/cards/QV.jpeg',
+    '/images/games/blackjack/cards/KV.jpeg',
+  ],
+  [
+    '/images/games/blackjack/cards/AS.jpeg',
+    '/images/games/blackjack/cards/2S.svg',
+    '/images/games/blackjack/cards/3S.svg',
+    '/images/games/blackjack/cards/4S.svg',
+    '/images/games/blackjack/cards/5S.svg',
+    '/images/games/blackjack/cards/6S.svg',
+    '/images/games/blackjack/cards/7S.svg',
+    '/images/games/blackjack/cards/8S.svg',
+    '/images/games/blackjack/cards/9S.svg',
+    '/images/games/blackjack/cards/10S.svg',
+    '/images/games/blackjack/cards/JS.jpeg',
+    '/images/games/blackjack/cards/QS.jpeg',
+    '/images/games/blackjack/cards/KS.jpeg',
+  ],
+  [
+    '/images/games/blackjack/cards/AB.jpeg',
+    '/images/games/blackjack/cards/2B.svg',
+    '/images/games/blackjack/cards/3B.svg',
+    '/images/games/blackjack/cards/4B.svg',
+    '/images/games/blackjack/cards/5B.svg',
+    '/images/games/blackjack/cards/6B.svg',
+    '/images/games/blackjack/cards/7B.svg',
+    '/images/games/blackjack/cards/8B.svg',
+    '/images/games/blackjack/cards/9B.svg',
+    '/images/games/blackjack/cards/10B.svg',
+    '/images/games/blackjack/cards/JB.jpeg',
+    '/images/games/blackjack/cards/QB.jpeg',
+    '/images/games/blackjack/cards/KB.jpeg',
+  ],
+  [
+    '/images/games/blackjack/cards/AK.jpeg',
+    '/images/games/blackjack/cards/2K.svg',
+    '/images/games/blackjack/cards/3K.svg',
+    '/images/games/blackjack/cards/4K.svg',
+    '/images/games/blackjack/cards/5K.svg',
+    '/images/games/blackjack/cards/6K.svg',
+    '/images/games/blackjack/cards/7K.svg',
+    '/images/games/blackjack/cards/8K.svg',
+    '/images/games/blackjack/cards/9K.svg',
+    '/images/games/blackjack/cards/10K.svg',
+    '/images/games/blackjack/cards/JK.jpeg',
+    '/images/games/blackjack/cards/QK.jpeg',
+    '/images/games/blackjack/cards/KK.jpeg',
+  ],
+];
 
 player.pointsPlace.textContent = `0`;
 dealer.pointsPlace.textContent = `0`;
@@ -93,17 +132,8 @@ let cardValues = [
 ];
 
 function placeCardOnTable(target, card) {
-  let n = target.cards.length - 1;
-  target.cardPlaces[n].firstElementChild.textContent = `${
-    cardValues[card.value]
-  }`;
-
-  target.cardPlaces[n].firstElementChild.nextElementSibling.textContent = `${
-    suits[card.suit]
-  }`;
-
-  colorSuit(target.cardPlaces[n].firstElementChild.nextElementSibling);
-  placeCardImage(target.cardPlaces[n].firstElementChild.nextElementSibling.nextElementSibling, card.value, card.suit)
+  target.cardPlaces[target.cards.length - 1].style.backgroundImage =
+    'url(' + cardDeck[card.suit][card.value] + ')';
 }
 
 function isStakeViable(amount) {
@@ -146,12 +176,25 @@ betButton.addEventListener('click', async function placeBet() {
     // const block = JSON.parse(response).block;
     res.playerCards.forEach(card => addPlayerCard(card));
     res.dealerCards.forEach(card => addDealerCard(card));
+    if (player.points > 21) {
+      lost();
+    } else if (dealer.cards.length > 1) {
+      if (dealer.points == 21) {
+        tie();
+      } else {
+        blackjack();
+      }
+    } else {
+      hitButton.disabled = false;
+    }
+
     gameSessionID = res.gameSessionID;
-    betWindow.classList.add('hide');
-    betWindow.classList.remove('stakeInputContainer');
     stake.textContent = betField.value;
     standButton.disabled = false;
-    gameTable.classList.remove('blur');
+    potentialWinnings.textContent = `${2*Number(stake.textContent)}`
+    betContainer.classList.add('hide')
+    moneyAmount.classList.remove('hide')
+    moneyAmountText.classList.remove('hide')
   } else {
     alert('Bad bet');
   }
@@ -161,13 +204,9 @@ window.addEventListener('load', f => {
   restartButton.disabled = true;
   hitButton.disabled = true;
   standButton.disabled = true;
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
 });
-
-function colorSuit(suit) {
-  if (suit.textContent === '♦' || suit.textContent === '♥') {
-    suit.classList.add('redColor');
-  }
-}
 
 function getPoints(value) {
   if (value > 9) return 10;
@@ -189,16 +228,6 @@ function addPlayerCard(card) {
 
   placeCardOnTable(player, card);
   player.updatePoints();
-  if (player.points > 21) {
-    lost();
-  } else if (
-    (player.points == 21 || (player.aces > 0 && player.points == 11)) &&
-    player.cards.length == 2
-  ) {
-    blackjack();
-  } else {
-    hitButton.disabled = false;
-  }
 }
 
 async function addDealerCard(card) {
@@ -215,35 +244,40 @@ async function addDealerCard(card) {
   dealer.points += cardPoint;
 
   if (dealer.cards.length > 1) {
-    await timer(1000);
+    await timer(500);
     placeCardOnTable(dealer, card);
   } else {
     placeCardOnTable(dealer, card);
   }
   dealer.updatePoints();
-  if (dealer.points > 21) {
-    lost();
-  } else if (dealer.points == 21 || (dealer.aces > 0 && dealer.points == 11)) {
-    if (player.points == 21) {
-      tie();
+}
+
+function check() {
+  if (dealer.points == 21 || (dealer.aces > 0 && dealer.points == 11)) {
+    if (player.points == 21 || (player.aces > 0 && player.points == 11)) {
+    }
+    if (dealer.cards.length == 2) {
     }
   }
 }
 
 function lost() {
-  loseScreen.classList.remove('hide');
-  alert('lost');
+  ending.classList.remove('hide')
+  ending.textContent = `Pralaimėjai`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   hitButton.disabled = true;
   restartButton.disabled = false;
-  loseScreen.classList.remove('hide');
   currentStake = 0;
   stake.textContent = `0`;
   potentialWinnings.textContent = `0`;
 }
 
 function blackjack() {
-  winScreen.classList.remove('hide');
-  alert('blackjack');
+  ending.classList.remove('hide')
+  ending.textContent = `Juodasis Džekas!`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   hitButton.disabled = true;
   restartButton.disabled = false;
 }
@@ -279,7 +313,6 @@ function hitRequest() {
         this.status == 406 &&
         JSON.parse(this.response).error == 'Bet too big'
       ) {
-        //TODO
         hitInProgress = false;
         alert("You don't have that much money");
         reject("You don't have that much money");
@@ -299,18 +332,24 @@ function hitRequest() {
 }
 
 hitButton.addEventListener('click', function hit() {
-  hitRequest().then(res => {
+  hitRequest().then(async res => {
     addPlayerCard(res.playerCard);
     if (res.dealerCards.length > 0) {
       //Only happens if player.points = 21
-      res.dealerCards.forEach(card => {
-        addDealerCard(card);
-      });
+      for (let i = 0; i < res.dealerCards.length; i++) {
+        await addDealerCard(res.dealerCards[i]);
+      }
       if (dealer.points == 21) {
-        tie();
+        if (dealer.cards.length == 2) {
+          lost();
+        } else {
+          tie();
+        }
       } else {
         won();
       }
+    } else if (player.points > 21) {
+      lost();
     }
   });
 });
@@ -332,7 +371,6 @@ function standRequest() {
         this.status == 406 &&
         JSON.parse(this.response).error == 'Bet too big'
       ) {
-        //TODO
         standInProgress = false;
         alert("You don't have that much money");
         reject("You don't have that much money");
@@ -363,45 +401,22 @@ standButton.addEventListener('click', function stand() {
   standButton.disabled = true;
 });
 
-function playerBust() {
-  if (Number(player.points.textContent) > 21) {
-    loseScreen.classList.remove('hide');
-    if (check()) {
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-    } else {
-      alert('Error');
-    }
-
-    disableHitButton();
-    disableStandButton();
-    restartButton.disabled = false;
-  }
-
-  disableHitButton();
-  disableStandButton();
-  restartButton.disabled = false;
-  standButton.disabled = false;
-}
-
 function tie() {
-  if (Number(player.points.textContent) === Number(dealer.points.textContent)) {
-    tieScreen.classList.remove('hide');
-    if (check()) {
-      currentStake = 0;
-      stake.textContent = `0`;
-      potentialWinnings.textContent = `0`;
-      restartButton.disabled = false;
-    } else {
-      alert('Error');
-    }
-  }
+  ending.classList.remove('hide')
+  ending.textContent = `Lygiosios`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
+  // currentStake = 0;
+  // stake.textContent = `0`;
+  // potentialWinnings.textContent = `0`;
+  // restartButton.disabled = false;
 }
 
 function won() {
-  alert('won');
-  winScreen.classList.remove('hide');
+  ending.classList.remove('hide')
+  ending.textContent = `Laimėjai`
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
   currentStake = 0;
   stake.textContent = `0`;
   potentialWinnings.textContent = `0`;
@@ -410,7 +425,7 @@ function won() {
   standButton.disabled = true;
 }
 
-restartButton.addEventListener('click', () => {
+restartButton.addEventListener('click', function restart() {
   player.cards = [];
   dealer.cards = [];
   player.points = 0;
@@ -421,25 +436,22 @@ restartButton.addEventListener('click', () => {
   dealer.points = 0;
   player.updatePoints();
   dealer.updatePoints();
-  for (i = 0; i < player.cardPlaces.length; i++) {
-    player.cardPlaces[i].firstElementChild.textContent = ``;
-    player.cardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
-    player.cardPlaces[i].firstElementChild.nextElementSibling.nextElementSibling.src = '/images/games/blackjack/transparent.svg'
-    dealer.cardPlaces[i].firstElementChild.textContent = ``;
-    dealer.cardPlaces[i].firstElementChild.nextElementSibling.textContent = ``;
-    dealer.cardPlaces[i].firstElementChild.nextElementSibling.nextElementSibling.src = '/images/games/blackjack/transparent.svg'
-  }
+  player.cardPlaces.forEach(cardPlace => {
+    cardPlace.style.backgroundImage = '';
+  });
+  dealer.cardPlaces.forEach(cardPlace => {
+    cardPlace.style.backgroundImage = '';
+  });
 
-  winScreen.classList.add('hide');
-  loseScreen.classList.add('hide');
-  tieScreen.classList.add('hide');
+  moneyAmount.classList.add('hide')
+  moneyAmountText.classList.add('hide')
+  ending.textContent = ``
+  ending.classList.add('hide')
+  betContainer.classList.remove('hide')
   hitButton.disabled = false;
   standButton.disabled = false;
 
   // uncolor();
-  betWindow.classList.remove('hide');
-  betWindow.classList.add('stakeInputContainer');
-  gameTable.classList.add('blur');
   restartButton.disabled = true;
 });
 
@@ -451,181 +463,5 @@ function uncolor() {
     dealer.cardPlaces[i].firstElementChild.nextElementSibling.classList.remove(
       'redColor'
     );
-  }
-}
-
-function placeCardImage(card, value, suit) {
-  switch (suit) {
-    case '♥':
-      switch (value) {
-        case 'A':
-          card.src = cardDeck[0][0]
-          break
-        case '2':
-          card.src = cardDeck[0][1]
-          break
-        case '3':
-          card.src = cardDeck[0][2]
-          break
-        case '4':
-          card.src = cardDeck[0][3]
-          break
-        case '5':
-          card.src = cardDeck[0][4]
-          break
-        case '6':
-          card.src = cardDeck[0][5]
-          break
-        case '7':
-          card.src = cardDeck[0][6]
-          break
-        case '8':
-          card.src = cardDeck[0][7]
-          break
-        case '9':
-          card.src = cardDeck[0][8]
-          break
-        case '10':
-          card.src = cardDeck[0][9]
-          break
-        case 'J':
-          card.src = cardDeck[0][10]
-          break
-        case 'Q':
-          card.src = cardDeck[0][11]
-          break
-        case 'K':
-          card.src = cardDeck[0][12]
-          break
-      }
-      break
-    case '♠':
-      switch (value) {
-        case 'A':
-          card.src = cardDeck[1][0]
-          break
-        case '2':
-          card.src = cardDeck[1][1]
-          break
-        case '3':
-          card.src = cardDeck[1][2]
-          break
-        case '4':
-          card.src = cardDeck[1][3]
-          break
-        case '5':
-          card.src = cardDeck[1][4]
-          break
-        case '6':
-          card.src = cardDeck[1][5]
-          break
-        case '7':
-          card.src = cardDeck[1][6]
-          break
-        case '8':
-          card.src = cardDeck[1][7]
-          break
-        case '9':
-          card.src = cardDeck[1][8]
-          break
-        case '10':
-          card.src = cardDeck[1][9]
-          break
-        case 'J':
-          card.src = cardDeck[1][10]
-          break
-        case 'Q':
-          card.src = cardDeck[1][11]
-          break
-        case 'K':
-          card.src = cardDeck[1][12]
-          break
-      }
-      break
-    case '♦':
-      switch (value) {
-        case 'A':
-          card.src = cardDeck[2][0]
-          break
-        case '2':
-          card.src = cardDeck[2][1]
-          break
-        case '3':
-          card.src = cardDeck[2][2]
-          break
-        case '4':
-          card.src = cardDeck[2][3]
-          break
-        case '5':
-          card.src = cardDeck[2][4]
-          break
-        case '6':
-          card.src = cardDeck[2][5]
-          break
-        case '7':
-          card.src = cardDeck[2][6]
-          break
-        case '8':
-          card.src = cardDeck[2][7]
-          break
-        case '9':
-          card.src = cardDeck[2][8]
-          break
-        case '10':
-          card.src = cardDeck[2][9]
-          break
-        case 'J':
-          card.src = cardDeck[2][10]
-          break
-        case 'Q':
-          card.src = cardDeck[2][11]
-          break
-        case 'K':
-          card.src = cardDeck[2][12]
-          break
-      }
-      break
-    case '♣':switch (value) {
-      case 'A':
-        card.src = cardDeck[3][0]
-        break
-      case '2':
-        card.src = cardDeck[3][1]
-        break
-      case '3':
-        card.src = cardDeck[3][2]
-        break
-      case '4':
-        card.src = cardDeck[3][3]
-        break
-      case '5':
-        card.src = cardDeck[3][4]
-        break
-      case '6':
-        card.src = cardDeck[3][5]
-        break
-      case '7':
-        card.src = cardDeck[3][6]
-        break
-      case '8':
-        card.src = cardDeck[3][7]
-        break
-      case '9':
-        card.src = cardDeck[3][8]
-        break
-      case '10':
-        card.src = cardDeck[3][9]
-        break
-      case 'J':
-        card.src = cardDeck[3][10]
-        break
-      case 'Q':
-        card.src = cardDeck[3][11]
-        break
-      case 'K':
-        card.src = cardDeck[3][12]
-        break
-    }
-      break
   }
 }
