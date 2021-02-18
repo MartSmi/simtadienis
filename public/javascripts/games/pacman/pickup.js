@@ -59,7 +59,7 @@ class FruitPickup extends Pickup {
     super (game, position);
     this.points = 100;
     this.img = document.getElementById('img_fruit');
-    this.radius = this.radius * 4;
+    this.radius = this.radius * 6;
 
     this.pickedImg = document.getElementById('img_fruitPicked');
     this.pickedImgShowTime = 1.5;
