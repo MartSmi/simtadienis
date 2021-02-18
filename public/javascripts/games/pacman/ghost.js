@@ -10,10 +10,9 @@ class Ghost {
     constructor (game) {
         this.mode = GhostMode.SCATTER;
 
-        let smallOfset = 5;
-        this.sizeX = game.level.cellSizeX - smallOfset;
-        this.sizeY = game.level.cellSizeY - smallOfset;
-        this.radius = this.sizeX;
+        this.sizeX = 3 * game.level.cellSizeX / 2;
+        this.sizeY = 3 * game.level.cellSizeY / 2;
+        this.radius = this.sizeX * 3 / 4;
 
         this.chaseSpeed = 75;
         this.scatterSpeed = 70;
@@ -105,6 +104,8 @@ class Ghost {
     }
 
     draw(ctx) {
+        if (this.game.lost && this.game.player.currentDeathSpriteId >= this.game.player.deathAnimList.length-1) return;
+        
         let posX = this.position.x - this.sizeX / 2;
         let posY = this.position.y - this.sizeY / 2;
 

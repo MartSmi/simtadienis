@@ -44,7 +44,7 @@ class Pickup {
 class PowerPickup extends Pickup {
   constructor (game, position) {
     super (game, position);
-    this.radius = this.radius * 2;
+    this.radius = this.radius * 3;
   }
 
   pick () {

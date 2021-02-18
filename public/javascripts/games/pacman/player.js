@@ -1,11 +1,11 @@
 class Player {
   constructor(game) {
-    let smallOfset = 0;
-    this.sizeX = game.level.cellSizeX - smallOfset;
-    this.sizeY = game.level.cellSizeY - smallOfset;
-    this.radius = this.sizeX / 2;
+    //let smallOfset = 0;
+    this.sizeX = 3 * game.level.cellSizeX / 2;
+    this.sizeY = 3 * game.level.cellSizeY / 2;
+    this.radius = this.sizeX / 3;
 
-    this.speed = 75;
+    this.speed = 76;
     this.dir = 0;
     this.savedDir = 0;
 
