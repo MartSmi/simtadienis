@@ -4,8 +4,12 @@ var mysql = require('mysql');
 var Q = require('q');
 var logger = require('../logger');
 var router = express.Router();
+var vs = require('express-validator/filter');
 
-router.get('/', function (req, res, next) {
+router.get('/', [
+  vs.sanitizeQuery('nottime').toBoolean(true),
+],
+function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /account without logging in');
     res.redirect(303, '/');
@@ -14,6 +18,8 @@ router.get('/', function (req, res, next) {
 
   var opts = { title: 'Tavo sąskaita' };
   var id = req.session.userID;
+
+  opts.nottime = req.query.nottime;
 
   Q.ninvoke(dbPool, 'query', 'SELECT * FROM users WHERE id = ?', id)
     .then(function (rows) {
