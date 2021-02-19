@@ -6,18 +6,24 @@ const { log } = require('../../logger');
 var logger = require(appRoot + '/logger');
 var router = express.Router();
 let gameID = 0; //Roulette's game id
+const enterTimestamp = process.env.ENTER_TIMESTAMP;
 
 router.get('/', (req, res, next) => {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /roulette without logging in');
     res.redirect(303, '/');
     return;
+  } else if (Date.now() < enterTimestamp) {
+    logger.warn('attempt to access /roulette before time');
+    res.redirect(303, '/');
+    return;
+  } else {
+    var opts = {
+      // name: req.session.fullName,
+      balance: req.session.balance,
+    };
+    res.render('games/roulette', opts);
   }
-  var opts = {
-    // name: req.session.fullName,
-    balance: req.session.balance,
-  };
-  res.render('games/roulette', opts);
 });
 
 router.post('/spin', (req, res, next) => {
