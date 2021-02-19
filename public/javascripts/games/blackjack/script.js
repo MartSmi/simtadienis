@@ -267,6 +267,7 @@ function lost() {
   moneyAmount.classList.add('hide')
   moneyAmountText.classList.add('hide')
   hitButton.disabled = true;
+  standButton.disabled = true
   restartButton.disabled = false;
   currentStake = 0;
   stake.textContent = `0`;
@@ -279,6 +280,7 @@ function blackjack() {
   moneyAmount.classList.add('hide')
   moneyAmountText.classList.add('hide')
   hitButton.disabled = true;
+  standButton.disabled = true;
   restartButton.disabled = false;
 }
 
