@@ -28,6 +28,11 @@ class Pickup {
     let pacmanPos = this.game.getPacmanPos();
     let dx = this.position.x - pacmanPos.x;
     let dy = this.position.y - pacmanPos.y;
+
+    let eps = 1e-9;
+    if (Math.abs(dx) > eps && Math.abs(dy) > eps)
+        return false;
+
     let sqDist = dx * dx + dy * dy;
     let sumRadius = this.radius + this.game.player.radius;
     let doPick = sqDist <= (sumRadius * sumRadius);

@@ -12,7 +12,7 @@ class Ghost {
 
         this.sizeX = 3 * game.level.cellSizeX / 2;
         this.sizeY = 3 * game.level.cellSizeY / 2;
-        this.radius = this.sizeX * 3 / 4;
+        this.radius = this.sizeX / 2;
 
         this.chaseSpeed = 75;
         this.scatterSpeed = 70;
@@ -260,6 +260,11 @@ class Ghost {
         let pacmanPos = this.game.getPacmanPos();
         let dx = this.position.x - pacmanPos.x;
         let dy = this.position.y - pacmanPos.y;
+
+        let eps = 1e-9;
+        if (Math.abs(dx) > eps && Math.abs(dy) > eps)
+            return false;
+
         let sqDist = dx * dx + dy * dy;
         let sumRadius = this.radius + this.game.player.radius;
         let doCollide = sqDist <= (sumRadius * sumRadius);
