@@ -2,8 +2,8 @@ console.log('hafhajkfhaf');
 let canvas = document.getElementById('gameScreen');
 let ctx = canvas.getContext('2d');
 
-const GAME_WIDTH = 420;
-const GAME_HEIGHT = 540;
+const GAME_WIDTH = 336;
+const GAME_HEIGHT = 372;
 const PLAY_TEXT = "Žaisti";
 const PAUSE_TEXT = "Sustabdyti";
 

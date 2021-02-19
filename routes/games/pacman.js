@@ -1,13 +1,19 @@
 const appRoot = require('app-root-path');
 const express = require('express');
+const { ConsoleTransportOptions } = require('winston/lib/winston/transports');
 // var dbPool = require(appRoot + '/db').pool;
 // var mysql = require('mysql');
 var logger = require(appRoot + '/logger');
 var router = express.Router();
+const enterTimestamp = process.env.ENTER_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /pacman without logging in');
+    res.redirect(303, '/');
+    return;
+  } else if (Date.now() < enterTimestamp) {
+    logger.warn('attempt to access /pacman before time');
     res.redirect(303, '/');
     return;
   } else {

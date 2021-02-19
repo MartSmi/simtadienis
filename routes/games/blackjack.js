@@ -6,10 +6,15 @@ const router = express.Router();
 const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
 const gameID = 1; //Blackjack's game id
+const enterTimestamp = process.env.ENTER_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /blackjack without logging in');
+    res.redirect(303, '/');
+    return;
+  } else if (Date.now() < enterTimestamp) {
+    logger.warn('attempt to access /blackjack before time');
     res.redirect(303, '/');
     return;
   } else {
