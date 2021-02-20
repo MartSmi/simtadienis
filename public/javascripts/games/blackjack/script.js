@@ -38,12 +38,14 @@ let balanceRequestContainer = document.querySelector(
 let betField = document.querySelector('[data-stake-input-field]');
 let betButton = document.querySelector('[data-stake-input-button]');
 let gameTable = document.querySelector('[data-game-table]');
-let moneyAmountText = document.querySelector('[data-money-text-container]')
-let moneyAmount = document.querySelector('[data-money-container]')
-let betContainer = document.querySelector('[data-bet-input-container]')
-let ending = document.querySelector('[data-ending-message]')
+let moneyAmountText = document.querySelector('[data-money-text-container]');
+let moneyAmount = document.querySelector('[data-money-container]');
+let betContainer = document.querySelector('[data-bet-input-container]');
+let ending = document.querySelector('[data-ending-message]');
 let currentStake;
 let errorOccurred;
+let finished = false;
+let standButtonPressed = false;
 
 const cardDeck = [
   [
@@ -185,15 +187,14 @@ betButton.addEventListener('click', async function placeBet() {
       }
     } else {
       hitButton.disabled = false;
+      gameSessionID = res.gameSessionID;
+      stake.textContent = betField.value;
+      standButton.disabled = false;
+      potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
+      betContainer.classList.add('hide');
+      moneyAmount.classList.remove('hide');
+      moneyAmountText.classList.remove('hide');
     }
-
-    gameSessionID = res.gameSessionID;
-    stake.textContent = betField.value;
-    standButton.disabled = false;
-    potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
-    betContainer.classList.add('hide');
-    moneyAmount.classList.remove('hide');
-    moneyAmountText.classList.remove('hide');
   } else {
     alert('Bad bet');
   }
@@ -230,25 +231,37 @@ function addPlayerCard(card) {
 }
 
 async function addDealerCard(card) {
-  dealer.cards.push(card);
-  if (card.value == 0) dealer.aces++;
-  let cardPoint = getPoints(card.value);
-  if (dealer.points + cardPoint <= 11 && dealer.aces > 0) {
-    dealer.points += 10;
-    dealer.usedAces++;
-  } else if (dealer.points + cardPoint > 21 && dealer.usedAces > 0) {
-    dealer.points -= 10;
-    dealer.usedAces--;
+  if (!finished) {
+    dealer.cards.push(card);
+    if (card.value == 0) dealer.aces++;
+    let cardPoint = getPoints(card.value);
+    if (dealer.points + cardPoint <= 11 && dealer.aces > 0) {
+      dealer.points += 10;
+      dealer.usedAces++;
+    } else if (dealer.points + cardPoint > 21 && dealer.usedAces > 0) {
+      dealer.points -= 10;
+      dealer.usedAces--;
+    }
+    dealer.points += cardPoint;
+    if (dealer.cards.length > 1) {
+      await timer(500);
+      placeCardOnTable(dealer, card);
+      alert('await 500 place');
+    } else {
+      placeCardOnTable(dealer, card);
+      alert('place');
+    }
+    if (
+      dealer.points > player.points &&
+      dealer.points < 21 &&
+      standButtonPressed
+    ) {
+      lost();
+      alert('dealer more than player less than 21');
+      finished = true;
+    }
+    dealer.updatePoints();
   }
-  dealer.points += cardPoint;
-
-  if (dealer.cards.length > 1) {
-    await timer(500);
-    placeCardOnTable(dealer, card);
-  } else {
-    placeCardOnTable(dealer, card);
-  }
-  dealer.updatePoints();
 }
 
 function check() {
@@ -261,11 +274,12 @@ function check() {
 }
 
 function lost() {
-  ending.classList.remove('hide')
-  ending.textContent = `Pralaimėjai`
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
+  ending.classList.remove('hide');
+  ending.textContent = `Pralaimėjai`;
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
   hitButton.disabled = true;
+  standButton.disabled = true;
   restartButton.disabled = false;
   currentStake = 0;
   stake.textContent = `0`;
@@ -273,11 +287,12 @@ function lost() {
 }
 
 function blackjack() {
-  ending.classList.remove('hide')
-  ending.textContent = `Juodasis Džekas!`
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
+  ending.classList.remove('hide');
+  ending.textContent = `Juodasis Džekas!`;
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
   hitButton.disabled = true;
+  standButton.disabled = true;
   restartButton.disabled = false;
 }
 
@@ -398,13 +413,14 @@ standButton.addEventListener('click', function stand() {
   });
   hitButton.disabled = true;
   standButton.disabled = true;
+  standButtonPressed = true;
 });
 
 function tie() {
-  ending.classList.remove('hide')
-  ending.textContent = `Lygiosios`
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
+  ending.classList.remove('hide');
+  ending.textContent = `Lygiosios`;
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
   // currentStake = 0;
   // stake.textContent = `0`;
   // potentialWinnings.textContent = `0`;
@@ -412,10 +428,10 @@ function tie() {
 }
 
 function won() {
-  ending.classList.remove('hide')
-  ending.textContent = `Laimėjai`
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
+  ending.classList.remove('hide');
+  ending.textContent = `Laimėjai`;
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
   currentStake = 0;
   stake.textContent = `0`;
   potentialWinnings.textContent = `0`;
@@ -442,13 +458,13 @@ restartButton.addEventListener('click', function restart() {
     cardPlace.style.backgroundImage = '';
   });
 
-  moneyAmount.classList.add('hide')
-  moneyAmountText.classList.add('hide')
-  ending.textContent = ``
-  ending.classList.add('hide')
-  betContainer.classList.remove('hide')
-  hitButton.disabled = false;
-  standButton.disabled = false;
+  moneyAmount.classList.add('hide');
+  moneyAmountText.classList.add('hide');
+  ending.textContent = ``;
+  ending.classList.add('hide');
+  betContainer.classList.remove('hide');
+  finished = false;
+  standButtonPressed = false;
 
   // uncolor();
   restartButton.disabled = true;
