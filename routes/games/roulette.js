@@ -45,27 +45,16 @@ router.post('/spin', (req, res, next) => {
   let bet = req.body.amount;
   let winnings = bet;
   let userID = req.session.userID;
-
-  new Promise((resolve, reject) =>
-    dbPool.query(
-      'SELECT balance from users WHERE id = ?',
-      [userID],
-      (err, rows) => {
-        if (err) {
-          logger.error(`DB error on /roulette (${req.ip}):`);
-          next(err);
-          return;
-        }
-        if (rows[0].balance < bet) {
-          logger.warn(`User bet more than he has (${req.ip}) /roulette :`);
-          res.status(406).json({ error: 'Bet too big' });
-          reject();
-          // reject({ message: 'You cannot bet more than you have', status: 406 });
-        }
-        resolve();
+  balance
+    .get(userID)
+    .then(bal => {
+      if (bal < bet) {
+        logger.warn(`User bet more than he has (${req.ip}) /roulette :`);
+        res.status(406).json({ error: 'Bet too big' });
+        reject();
+        // reject({ message: 'You cannot bet more than you have', status: 406 });
       }
-    )
-  )
+    })
     .then(() => {
       let block = Math.floor(Math.random() * 15);
 
@@ -82,33 +71,14 @@ router.post('/spin', (req, res, next) => {
         // Lost
         winnings *= -1;
       }
-
       res.send({ block });
 
-      dbPool.query(
-        'INSERT INTO play_history (user_id, game_id, winnings, time) VALUES(?, ?, ?, CURRENT_TIME())',
-        [userID, gameID, winnings],
-        (err, rows) => {
-          if (err) {
-            logger.error(`DB error on /roulette (${req.ip}):`);
-            next(err);
-            return;
-          }
-        }
-      );
-
-      dbPool.query(
-        'UPDATE users SET balance = balance + ? WHERE id = ?',
-        [winnings, userID],
-        (err, rows) => {
-          if (err) {
-            logger.error(`DB error on /roulette (${req.ip}):`);
-            next(err);
-            return;
-          }
-        }
-      );
+      playHistory.insert(userID, gameID, null, winnings);
+      balance.update(winnings, userID);
     })
-    .catch(err => {});
+    .catch(err => {
+      logger.error(`DB error on /roulette (${req.ip}):`);
+      next(err);
+    });
 });
 module.exports = router;
