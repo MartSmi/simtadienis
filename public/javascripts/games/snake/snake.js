@@ -21,7 +21,8 @@ const raudona = document.getElementById('raudona');
 const maistas = document.getElementsByClassName('maistas');
 // const siena = document.getElementById('siena');
 // const save = document.getElementById('save');
-
+let started = false;
+let died = false;
 window.onload = window.onresize = function () {
   var canvas = document.getElementById('snake');
   scaleConstant = 532 / 610;
@@ -37,7 +38,7 @@ window.onload = window.onresize = function () {
   // Draws instantly ~60 ms faster to draw the first frame
   draw();
   // Žaidimo greitis
-  game = setInterval(draw, 180 - score / 2);
+  if (!('game' in window)) game = setInterval(draw, 180 - score / 2);
 };
 
 // create the snake
@@ -64,18 +65,29 @@ document.addEventListener('keydown', direction);
 
 let veikia = 1;
 
+function start() {
+  if (started === false) {
+    started = true;
+    startRequest();
+  }
+}
+
 function direction(event) {
   let key = event.keyCode;
   if (key == 37 && d != 'RIGHT') {
     d = 'LEFT';
+    start();
   } else if (key == 38 && d != 'DOWN') {
     d = 'UP';
+    start();
   } else if (key == 39 && d != 'LEFT') {
     d = 'RIGHT';
+    start();
   } else if (key == 40 && d != 'UP') {
     d = 'DOWN';
-  } else if (key == 82) {
-    mirtis();
+    start();
+    // } else if (key == 82) {
+    //   mirtis();
   } else if (key == 32) {
     if (veikia == 1) veikia = 0;
     else veikia = 1;
@@ -91,7 +103,38 @@ function collision(head, array) {
   return false;
 }
 
+function startRequest() {
+  return new Promise((resolve, reject) => {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', '/games/snake/start', true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // Response
+        gameSessionID = JSON.parse(this.responseText).gameSessionID;
+        resolve();
+      } else if (this.readyState == 4) {
+        reject();
+      }
+    };
+    xhr.send(null);
+  });
+}
+
+function deathRequest() {
+  let xhr = new XMLHttpRequest();
+  xhr.open('POST', '/games/snake/end', true);
+  xhr.setRequestHeader('Content-Type', 'application/json');
+  xhr.send(JSON.stringify({ gameSessionID, score }));
+}
+
 function mirtis(ar) {
+  if (died == true) {
+    return;
+  } else {
+    died = true;
+  }
+  deathRequest();
   clearInterval(game);
   ctx.fillStyle = 'black';
   ctx.font = textFont;
@@ -120,9 +163,9 @@ function mirtis(ar) {
   //Šitoje vietoje tūrėtų būti kažkas su taškų pervedimu kintamsis: score
   // score prasideda nuo 0. Lenta yra 15*17, todėl teoriškai 254 yra įmanoma surinkti idealiai žaidžiat, bet praktiškai tai nėra realu, nes žaidimas greitėja.
 
-  setTimeout(() => {
-    location.reload();
-  }, 2000);
+  // setTimeout(() => {
+  //   location.reload();
+  // }, 2000);
 }
 
 var naujas = Math.floor(Math.random() * maistas.length);
