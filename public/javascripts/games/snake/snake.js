@@ -9,18 +9,18 @@ Youtube channel : https://www.youtube.com/channel/UC8n8ftV94ZU_DJLOLtrpORA
 const cvs = document.getElementById('snake');
 const ctx = cvs.getContext('2d');
 
-const pathToImg = '../../../images/games/snake/img/';
-const pathToAudio = '../../../images/audio/snake/audio/';
-
-// create the unit
-var box = 28;
-
-let scaleConstant = 532 / 610;
-let canvasSize = window.innerHeight * scaleConstant;
-box = canvasSize / 19;
-
-var fontSize = Math.round((45 * box) / 32);
-var textFont = fontSize + 'px Acherus Grotesque';
+// Images
+const ground = document.getElementById('ground');
+const fonas = document.getElementById('fonas');
+const licejus = document.getElementById('licejus');
+const icon = document.getElementById('icon');
+const galva = document.getElementById('galva');
+const zalia = document.getElementById('zalia');
+const obuolys = document.getElementById('obuolys');
+const raudona = document.getElementById('raudona');
+const maistas = document.getElementsByClassName('maistas');
+// const siena = document.getElementById('siena');
+// const save = document.getElementById('save');
 
 window.onload = window.onresize = function () {
   var canvas = document.getElementById('snake');
@@ -34,78 +34,19 @@ window.onload = window.onresize = function () {
 
   fontSize = Math.round((45 * box) / 32);
   textFont = fontSize + 'px Acherus Grotesque';
+  // Draws instantly ~60 ms faster to draw the first frame
+  draw();
+  // Žaidimo greitis
+  game = setInterval(draw, 180 - score / 2);
 };
-
-// load images
-
-const ground = new Image();
-ground.src = pathToImg + 'ground.png';
-
-const fonas = new Image();
-fonas.src = pathToImg + 'fonas.png';
-
-const licejus = new Image();
-licejus.src = pathToImg + 'licejus.png';
-
-const icon = new Image();
-icon.src = pathToImg + 'icon.png';
-
-galva = new Image();
-galva.src = pathToImg + 'Saulius.png';
-
-const zalia = new Image();
-zalia.src = pathToImg + 'zalia.png';
-
-const oboulys = new Image();
-oboulys.src = pathToImg + 'obuolys.png';
-
-const raudona = new Image();
-raudona.src = pathToImg + 'raudona.png';
-
-var vaizdas = new Array();
-//vaizdas =["img/1.png", "img/2.png", "img/3.png", "img/4.png", "img/5.png", "img/6.png", "img/7.png", "img/8.png", "img/9.png", "img/10.png", "img/11.png", "img/12.png", "img/13.png", "img/14.png", "img/15.png", "img/16.png", "img/17.png", "img/18.png", "img/19.png", "img/20.png", "img/21.png", "img/22.png", "img/23.png", "img/24.png", "img/25.png", "img/26.png", "img/27.png", "img/28.png", "img/29.png", "img/30.png", "img/31.png", "img/32.png"]
-vaizdas = [];
-for (var i = 1; i <= 32; i++) {
-  vaizdas.push(pathToImg + i + '.png');
-}
-
-var maistas = new Array();
-
-var kiek = vaizdas.length;
-for (var i = 0; i < kiek; i++) {
-  maistas[i] = new Image();
-  maistas[i].src = vaizdas[i];
-}
-
-// load audio files
-
-let dead = new Audio();
-let eat = new Audio();
-let up = new Audio();
-let right = new Audio();
-let left = new Audio();
-let down = new Audio();
-let garsas = 0;
-dead.src = pathToAudio + 'mokytis.mp4';
-dead.volume = garsas;
-eat.src = pathToAudio + 'tb.mp4';
-eat.volume = garsas;
-up.src = pathToAudio + 'a.mp4';
-up.volume = garsas;
-right.src = pathToAudio + 'b.mp4';
-right.volume = garsas;
-down.src = pathToAudio + 'c.mp4';
-down.volume = garsas;
-left.src = pathToAudio + 'd.mp4';
-left.volume = garsas;
 
 // create the snake
-let snake = [];
-
-snake[0] = {
-  x: 9,
-  y: 10,
-};
+let snake = [
+  {
+    x: 9,
+    y: 10,
+  },
+];
 
 // create the food
 
@@ -114,11 +55,9 @@ let food = {
   y: Math.floor(Math.random() * 15 + 3),
 };
 
-// create the score var
-
 let score = 0;
 
-//control the snake
+//Direction of snake
 let d;
 
 document.addEventListener('keydown', direction);
@@ -128,26 +67,21 @@ let veikia = 1;
 function direction(event) {
   let key = event.keyCode;
   if (key == 37 && d != 'RIGHT') {
-    left.play();
     d = 'LEFT';
   } else if (key == 38 && d != 'DOWN') {
     d = 'UP';
-    up.play();
   } else if (key == 39 && d != 'LEFT') {
     d = 'RIGHT';
-    right.play();
   } else if (key == 40 && d != 'UP') {
     d = 'DOWN';
-    down.play();
   } else if (key == 82) {
     mirtis();
   } else if (key == 32) {
     if (veikia == 1) veikia = 0;
     else veikia = 1;
-    dead.play();
   }
 }
-// cheack collision function
+// check collision function
 function collision(head, array) {
   for (let i = 0; i < array.length; i++) {
     if (head.x == array[i].x && head.y == array[i].y) {
@@ -161,11 +95,6 @@ function mirtis(ar) {
   clearInterval(game);
   ctx.fillStyle = 'black';
   ctx.font = textFont;
-
-  const siena = new Image();
-  siena.src = pathToImg + 'siena.png';
-  const save = new Image();
-  save.src = pathToImg + 'save.png';
 
   //kokia pabaiga
   ctx.drawImage(
@@ -187,7 +116,6 @@ function mirtis(ar) {
       (84 * box) / 32,
       (325 * box) / 32
     );
-  dead.play();
 
   //Šitoje vietoje tūrėtų būti kažkas su taškų pervedimu kintamsis: score
   // score prasideda nuo 0. Lenta yra 15*17, todėl teoriškai 254 yra įmanoma surinkti idealiai žaidžiat, bet praktiškai tai nėra realu, nes žaidimas greitėja.
@@ -197,7 +125,7 @@ function mirtis(ar) {
   }, 2000);
 }
 
-var naujas = Math.floor(Math.random() * kiek);
+var naujas = Math.floor(Math.random() * maistas.length);
 let segmentai = [];
 // draw everything to the canvas
 function draw() {
@@ -224,7 +152,7 @@ function draw() {
       );
       ctx.drawImage(zalia, snake[i].x * box, snake[i].y * box, box, box);
     }
-    ctx.drawImage(oboulys, food.x * box, food.y * box, box, box);
+    ctx.drawImage(obuolys, food.x * box, food.y * box, box, box);
     ctx.drawImage(
       maistas[naujas],
       box * food.x + (7 * box) / 32,
@@ -254,8 +182,7 @@ function draw() {
     if (snakeX == food.x && snakeY == food.y) {
       score++;
       segmentai.push(naujas);
-      naujas = Math.floor(Math.random() * kiek);
-      eat.play();
+      naujas = Math.floor(Math.random() * maistas.length);
       food = {
         x: Math.floor(Math.random() * 17 + 1),
         y: Math.floor(Math.random() * 15 + 3),
@@ -309,7 +236,3 @@ function draw() {
     ctx.fillText(score, 2 * box, 1.6 * box);
   }
 }
-
-// žaidimo greitis
-
-let game = setInterval(draw, 180 - score / 2);
