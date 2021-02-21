@@ -38,7 +38,7 @@ router.post('/bet', function (req, res, next) {
   const bet = req.body.bet;
   const userID = req.session.userID;
   let playerCards, dealerCards, playerPoints, playerAces, points, dealerAces;
-
+  let gameSessionID;
   new Promise((resolve, reject) => {
     dbPool.query(
       'SELECT balance from users WHERE id = ?',
