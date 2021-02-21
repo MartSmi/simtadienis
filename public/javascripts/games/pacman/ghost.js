@@ -62,12 +62,12 @@ class Ghost {
                                document.getElementById('img_ghost_eyes2'),
                                document.getElementById('img_ghost_eyes3')];
         this.eyesSpriteDelta = {
-            x: this.sizeX / 4,
-            y: this.sizeY / 4
+            x: 3 * this.sizeX / 8,
+            y: this.sizeY / 3
         };
         this.eyesSize = {
-            x: this.sizeX / 2,
-            y: this.sizeY / 2
+            x: this.sizeX / 4,
+            y: this.sizeY / 4
         };
 
         this.moveDir = 0;
