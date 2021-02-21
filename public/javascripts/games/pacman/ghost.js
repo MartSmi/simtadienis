@@ -7,7 +7,7 @@ const GhostMode = {
  Object.freeze(GhostMode);
 
 class Ghost {
-    constructor (game) {
+    constructor (game, initPosId) {
         this.mode = GhostMode.SCATTER;
 
         this.sizeX = 3 * game.level.cellSizeX / 2;
@@ -21,10 +21,7 @@ class Ghost {
         this.speed = this.chaseSpeed;
         this.dir = 0;
 
-        this.position = {
-            x: game.gameWidth / 2 + 100,
-            y: game.gameHeight / 2,
-        };
+        this.position = game.level.idToPos (initPosId);
 
         this.targetPosition = this.position;
         this.ultimateTarget = this.position;
@@ -71,6 +68,8 @@ class Ghost {
         };
 
         this.moveDir = 0;
+
+        this.curStartPosCnt = 0;
     }
 
     updateFrame (deltaTime) {
@@ -105,7 +104,7 @@ class Ghost {
 
     draw(ctx) {
         if (this.game.lost && this.game.player.currentDeathSpriteId >= this.game.player.deathAnimList.length-1) return;
-        
+        // console.log("drawing");
         let posX = this.position.x - this.sizeX / 2;
         let posY = this.position.y - this.sizeY / 2;
 
@@ -120,10 +119,10 @@ class Ghost {
 
         // let targetX = this.targetPosition.x - this.sizeX / 2;
         // let targetY = this.targetPosition.y - this.sizeY / 2;
-        // ctx.drawImage(this.img, targetX, targetY, this.sizeX/2, this.sizeY/2);
+        // ctx.drawImage(this.currentImage, targetX, targetY, this.sizeX/2, this.sizeY/2);
         // let ttargetX = this.ultimateTarget.x - this.sizeX / 2;
         // let ttargetY = this.ultimateTarget.y - this.sizeY / 2;
-        // ctx.drawImage(this.img, ttargetX, ttargetY, this.sizeX/3, this.sizeY/3);
+        // ctx.drawImage(this.currentImage, ttargetX, ttargetY, this.sizeX/3, this.sizeY/3);
     }
 
     move (deltaTime) {
@@ -184,6 +183,13 @@ class Ghost {
     }
 
     calculateNewTarget () {
+        if (this.curStartPosCnt < this.startMovementIds.length) {
+            let newPosId = this.startMovementIds[this.curStartPosCnt];
+            this.targetPosition = this.game.level.idToPos(newPosId);
+            this.curStartPosCnt++;
+            return;
+        }
+
         if (this.atUltimate()) {
             switch (this.mode) {
                 case GhostMode.CHASE:
@@ -226,6 +232,7 @@ class Ghost {
                 this.speed = this.chaseSpeed;
                 break;
             case GhostMode.SCATTER:
+                this.updateEveryIntersection = false;
                 this.speed = this.scatterSpeed;
                 break;
             case GhostMode.FRIGHTENED:
@@ -311,17 +318,18 @@ class Ghost {
 
 class RedGhost extends Ghost {
     constructor (game) {
-        super(game);
-        this.bodyAnimList = [document.getElementById('img_red_ghost_body1'),
-                             document.getElementById('img_red_ghost_body2')];
-
-        this.position = {
-            x: game.level.cellSizeX,
-            y: game.level.cellSizeY,
+        let initPosId = {
+            i: 12,
+            j: 11
         };
 
-        this.targetPosition = this.position;
-        this.ultimateTarget = this.position;
+        super(game, initPosId);
+
+        this.bodyAnimList = [document.getElementById('img_red_ghost_body1'),
+                             document.getElementById('img_red_ghost_body2')];
+                             
+        this.startMovementIds = [{i: 9, j: 11},
+                                 {i: 9, j: 8}];
     }
 
     getTarget () {
@@ -331,17 +339,22 @@ class RedGhost extends Ghost {
 
 class PinkGhost extends Ghost {
     constructor (game) {
-        super(game);
-        this.bodyAnimList = [document.getElementById('img_pink_ghost_body1'),
-                             document.getElementById('img_pink_ghost_body2')];
-    
-        this.position = {
-            x: game.gameWidth - 2*game.level.cellSizeX,
-            y: game.level.cellSizeY,
+        let initPosId = {
+            i: 13,
+            j: 13
         };
 
-        this.targetPosition = this.position;
-        this.ultimateTarget = this.position;
+        super(game, initPosId);
+        this.bodyAnimList = [document.getElementById('img_pink_ghost_body1'),
+                             document.getElementById('img_pink_ghost_body2')];
+        
+        this.startMovementIds = [{i: 13, j: 10},
+                                 {i: 13, j: 13},
+                                 {i: 13, j: 10},
+                                 {i: 13, j: 13},
+                                 {i: 13, j: 12},
+                                 {i: 9, j: 12},
+                                 {i: 9, j: 15}];
     }
 
     getTarget () {
@@ -351,18 +364,27 @@ class PinkGhost extends Ghost {
 
 class YellowGhost extends Ghost {
     constructor (game) {
-        super(game);
+        let initPosId = {
+            i: 15,
+            j: 10
+        };
+
+        super(game, initPosId);
         this.bodyAnimList = [document.getElementById('img_orange_ghost_body1'),
                              document.getElementById('img_orange_ghost_body2')];
         this.updateEveryIntersection = false;
 
-        this.position = {
-            x: game.level.cellSizeX,
-            y: game.gameHeight - 2*game.level.cellSizeY,
-        };
-
-        this.targetPosition = this.position;
-        this.ultimateTarget = this.position;
+        this.startMovementIds = [{i: 15, j: 13},
+                                 {i: 15, j: 10},
+                                 {i: 15, j: 13},
+                                 {i: 15, j: 10},
+                                 {i: 15, j: 13},
+                                 {i: 15, j: 10},
+                                 {i: 15, j: 13},
+                                 {i: 15, j: 10},  
+                                 {i: 15, j: 11},    
+                                 {i: 9, j: 11},
+                                 {i: 9, j: 8}];
     }
 
     getTarget () {
@@ -373,17 +395,47 @@ class YellowGhost extends Ghost {
 
 class CyanGhost extends Ghost {
     constructor (game) {
-        super(game);
+        let initPosId = {
+            i: 17,
+            j: 11
+        };
+
+        super(game, initPosId);
         this.bodyAnimList = [document.getElementById('img_cyan_ghost_body1'),
                              document.getElementById('img_cyan_ghost_body2')];
 
-        this.position = {
-            x: game.gameWidth - 2*game.level.cellSizeX,
-            y: game.gameHeight - 2*game.level.cellSizeY,
-        };
-
-        this.targetPosition = this.position;
-        this.ultimateTarget = this.position;
+        this.startMovementIds = [{i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 11},
+                                 {i: 17, j: 12},
+                                 {i: 17, j: 12},
+                                 {i: 9, j: 12},
+                                 {i: 9, j: 15}];
     }
 
     getTarget () {

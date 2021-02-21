@@ -6,6 +6,8 @@ class Game {
     this.lost = false;
     this.won = false;
     this.winScore = 500;
+
+    this.graphGenerated = false;
   }
 
   createLevel() {
@@ -70,6 +72,13 @@ class Game {
     this.player.playLose = false;
     this.player.timeLeftUntilNextDeathSprite = this.player.deathAnimTime;
     this.player.currentDeathSpriteId = 0;
+
+    if (!this.graphGenerated) {
+      this.graphGenerated = true;
+      this.graph = new Graph(this, this.level);
+      //graph.getNextIntersectionInShortestRoute(this.level.posToId(this.ghosts[0].position), this.level.posToId(this.player.position));
+    }
+    
   }
 
   ghostsToChase () {
@@ -198,9 +207,9 @@ class Game {
   }
 
   getNextIntersection (posFrom, posTo) {
-    let graph = new Graph (this, this.level, posFrom, posTo);
-    let idLinear = graph.getNextIntersectionInShortestRoute();
-    let intersectionPos = this.convertGraphIdToPos(idLinear);
+    // let graph = new Graph (this, this.level);
+    let id = this.graph.getNextIntersectionInShortestRoute(this.level.posToId(posFrom), this.level.posToId(posTo));
+    let intersectionPos = this.level.idToPos(id);
     
     // console.log("from getnextinter at game.js:");
     // console.log(idLinear);
