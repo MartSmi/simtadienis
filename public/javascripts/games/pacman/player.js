@@ -21,9 +21,13 @@ class Player {
     this.imgList = [document.getElementById('img_pacman1'),
                     document.getElementById('img_pacman2'),
                     document.getElementById('img_pacman3'),
+                    document.getElementById('img_pacman4'),
+                    document.getElementById('img_pacman5'),
+                    document.getElementById('img_pacman4'),
+                    document.getElementById('img_pacman3'),
                     document.getElementById('img_pacman2')];
     this.currentSpriteId = 0;
-    this.spriteAnimationTime = 0.03;
+    this.spriteAnimationTime = 0.01;
     this.timeLeftUntilNextSprite = this.spriteAnimationTime;
 
     this.game = game;
@@ -33,7 +37,8 @@ class Player {
     this.deathAnimList = [document.getElementById('img_pacman_death1'),
                           document.getElementById('img_pacman_death2'),
                           document.getElementById('img_pacman_death3'),
-                          document.getElementById('img_pacman_death4')];
+                          document.getElementById('img_pacman_death4'),
+                          document.getElementById('img_pacman_death5')];
     this.currentDeathSpriteId = 0;
     this.deathAnimTime = 0.25;
     this.timeLeftUntilNextDeathSprite = this.deathAnimTime;
@@ -46,19 +51,41 @@ class Player {
         angle = 3 * Math.PI / 2;
         break;
       case 1:
-        angle = Math.PI;
+        angle = 0;
         break;
       case 2:
-        angle = Math.PI / 2;
+        angle = 3 * Math.PI / 2;
         break;
       case 3:
-        angle = 2 * Math.PI;
+        angle = 0;
         break;
       default:
         console.log('unknown direction');
         break;
     }
     return angle;
+  }
+
+  doFlip () {
+    var ret = false;
+    switch (this.dir) {
+      case 0:
+        ret = false;
+        break;
+      case 1:
+        ret = true;
+        break;
+      case 2:
+        ret = true;
+        break;
+      case 3:
+        ret = false;
+        break;
+      default:
+        console.log('unknown direction');
+        break;
+    }
+    return ret;
   }
 
   draw(ctx) {
@@ -89,11 +116,14 @@ class Player {
     var height = this.sizeY;
 
     var rotation = this.getRotation();
+    var flip = this.doFlip();
 
     ctx.translate(x, y);
-    ctx.rotate(rotation);
+    if (rotation != 0) ctx.rotate(rotation);
+    if (flip) ctx.scale(-1, 1);
     ctx.drawImage(currentImg, -width / 2, -height / 2, width, height);
-    ctx.rotate(-rotation);
+    if (flip) ctx.scale(-1, 1);
+    if (rotation != 0) ctx.rotate(-rotation);
     ctx.translate(-x, -y);
   }
 
