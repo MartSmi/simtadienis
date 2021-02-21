@@ -5,7 +5,7 @@ var mysql = require('mysql');
 const { log } = require('../../logger');
 var logger = require(appRoot + '/logger');
 var router = express.Router();
-let gameID = 0; //Roulette's game id
+const gameID = 0; //Roulette's game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 
 router.get('/', (req, res, next) => {
