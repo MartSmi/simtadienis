@@ -161,7 +161,7 @@ function betRequest(bet) {
         this.status == 406 &&
         JSON.parse(this.response).error == 'Bet too big'
       ) {
-        alert("You don't have that much money");
+        alert("Neturi tiek licų");
         reject();
       } else if (this.readyState == 4) {
         reject();
@@ -196,7 +196,7 @@ betButton.addEventListener('click', async function placeBet() {
       moneyAmountText.classList.remove('hide');
     }
   } else {
-    alert('Bad bet');
+    alert('Netinkamas statymas');
   }
 });
 
@@ -246,10 +246,8 @@ async function addDealerCard(card) {
     if (dealer.cards.length > 1) {
       await timer(500);
       placeCardOnTable(dealer, card);
-      alert('await 500 place');
     } else {
       placeCardOnTable(dealer, card);
-      alert('place');
     }
     if (
       dealer.points > player.points &&
@@ -257,7 +255,6 @@ async function addDealerCard(card) {
       standButtonPressed
     ) {
       lost();
-      alert('dealer more than player less than 21');
       finished = true;
     }
     dealer.updatePoints();
@@ -328,7 +325,7 @@ function hitRequest() {
         JSON.parse(this.response).error == 'Bet too big'
       ) {
         hitInProgress = false;
-        alert("You don't have that much money");
+        alert("Neturi tiek licų");
         reject("You don't have that much money");
       } else if (this.readyState == 4) {
         hitInProgress = false;
@@ -386,7 +383,7 @@ function standRequest() {
         JSON.parse(this.response).error == 'Bet too big'
       ) {
         standInProgress = false;
-        alert("You don't have that much money");
+        alert("Neturi tiek licų");
         reject("You don't have that much money");
       } else if (this.readyState == 4) {
         standInProgress = false;
