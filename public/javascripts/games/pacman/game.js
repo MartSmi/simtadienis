@@ -8,6 +8,29 @@ class Game {
     this.winScore = 500;
 
     this.graphGenerated = false;
+
+    this.waitTimeAtStart = 3;
+    this.timeLeftUntilStart = this.waitTimeAtStart;
+
+    this.chaseTime = 20;
+    this.scatterTime = 20;
+    this.frightenedTime = 10;
+
+    this.maxHealth = 5;
+    this.curHealth = 0;
+    this.curLevel = 1;
+    
+    this.scoreText = document.getElementById('score_text');
+
+    this.imgNumber1 = document.getElementById('img_num1');
+    this.imgNumber2 = document.getElementById('img_num2');
+    this.imgNumber3 = document.getElementById('img_num3');
+  }
+
+  updateScoreText () {
+    this.scoreText.innerHTML = 'Taškai: ' + ("0000" + this.score).slice(-4) 
+                              + '\nGyvybių liko: ' + (Math.max(this.curHealth-1, 0))
+                              + '\nLygis: ' + this.curLevel;
   }
 
   createLevel() {
@@ -49,7 +72,9 @@ class Game {
     }
   }
 
-  start() {
+  start(doResetPoints = true) {
+    if (doResetPoints) this.curHealth = this.maxHealth;
+
     this.createLevel();
 
     this.lost = false;
@@ -59,15 +84,11 @@ class Game {
 
     this.gameObjects = [this.level, ...this.pickups, ...this.ghosts, this.player];
 
-    this.chaseTime = 20;
-    this.scatterTime = 20;
-    this.frightenedTime = 10;
     this.leftTime = this.chaseTime;
-    this.ghostMode = GhostMode.CHASE;
+    this.ghostMode = GhostMode.SCATTER;
 
-    this.score = 0;
-    this.scoreText = document.getElementById('score_text');
-    this.scoreText.innerHTML = 'Score: ' + ("0000" + this.score).slice(-4);
+    if (doResetPoints) this.score = 0;
+    this.updateScoreText();
 
     this.player.playLose = false;
     this.player.timeLeftUntilNextDeathSprite = this.player.deathAnimTime;
@@ -78,7 +99,77 @@ class Game {
       this.graph = new Graph(this, this.level);
       //graph.getNextIntersectionInShortestRoute(this.level.posToId(this.ghosts[0].position), this.level.posToId(this.player.position));
     }
+
+    this.timeLeftUntilStart = this.waitTimeAtStart;
+  }
+
+  fLost () {
+    this.lost = true;
+    this.curLevel = 1;
+    //this.start();
+  }
+
+  restart() {
+    if (this.curHealth == 0)  {
+      this.fLost();
+      return;
+    }
+    //this.createLevel();
+
+    this.lost = false;
+    this.won = false;
+    this.playLose = false;
+
+
+
+    this.player = new Player(this);
+    let redGhost = new RedGhost(this);
+    let pinkGhost = new PinkGhost(this);
+    let yellowGhost = new YellowGhost(this);
+    let cyanGhost = new CyanGhost(this);
+
     
+    new InputHandler(this.player);
+
+    this.ghosts = [];
+    this.ghosts.push(redGhost);
+    this.ghosts.push(pinkGhost);
+    this.ghosts.push(yellowGhost);
+    this.ghosts.push(cyanGhost);
+
+    this.gameObjects = [this.level, ...this.pickups, ...this.ghosts, this.player];
+
+    this.leftTime = this.chaseTime;
+    this.ghostMode = GhostMode.SCATTER;
+
+    this.player.playLose = false;
+    this.player.timeLeftUntilNextDeathSprite = this.player.deathAnimTime;
+    this.player.currentDeathSpriteId = 0;
+
+    if (!this.graphGenerated) {
+      this.graphGenerated = true;
+      this.graph = new Graph(this, this.level);
+      //graph.getNextIntersectionInShortestRoute(this.level.posToId(this.ghosts[0].position), this.level.posToId(this.player.position));
+    }
+
+    this.timeLeftUntilStart = this.waitTimeAtStart;
+    
+  }
+
+  fWon () {
+    this.won = true;
+    this.curLevel++;
+    this.start(false);
+  }
+
+  minusHealth() {
+    this.player.playLose = true;
+    this.curHealth--;
+   // if (this.curHealth == 0) {
+     // this.fLost();
+   // }
+
+    this.updateScoreText();
   }
 
   ghostsToChase () {
@@ -102,17 +193,17 @@ class Game {
   update(deltaTime, playing) {
     //console.log(deltaTime);
 
-    if (!playing) {
-
-      if (this.lost) {
-        this.player.playLose = true;
-        this.player.updateLoseAnim(deltaTime);
-      }
-
+    if (!playing || this.player.playLose) {
+      this.player.updateLoseAnim(deltaTime);
       return;
     };
 
-    if (deltaTime > 0.1) return;
+    if (deltaTime > 0.5) return;
+
+    if (this.timeLeftUntilStart > 0) {
+      this.timeLeftUntilStart -= deltaTime;
+      return;
+    }
 
     //this.gameObjects.forEach(object => object.updateFrame(deltaTime));
     this.gameObjects.forEach(object => object.update(deltaTime));
@@ -137,11 +228,25 @@ class Game {
   }
 
   draw(ctx) {
+
     //ctx.clearRect(0, 0, this.gameWidth, this.gameWidth);
     this.gameObjects.forEach(object => object.draw(ctx));
 
     //let graph = new Graph (this, this.level, this.redGhost.position, this.player.position);
     //graph.drawGraph(ctx);
+
+    if (this.timeLeftUntilStart < this.waitTimeAtStart && this.timeLeftUntilStart > 0) {
+      var curImg;
+      if (this.timeLeftUntilStart < this.waitTimeAtStart / 3) curImg = this.imgNumber1;
+      else if (this.timeLeftUntilStart < 2*this.waitTimeAtStart / 3) curImg = this.imgNumber2;
+      else curImg = this.imgNumber3;
+
+      let lenX = this.gameHeight / 3;
+      let lenY = this.gameHeight / 3;
+      let posX = this.gameWidth / 2 - lenX / 2;
+      let posY = this.gameHeight / 2 - lenY / 2;
+      ctx.drawImage(curImg, posX, posY, lenX, lenY);
+    }
   }
 
   addScore(scoreToAdd, isPickup) {
@@ -153,11 +258,11 @@ class Game {
       
       if (this.pickupCount == 0) {
         this.score += this.winScore;
-        this.won = true;
+        this.fWon();
       }
     }
 
-    this.scoreText.innerHTML = 'Score: ' + ("0000" + this.score).slice(-4);
+    this.updateScoreText();
   }
 
   getPacmanPos () {

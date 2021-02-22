@@ -8,6 +8,7 @@ const GhostMode = {
 
 class Ghost {
     constructor (game, initPosId) {
+        this.savedInitPos = initPosId;
         this.mode = GhostMode.SCATTER;
 
         this.sizeX = 3 * game.level.cellSizeX / 2;
@@ -202,7 +203,7 @@ class Ghost {
                     this.ultimateTarget = this.getEatenTarget();
                     break;
                 case GhostMode.EATEN:
-                    this.ultimateTarget = this.getEatenTarget();
+                    this.ultimateTarget = this.game.level.idToPos (this.savedInitPos);
                     break;
                 default:
                     console.log("unknown ghost mode");
@@ -258,7 +259,7 @@ class Ghost {
             this.switchToMode(GhostMode.EATEN);
             this.game.addScore(this.ghostEatingScore, false);
         } else {
-            this.game.lost = true;
+            this.game.minusHealth();
             //console.log("the pacman was eaten tiu tiu tiu");
         }
     }
