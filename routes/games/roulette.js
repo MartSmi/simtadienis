@@ -1,11 +1,10 @@
 const appRoot = require('app-root-path');
 const express = require('express');
-var dbPool = require(appRoot + '/db').pool;
-var mysql = require('mysql');
-const { log } = require('../../logger');
 var logger = require(appRoot + '/logger');
 var router = express.Router();
-let gameID = 0; //Roulette's game id
+const balance = require(appRoot + '/services/balance');
+const playHistory = require(appRoot + '/services/playHistory');
+const gameID = 0; //Roulette's game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 
 router.get('/', (req, res, next) => {
@@ -71,6 +70,7 @@ router.post('/spin', (req, res, next) => {
         // Lost
         winnings *= -1;
       }
+      req.session.balance += winnings;
       res.send({ block });
 
       playHistory.insert(userID, gameID, null, winnings);

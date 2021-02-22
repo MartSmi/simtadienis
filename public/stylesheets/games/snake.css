@@ -1,25 +1,30 @@
 canvas {
-    position: relative;
-    top:0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin:auto;
-	display: block;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  display: block;
 }
 
 #canvasCointainer {
-	align-items: center;
+  align-items: center;
 }
 
 body {
-	background-color: #c8f177;
+  background-color: #c8f177;
 }
 
+img {
+  display: none;
+}
 .navbar {
-	background-color: #64974d;
+  background-color: #64974d;
 }
 
-.navbar-brand, .nav-link, .navbar-text {
-	color: #c8f177;
+.navbar-brand,
+.nav-link,
+.navbar-text {
+  color: #c8f177;
 }
