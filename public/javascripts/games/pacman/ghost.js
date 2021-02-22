@@ -55,17 +55,17 @@ class Ghost {
         this.moveBodyAnimTime = 0.3;
         this.timeLeftUntilNextMoveBodySprite = this.moveBodyAnimTime;
 
-        this.eyesSpriteList = [document.getElementById('img_ghost_eyes0'),
-                               document.getElementById('img_ghost_eyes1'),
-                               document.getElementById('img_ghost_eyes2'),
-                               document.getElementById('img_ghost_eyes3')];
+        this.eyesSpriteList = [document.getElementById('img_ghost_eyes'),
+                               document.getElementById('img_ghost_eyes'),
+                               document.getElementById('img_ghost_eyes'),
+                               document.getElementById('img_ghost_eyes')];
         this.eyesSpriteDelta = {
-            x: 3 * this.sizeX / 8,
-            y: this.sizeY / 3
+            x: 1 * this.sizeX / 4,
+            y: 1 * this.sizeY / 4
         };
         this.eyesSize = {
-            x: this.sizeX / 4,
-            y: this.sizeY / 4
+            x: this.sizeX / 2,
+            y: this.sizeY / 2
         };
 
         this.moveDir = 0;
@@ -115,7 +115,7 @@ class Ghost {
             // drawing eyes also
             let eyesPosX = posX + this.eyesSpriteDelta.x;
             let eyesPosY = posY + this.eyesSpriteDelta.y;
-            ctx.drawImage(this.eyesSpriteList[this.dir], posX, posY, this.sizeX, this.sizeY);
+            ctx.drawImage(this.eyesSpriteList[this.dir], eyesPosX, eyesPosY, this.eyesSize.x, this.eyesSize.y);
         }
 
         // let targetX = this.targetPosition.x - this.sizeX / 2;
