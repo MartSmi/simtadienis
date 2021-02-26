@@ -5,7 +5,8 @@ body {
 #gameScreen {
   border: 1px solid black;
 }
-img {
+
+#imgContainer {
   display: none;
 }
 #texts {
@@ -50,4 +51,8 @@ display: block;
 
 .navbar-brand:hover, .nav-link:hover {
   color: #466437;
+}
+
+#topbarCoinImg {
+  display: inline-block;
 }

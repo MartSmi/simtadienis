@@ -177,6 +177,13 @@ betButton.addEventListener('click', async function placeBet() {
     let res = await betRequest(bet);
     res.playerCards.forEach(card => addPlayerCard(card));
     res.dealerCards.forEach(card => addDealerCard(card));
+
+    stake.textContent = betField.value;
+    potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
+    betContainer.classList.add('hide');
+    moneyAmount.classList.remove('hide');
+    moneyAmountText.classList.remove('hide');
+
     if (player.points > 21) {
       lost();
     } else if (player.points == 21) {
@@ -187,13 +194,8 @@ betButton.addEventListener('click', async function placeBet() {
       }
     } else {
       hitButton.disabled = false;
-      gameSessionID = res.gameSessionID;
-      stake.textContent = betField.value;
       standButton.disabled = false;
-      potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
-      betContainer.classList.add('hide');
-      moneyAmount.classList.remove('hide');
-      moneyAmountText.classList.remove('hide');
+      gameSessionID = res.gameSessionID;
     }
   } else {
     alert('Netinkamas statymas');
@@ -418,10 +420,10 @@ function tie() {
   ending.textContent = `Lygiosios`;
   moneyAmount.classList.add('hide');
   moneyAmountText.classList.add('hide');
+  restartButton.disabled = false;
   // currentStake = 0;
   // stake.textContent = `0`;
   // potentialWinnings.textContent = `0`;
-  // restartButton.disabled = false;
 }
 
 function won() {

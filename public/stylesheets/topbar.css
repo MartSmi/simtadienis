@@ -24,4 +24,5 @@
 #topbarCoinImg {
   width: 3%;
   height: auto;
+  display: inline-block;
 }
