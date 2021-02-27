@@ -257,3 +257,25 @@ input[type='radio'] {
 .navbar-brand, .nav-link, .navbar-text {
   color: #768d6c;
 }
+
+.hide {
+  display: none;
+}
+
+.winningAnimationContainer, .lossAnimationContainer {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 5vw;
+  right: 0;
+  text-align: center;
+  padding: 0.6%;
+  font-size: 150%;
+  font-weight: 600;
+}
+.moneyWon {
+  color: #3DF900;
+}
+.moneyLost {
+  color: #F90000;
+}
