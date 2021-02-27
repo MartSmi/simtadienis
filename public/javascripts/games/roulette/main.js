@@ -78,15 +78,56 @@ function spin() {
 }
 
 function won(winnings) {
+  outcomeAmount = winnings
   setTimeout(function () {
-    alert('You won ' + winnings);
     spinning = false;
+    wonSpin = true
+    winningAnimation()
   }, 5000);
 }
 
 function lost(winnings) {
+  outcomeAmount = winnings
   setTimeout(function () {
-    alert('You lost ' + winnings * -1);
     spinning = false;
+    wonSpin = false
+    winningAnimation()
   }, 5000);
+}
+
+
+let winningAnimationContainer = document.querySelector('[data-winning-animation]')
+let wonSpin
+let outcomeAmount
+const timer = ms => new Promise(res => setTimeout(res, ms))
+
+async function winningAnimation() {
+  winningAnimationContainer.classList.remove('moneyLost')
+  winningAnimationContainer.classList.remove('moneyWon')
+  winningAnimationContainer.style.top = `5vw`
+  winningAnimationContainer.style.opacity = `1`
+  if (wonSpin) {
+    winningAnimationContainer.classList.remove('hide')
+    winningAnimationContainer.classList.add('moneyWon')
+    winningAnimationContainer.textContent = `+${outcomeAmount}`
+    winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
+  } else {
+    winningAnimationContainer.classList.remove('hide')
+    winningAnimationContainer.classList.add('moneyLost')
+    winningAnimationContainer.textContent = `${outcomeAmount}`
+    winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
+  }
+  await timer(1000)
+  easeOut()
+}
+
+async function easeOut() {
+  for (i = 0; i < 50; i++) {
+    winningAnimationContainer.style.top = `${5-0.05*i}vw`
+    winningAnimationContainer.style.opacity = `${1-0.02*i}`
+    await timer(2)
+    if (i == 49) {
+      winningAnimationContainer.classList.add('hide')
+    }
+  }
 }
