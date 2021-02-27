@@ -21,11 +21,13 @@ let previousBlockDeg = 0;
 function spin() {
   numSpins++;
   let amount = parseInt(document.getElementById('amountInput').value);
-  if (amount == 0) {
-    console.log('Amount must be greater than 0');
+  if (amount <= 0) {
+    console.log('Statymas turi būti didesnis nei 0');
+    alert('Statymas turi būti didesnis nei 0')
     return;
   } else if (chosenColor == undefined) {
-    console.log('A color must be chosen');
+    console.log('Spalva turi būti pasirinkta');
+    alert('Spalva turi būti pasirinkta')
     return;
   }
   spinning = true;
@@ -45,6 +47,9 @@ function spin() {
       previousBlockDeg = currentBlockDeg;
       document.getElementById('box').style.transform = 'rotate(' + deg + 'deg)';
       let winnings = amount;
+      outcomeAmount = amount*(-1)
+      gameOutcome = 'lose'
+      winningAnimation()
       if (chosenColor == 2 && block == 0) {
         // Won on green
         winnings *= 20;
@@ -67,7 +72,7 @@ function spin() {
       this.status == 406 &&
       JSON.parse(this.response).error == 'Bet too big'
     ) {
-      alert("You don't have that much money");
+      alert("Neturi tiek licų");
       spinning = false;
     } else if (this.readyState == 4) {
       spinning = false;
@@ -81,7 +86,7 @@ function won(winnings) {
   outcomeAmount = winnings
   setTimeout(function () {
     spinning = false;
-    wonSpin = true
+    gameOutcome = 'win'
     winningAnimation()
   }, 5000);
 }
@@ -90,31 +95,37 @@ function lost(winnings) {
   outcomeAmount = winnings
   setTimeout(function () {
     spinning = false;
-    wonSpin = false
+    gameOutcome = ''
     winningAnimation()
   }, 5000);
 }
 
-
+//From here
 let winningAnimationContainer = document.querySelector('[data-winning-animation]')
-let wonSpin
+let gameOutcome
 let outcomeAmount
 const timer = ms => new Promise(res => setTimeout(res, ms))
 
 async function winningAnimation() {
   winningAnimationContainer.classList.remove('moneyLost')
   winningAnimationContainer.classList.remove('moneyWon')
+  winningAnimationContainer.classList.remove('moneyReturned')
   winningAnimationContainer.style.top = `5vw`
   winningAnimationContainer.style.opacity = `1`
-  if (wonSpin) {
+  if (gameOutcome == 'win') {
     winningAnimationContainer.classList.remove('hide')
     winningAnimationContainer.classList.add('moneyWon')
     winningAnimationContainer.textContent = `+${outcomeAmount}`
     winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
-  } else {
+  } else if (gameOutcome == 'lose') {
     winningAnimationContainer.classList.remove('hide')
     winningAnimationContainer.classList.add('moneyLost')
     winningAnimationContainer.textContent = `${outcomeAmount}`
+    winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
+  } else if (gameOutcome == 'draw') {
+    winningAnimationContainer.classList.remove('hide')
+    winningAnimationContainer.classList.add('moneyReturned')
+    winningAnimationContainer.textContent = `+${outcomeAmount}`
     winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
   }
   await timer(1000)
@@ -131,3 +142,4 @@ async function easeOut() {
     }
   }
 }
+//to here
