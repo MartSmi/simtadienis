@@ -354,6 +354,8 @@ hitButton.addEventListener('click', function hit() {
     addPlayerCard(res.playerCard);
     if (res.dealerCards.length > 0) {
       //Only happens if player.points = 21
+      hitButton.disabled = true
+      standButton.disabled = true
       for (let i = 0; i < res.dealerCards.length; i++) {
         await addDealerCard(res.dealerCards[i]);
       }
