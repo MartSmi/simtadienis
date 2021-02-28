@@ -459,6 +459,8 @@ restartButton.addEventListener('click', function restart() {
   dealer.aces = 0;
   player.points = 0;
   dealer.points = 0;
+  player.usedAces = 0;
+  dealer.usedAces = 0;
   player.updatePoints();
   dealer.updatePoints();
   player.cardPlaces.forEach(cardPlace => {
