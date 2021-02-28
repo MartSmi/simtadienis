@@ -21,6 +21,12 @@ class Game {
     this.curLevel = 1;
     
     this.scoreText = document.getElementById('score_text');
+    this.levelText = document.getElementById('level_text')
+    this.lifeText = document.getElementById('life_text')
+
+    this.scoreCount = document.getElementById('score_count')
+    this.levelCount = document.getElementById('level_count')
+    this.lifeCount = document.getElementById('life_count')
 
     this.imgNumber1 = document.getElementById('img_num1');
     this.imgNumber2 = document.getElementById('img_num2');
@@ -28,9 +34,12 @@ class Game {
   }
 
   updateScoreText () {
-    this.scoreText.innerHTML = 'Taškai: ' + ("0000" + this.score).slice(-4) 
-                              + '\nGyvybių liko: ' + (Math.max(this.curHealth-1, 0))
-                              + '\nLygis: ' + this.curLevel;
+    this.scoreText.innerHTML = 'Taškai: '
+    this.scoreCount.innerHTML = ("0000" + this.score).slice(-4) 
+    this.lifeText.innerHTML = '\nGyvybių liko: '
+    this.lifeCount.innerHTML = '<img src=/images/games/pacman/gyvybe.svg height="30px" width="30px">'.repeat((Math.max(this.curHealth-1, 0)))
+    this.levelText.innerHTML = '\nLygis: '
+    this.levelCount.innerHTML = this.curLevel;
   }
 
   createLevel() {
