@@ -72,12 +72,11 @@ router.post(
         'SELECT full_name, balance, can_send, is_station, is_frozen FROM users WHERE id = ?',
         [fromID],
         (err, rows) => {
-          console.log("wow");
           if (err) {
             // logger.error(`DB error on /blackjack (${req.ip}):`);
             next(err);
             reject(err);
-          } else if (rows[0].length < 1) {
+          } else if (rows.length < 1) {
             logger.error(`non-existant logged-in user: ${req.session.userID}`);
             res.json({
               success: false,
@@ -125,7 +124,7 @@ router.post(
             if (err) {
               next(err);
               reject(err);
-            } else if (rows[0].length < 1) {
+            } else if (rows.length < 1) {
               logger.info(
                 `${from_full_name} attempted to bet but auction has not started`
               );
