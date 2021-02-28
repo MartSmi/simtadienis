@@ -23,6 +23,7 @@ var gameBlackjack = require('./routes/games/blackjack');
 var gameSlots = require('./routes/games/slots');
 var gameRoulette = require('./routes/games/roulette');
 var gameSnake = require('./routes/games/snake');
+var auctionRouter = require('./routes/auction');
 
 var app = express();
 
@@ -97,6 +98,7 @@ app.use('/games/blackjack', gameBlackjack);
 app.use('/games/slots', gameSlots);
 app.use('/games/roulette', gameRoulette);
 app.use('/games/snake', gameSnake);
+app.use('/auction', auctionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

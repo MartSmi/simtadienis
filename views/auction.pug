@@ -1,0 +1,31 @@
+extends topbarLayout
+
+append scripts
+  script(src='/javascripts/auction.js')
+
+block content
+    link(rel="stylesheet", href="/stylesheets/auction.css", type="text/css")
+    
+    #wrapper
+        #video.twitch
+            iframe(src='https://www.twitch.tv/embed/example/?parent=www.exmaple.com' frameborder='0' allowfullscreen='true' scrolling='no' height='378' width='620')
+        #chat.twitch
+            iframe(src='https://www.twitch.tv/embed/example/chat?parent=www.exmaple.com' height='378' width='350')
+        
+        h2.h4.mb-3 Statymas
+            form#bet-form
+                .col-8.col-sm-9.col-md-10
+                    input#amount.form-control(type='number' autocomplete='off' name='amount' placeholder='Suma' required)
+                .form-group
+                button.btn.btn-primary(type='submit') Pervesti
+                #transfer-success-template.mt-3.alert.alert-success.alert-dismissible.fade.show.d-none
+                    img.alertIcon(src='/images/account/tick.svg' height='80px' width='60px' alt='')
+                    <div class="alertContainer"><span class="alrt-amount"></span> <div class="alertText">licų sėkmingai pastatytas</div>.</div>
+                    button.close(type='button' data-dismiss='alert')
+                    span &times;
+                #transfer-failure-template.mt-3.alert.alert-danger.alert-dismissible.fade.show.d-none
+                    img.alertIcon(src='/images/account/exclamation-mark.svg' height='80px' width='22px' alt='')
+                    <div class="alertContainer"><div class="alertText"> Klaida: </div><span class="alrt-error"></span></div>
+                    button.close(type='button' data-dismiss='alert')
+                    span &times;
+    
