@@ -1,30 +1,18 @@
-const appRoot = require('app-root-path');
-const express = require('express');
-const dbPool = require(appRoot + '/db').pool;
-// var mysql = require('mysql');
-const logger = require(appRoot + '/logger');
-const router = express.Router();
-const v = require('express-validator/check');
-const { resolve } = require('q');
-const { reject } = require('q');
-const { Promise } = require('q');
-const enterTimestamp = process.env.ENTER_TIMESTAMP;
+var express = require('express');
+var v = require('express-validator/check');
+var vs = require('express-validator/filter');
+var bcrypt = require('bcrypt');
+var dbPool = require('../db').pool;
+var logger = require('../logger');
+var router = express.Router();
 
 router.get('/', function (req, res, next) {
-  if (!req.session.loggedIn) {
-    logger.warn('attempt to access /auction without logging in');
-    res.redirect(303, '/');
-    return;
-  } else if (Date.now() < enterTimestamp) {
-    logger.warn('attempt to access /auction before time');
-    res.redirect(303, '/');
-    return;
+  if (!req.session.adminLoggedIn) {
+    logger.warn(`${req.ip} accessed /auction-admin (not logged in)`);
+    res.redirect(303, '/admin/login');
   } else {
-    var opts = {
-      // name: req.session.fullName,
-      balance: req.session.balance,
-    };
-    res.render('auction', opts);
+    logger.info(`${req.ip} accessed /auction-admin (logged in)`);
+    res.render('auction-admin');
   }
 });
 

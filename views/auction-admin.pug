@@ -1,0 +1,21 @@
+extends layout
+
+append scripts
+  script(src='/javascripts/admin/auction.js')
+
+block content
+  p= 'Auction admin page'
+
+  button.btn.btn-primary#stopButton(type='submit') STABDYTI DABARTINIO DAIKTO STATYMĄ IR IŠ ŽMOGAUS NUSKAIČIUOTI PINIGĄ
+
+
+  #stop-success-template.mt-3.alert.alert-success.alert-dismissible.fade.show.d-none
+      img.alertIcon(src='/images/account/tick.svg' height='80px' width='60px' alt='')
+      <div class="alertContainer">Sėkmingai sustabdyta<div class="alertText"></div></div>
+      button.close(type='button' data-dismiss='alert')
+      span &times;
+  #stop-failure-template.mt-3.alert.alert-danger.alert-dismissible.fade.show.d-none
+      img.alertIcon(src='/images/account/exclamation-mark.svg' height='80px' width='22px' alt='')
+      <div class="alertContainer"><div class="alertText"> Klaida: </div><span class="alrt-error"></span></div>
+      button.close(type='button' data-dismiss='alert')
+      span &times;
