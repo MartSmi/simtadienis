@@ -115,7 +115,6 @@ dealer.pointsPlace.textContent = `0`;
 
 //TODO: after game ends stand button should be disabled
 
-const timer = ms => new Promise(res => setTimeout(res, ms));
 let suits = ['♠', '♥', '♦', '♣'];
 let cardValues = [
   'A',
@@ -180,9 +179,12 @@ betButton.addEventListener('click', async function placeBet() {
 
     stake.textContent = betField.value;
     potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
+    outcomeAmount = Number(betField.value)*(-1)
     betContainer.classList.add('hide');
     moneyAmount.classList.remove('hide');
     moneyAmountText.classList.remove('hide');
+    gameOutcome = 'lose'
+    winningAnimation()
 
     if (player.points > 21) {
       lost();
@@ -286,6 +288,7 @@ function lost() {
 }
 
 function blackjack() {
+  outcomeAmount = Number(potentialWinnings.textContent)
   ending.classList.remove('hide');
   ending.textContent = `Juodasis Džekas!`;
   moneyAmount.classList.add('hide');
@@ -293,6 +296,8 @@ function blackjack() {
   hitButton.disabled = true;
   standButton.disabled = true;
   restartButton.disabled = false;
+  gameOutcome = 'win'
+  winningAnimation()
 }
 
 window.addEventListener('load', f => {
@@ -349,6 +354,8 @@ hitButton.addEventListener('click', function hit() {
     addPlayerCard(res.playerCard);
     if (res.dealerCards.length > 0) {
       //Only happens if player.points = 21
+      hitButton.disabled = true
+      standButton.disabled = true
       for (let i = 0; i < res.dealerCards.length; i++) {
         await addDealerCard(res.dealerCards[i]);
       }
@@ -416,17 +423,21 @@ standButton.addEventListener('click', function stand() {
 });
 
 function tie() {
+  outcomeAmount = Number(stake.textContent)
   ending.classList.remove('hide');
   ending.textContent = `Lygiosios`;
   moneyAmount.classList.add('hide');
   moneyAmountText.classList.add('hide');
   restartButton.disabled = false;
+  gameOutcome = 'draw'
+  winningAnimation()
   // currentStake = 0;
   // stake.textContent = `0`;
   // potentialWinnings.textContent = `0`;
 }
 
 function won() {
+  outcomeAmount = Number(potentialWinnings.textContent)
   ending.classList.remove('hide');
   ending.textContent = `Laimėjai`;
   moneyAmount.classList.add('hide');
@@ -437,6 +448,8 @@ function won() {
   restartButton.disabled = false;
   hitButton.disabled = true;
   standButton.disabled = true;
+  gameOutcome = 'win'
+  winningAnimation()
 }
 
 restartButton.addEventListener('click', function restart() {
@@ -448,6 +461,8 @@ restartButton.addEventListener('click', function restart() {
   dealer.aces = 0;
   player.points = 0;
   dealer.points = 0;
+  player.usedAces = 0;
+  dealer.usedAces = 0;
   player.updatePoints();
   dealer.updatePoints();
   player.cardPlaces.forEach(cardPlace => {

@@ -25,7 +25,7 @@ async function winningAnimation() {
     winningAnimationContainer.textContent = `+${outcomeAmount}`
     winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
   }
-  await timer(1000)
+  await timer(1500)
   easeOut()
 }
 
