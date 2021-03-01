@@ -222,4 +222,68 @@ router.post(
   }
 );
 
+router.get('/get-biggest-bet', function (req, res) {
+
+  var biggestBet;
+
+  new Promise((resolve, reject) => {
+    dbPool.query(
+      'SELECT * FROM auction ORDER BY id DESC LIMIT 1',
+      (err, rows) => {
+        if (err) {
+          // logger.error(`DB error on /blackjack (${req.ip}):`);
+          next(err);
+          reject(err);
+        } else if (rows.length < 1) {
+          logger.error(`auction has not started`);
+          res.json({
+            success: false,
+            error: 'aukcionas neprasidėjęs.',
+          });
+          reject(err);
+        }
+       
+        resolve(rows);
+      }
+    );
+  })
+  .then(rows => {
+    const row = rows[0];
+    biggestBet = row.biggest_bet;
+    let bettorId = row.bettor_id;
+
+    return new Promise((resolve, reject) => {
+      dbPool.query(
+        'SELECT * FROM users WHERE id = ?',
+        [bettorId],
+        (err, rows) => {
+          if (err) {
+            next(err);
+            reject(err);
+          } else if (rows.length < 1) {
+            reject(new Error("user not found"));
+          }
+
+          resolve(rows);
+        }
+      );
+    });
+
+    
+  }).then(rows => {
+    const row = rows[0];
+    let bettorName = row.full_name;
+
+    res.send ({
+      'biggest_bet': biggestBet,
+      'bettor_name': bettorName
+    });
+  }).catch((err) => {
+    logger.error('transfer error: ' + err);
+  });
+
+
+
+})
+
 module.exports = router;

@@ -1,8 +1,5 @@
 extends layout
 
-append scripts
-  script(src='/javascripts/admin/auction.js')
-
 block content
   p= 'Auction admin page'
 
@@ -19,6 +16,9 @@ block content
     <div class="alertContainer"><div class="alertText"> Klaida: </div><span class="alrt-error"></span></div>
     button.close(type='button' data-dismiss='alert')
     span &times;
+
+  h2.h4.mb-3 Didžiausias statymas
+    p#biggestBetText Daugiausiai pastatyta: 0 (niekas)
 
   form.mt-5#newItemForm
     .form-group
@@ -39,4 +39,6 @@ block content
     <div class="alertContainer"><div class="alertText"> Klaida: </div><span class="alrt-error"></span></div>
     button.close(type='button' data-dismiss='alert')
     span &times;
+  
+  script(src='/javascripts/admin/auction.js')
     

@@ -35,3 +35,26 @@ $(function () {
 		});
 	});
 });
+
+var biggestBetText = document.getElementById('biggestBetText');
+//console.log(biggestBetText);
+
+function updateBiggestBetFields(){	
+	$.get(
+		'/auction/get-biggest-bet',
+		function(data) {
+		   	biggestBet = data.biggest_bet;
+		   	bettorName = data.bettor_name;
+			biggestBetText.innerHTML = 'Daugiausiai pastatyta: ' + biggestBet + ' licų (' + bettorName + ')';
+		}
+	).fail(() => {
+		console.log("Klaida, techninė.");
+	});
+
+	// darau GET request'ą, kurio metu pasiimu, kiek dabar daugiausiai pastatyta buvo
+	// atnaujinu text field'ą puge
+
+    setTimeout(updateBiggestBetFields, 1000);
+}
+
+updateBiggestBetFields();

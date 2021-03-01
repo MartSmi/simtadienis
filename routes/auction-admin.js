@@ -84,7 +84,7 @@ router.post('/stopCurrent', [], function (req, res, next) {
       `${req.ip} stopped betting process current`
     );
   }).then (() => {
-    balance.update (biggestBet, bettorId).catch(err => {
+    balance.update (-biggestBet, bettorId).catch(err => {
       next(err);
       throw err;
     });
