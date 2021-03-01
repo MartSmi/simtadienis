@@ -1,6 +1,7 @@
 .reverted {
 	text-decoration: line-through;
-	background-color: rgb(248, 215, 218);
+	text-decoration-color: black;
+	background-color: transparent;
 }
 .buttons .btn {
 	margin-right: .5rem;
