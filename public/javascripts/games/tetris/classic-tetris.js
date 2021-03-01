@@ -330,21 +330,22 @@ class ClassicTetris {
     ];
 
     // HUD stuff coordinates
-    this.scoreX = 110 * px//scoreX;             // score coords
+    this.scoreX = 105 * px//scoreX;             // score coords
     this.scoreY = scoreY;
-    this.levelX = 110 * px;             // level coords
+    this.levelX = 105 * px;             // level coords
     this.levelY = levelY;
-    this.linesX = 110 * px;             // lines coords
+    this.linesX = 105 * px;             // lines coords
     this.linesY = linesY;
-    this.nextX = 110 * px;               // next text coords
+    this.nextX = 105 * px;               // next text coords
     this.nextY = nextY;
-    this.nextOffsetX = 110 * px;   // next piece coords
+    this.nextOffsetX = 105 * px;   // next piece coords
     this.nextOffsetY = nextOffsetY;
     this.pauseX = 105 * px;             // pause text coords
     this.pauseY = pauseY;
 
     // canvas font 
-    this.canvasFont = canvasFont;
+    this.canvasFont = (px*8).toString()+'px georgia';
+    //this.canvasFont= canvasFont.fontsize(px*50);
     this.canvasFontColor = canvasFontColor;
 
     // piece colors
@@ -566,7 +567,7 @@ class ClassicTetris {
   // frames before the piece drops 1 tile
   // depends on the level
   _getFramesPerGridcell(level) {
-    if (level === 0) return 96;  //48;
+    /*if (level === 0) return 96;  //48;
     else if (level === 1) return 86;  //43;
     else if (level === 2) return 76;  //38;
     else if (level === 3) return 66;  //33;
@@ -580,7 +581,22 @@ class ClassicTetris {
     else if (level <= 15) return 8;  //4;
     else if (level <= 18) return 6;  //3;
     else if (level <= 28) return 4;  //2;
-    return 2;  //1;
+    return 2;  //1;*/
+    if (level === 0) return 48;
+    else if (level === 1) return 43;
+    else if (level === 2) return 38;
+    else if (level === 3) return 33;
+    else if (level === 4) return 28;
+    else if (level === 5) return 23;
+    else if (level === 6) return 18;
+    else if (level === 7) return 13;
+    else if (level === 8) return 8;
+    else if (level === 9) return 6;
+    else if (level <= 12) return 5;
+    else if (level <= 15) return 4;
+    else if (level <= 18) return 3;
+    else if (level <= 28) return 2;
+    return 2;  1;
   }
 
 
@@ -1373,6 +1389,7 @@ class ClassicTetris {
   }
 
   _triggerGameOver() {
+    _payUp();
     // stop theme song
     if (this.gameTheme) {
       this.gameTheme.pause();
@@ -1394,6 +1411,10 @@ class ClassicTetris {
       score: this.score,
       lines: this.lines
     });
+  }
+  _payUp(){
+    ///ismokas padaryt.
+    let sum = this.score/100;
   }
 
   _processGameOver() {
@@ -1528,7 +1549,8 @@ class ClassicTetris {
   // when the player clears (startLevel × 10 + 10) or max(100, (startLevel × 10 - 50)) lines, 
   // whatever comes first, the level advances by 1. After this, the level advances by 1 for every 10 lines.
   _getLevel() {
-    const a = this.lines - Math.min(this.startLevel * 10 + 10, Math.max(100, this.startLevel * 10 - 50));
+    //const a = this.lines - Math.min(this.startLevel * 10 + 10, Math.max(100, this.startLevel * 10 - 50));
+    const a = this.lines - Math.min(this.startLevel * 2 + 10, Math.max(100, this.startLevel * 10 - 50));
     return this.startLevel + (a >= 0 ? ((a / 10) | 0) + 1 : 0);
   }
 
@@ -1750,6 +1772,7 @@ class ClassicTetris {
     }
 
     this.context.font = this.canvasFont;
+    //this.context.font = this.canvasFont.fontsize();
     this.context.fillStyle = this.canvasFontColor;
     this.context.fillText(scoreStr, this.scoreX, this.scoreY);
     this.context.fillText(levelStr, this.levelX, this.levelY);

@@ -71,14 +71,19 @@
 #start-stop-btn{
   width: 65%; 
   height: 100%;
+  font-size: 1vw;
 }
 #quit-btn{
-  width: 34%; 
+  width: 35%; 
   height: 100%;
+  font-size: 1vw;
 }
 #bdy{
   height: 100vh;
   width: 100vw;
+}
+#btns{
+  width: 100%;
 }
 img{
   display: none;
