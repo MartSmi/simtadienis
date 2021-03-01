@@ -9,6 +9,8 @@ block content
         #chat.twitch
             iframe(src=chatLink height='378' width='350')
         
+        //- #twitch-embed
+
         h2.h4.mb-3 Didžiausias statymas
             p#biggestBetText Daugiausiai pastatyta: 0 (niekas)
 
@@ -29,5 +31,6 @@ block content
                     button.close(type='button' data-dismiss='alert')
                     span &times;
     
+    //- script(src='https://player.twitch.tv/js/embed/v1.js')
     script(src='/javascripts/auction.js')
     

@@ -42,14 +42,16 @@ app.use(
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
+      defaultSrc: ["'self'", 'https://player.twitch.tv/'],
       scriptSrc: [
         "'self'",
         'https://code.jquery.com',
         'https://stackpath.bootstrapcdn.com',
+        'https://player.twitch.tv/'
       ],
       styleSrc: ["'self'", 'https://stackpath.bootstrapcdn.com'],
       objectSrc: ["'none'"],
+      frameSrc: ['https://player.twitch.tv/', 'https://www.twitch.tv/'],
     },
   })
 );

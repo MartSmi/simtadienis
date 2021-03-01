@@ -58,3 +58,14 @@ function updateBiggestBetFields(){
 }
 
 updateBiggestBetFields();
+
+
+
+
+
+// new Twitch.Player("twitch-embed", {
+// 	width: 800,
+// 	height: 650,
+// 	channel: "extracredits",
+// 	parent: ['localhost']
+// });

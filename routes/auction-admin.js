@@ -7,7 +7,7 @@ var logger = require('../logger');
 const appRoot = require('app-root-path');
 const balance = require(appRoot + '/services/balance');
 var router = express.Router();
-const auctionID = 419;
+const auctionID = process.env.AUCTION_USER_ID;
 
 router.get('/', function (req, res, next) {
   if (!req.session.adminLoggedIn) {
