@@ -9,6 +9,9 @@ const { resolve } = require('q');
 const { reject } = require('q');
 const { Promise } = require('q');
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const auctionStartTimestamp = process.env.AUCTION_START_TIMESTAMP;
+const streamLink = process.env.AUCTION_STREAM_LINK;
+const chatLink = process.env.AUCTION_CHAT_LINK;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
@@ -19,10 +22,16 @@ router.get('/', function (req, res, next) {
     logger.warn('attempt to access /auction before time');
     res.redirect(303, '/');
     return;
+  } else if (Date.now() < auctionStartTimestamp) {
+    logger.warn('attempt to access /auction before auction time');
+    res.redirect(303, '/account?auctionNotStarted=true');
+    return;
   } else {
     var opts = {
       // name: req.session.fullName,
       balance: req.session.balance,
+      streamLink: streamLink,
+      chatLink: chatLink,
     };
     res.render('auction', opts);
   }
