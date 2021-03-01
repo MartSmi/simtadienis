@@ -23,7 +23,7 @@ $(function () {
 
 				$('#transactions').find('tbody').prepend(
 					$('<tr>').append($('<td>').addClass('tableText').text(data.account))
-							 .append($('<td>').addClass('text-danger').text('-' + data.amount))
+							 .append($('<td>').addClass('textDanger').text('-' + data.amount))
 							 .append($('<td>').addClass('tableText').text(data.time))
 				);
 
