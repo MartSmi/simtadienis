@@ -36,9 +36,9 @@ $(function () {
 	});
 });
 
-var biggestBetField = document.querySelector('#biggestbet')
-var betHolder = document.querySelector('#betHolder')
-//console.log(biggestBetText);
+var biggestBetField = document.getElementById('biggestBet')
+var betHolder = document.getElementById('betHolder')
+console.log(biggestBetField);
 
 function updateBiggestBetFields(){	
 	$.get(
@@ -47,7 +47,7 @@ function updateBiggestBetFields(){
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
 			biggestBetField.innerHTML = '<img src=/images/auction/L.svg height="30px" width="30px">' + biggestBet
-			betHolder.innerHTML = betHolder
+			betHolder.innerHTML = bettorName
 		}
 	).fail(() => {
 		console.log("Klaida, techninė.");
@@ -59,7 +59,7 @@ function updateBiggestBetFields(){
     setTimeout(updateBiggestBetFields, 1000);
 }
 
-updateBiggestBetFields();
+setTimeout(updateBiggestBetFields, 1000);
 
 
 
