@@ -2,6 +2,7 @@ extends topbarLayout
 
 block content
     link(rel="stylesheet", href="/stylesheets/auction.css", type="text/css")
+    link(rel="stylesheet" href="/stylesheets/misc/alerts.css" type="text/css")
     
     #wrapper
         
@@ -32,12 +33,12 @@ block content
                         img.alertIcon(src='/images/account/tick.svg' height='80px' width='60px' alt='')
                         <div class="alertContainer"><span class="alrt-amount"></span> <div class="alertText">licų sėkmingai pastatytas</div>.</div>
                         button.close(type='button' data-dismiss='alert')
-                        span &times;
+                            span &times;
                     #transfer-failure-template.mt-3.alert.alert-danger.alert-dismissible.fade.show.d-none
                         img.alertIcon(src='/images/account/exclamation-mark.svg' height='80px' width='22px' alt='')
                         <div class="alertContainer"><div class="alertText"> Klaida: </div><span class="alrt-error"></span></div>
                         button.close(type='button' data-dismiss='alert')
-                        span &times;
+                            span &times;
     
     //- script(src='https://player.twitch.tv/js/embed/v1.js')
     script(src='/javascripts/auction.js')
