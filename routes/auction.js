@@ -107,7 +107,7 @@ router.post(
           );
           res.json({
             success: false,
-            error: `neužtenka pinigų (dabartinis balansas: ${balance})`,
+            error: `neužtenka pinigų`,
           });
           throw new Error("not money");
         } else if (row.is_frozen || !row.can_send) {
@@ -156,7 +156,7 @@ router.post(
           );
           res.json({
             success: false,
-            error: `per mažas statymas (didžiausias statymas kol kas: ${biggestBet})`,
+            error: `per mažas statymas`,
           });
           throw new Error("bet less than biggest");
         } else if (!inProgress) {
