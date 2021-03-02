@@ -36,7 +36,8 @@ $(function () {
 	});
 });
 
-var biggestBetText = document.getElementById('biggestBetText');
+var biggestBetField = document.querySelector('#biggestbet')
+var betHolder = document.querySelector('#betHolder')
 //console.log(biggestBetText);
 
 function updateBiggestBetFields(){	
@@ -45,7 +46,8 @@ function updateBiggestBetFields(){
 		function(data) {
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
-			biggestBetText.innerHTML = 'Daugiausiai pastatyta: ' + biggestBet + ' licų (' + bettorName + ')';
+			biggestBetField.innerHTML = '<img src=/images/auction/L.svg height="30px" width="30px">' + biggestBet
+			betHolder.innerHTML = betHolder
 		}
 	).fail(() => {
 		console.log("Klaida, techninė.");
