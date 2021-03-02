@@ -10,8 +10,8 @@ class Player {
     this.savedDir = 0;
 
     this.position = {
-      x: game.gameWidth / 2 - 100,
-      y: game.gameHeight / 2,
+      x: game.gameWidth / 28 * (9.5),
+      y: game.gameHeight / 31 * (27.5),
     };
     this.targetPos = {
       x: this.position.x,
@@ -94,6 +94,7 @@ class Player {
       if (this.timeLeftUntilNextDeathSprite <= 0) {
         this.currentDeathSpriteId++;
         if (this.currentDeathSpriteId >= this.deathAnimList.length) {
+          this.game.restart();
           return;
         }
         this.timeLeftUntilNextDeathSprite = this.deathAnimTime;

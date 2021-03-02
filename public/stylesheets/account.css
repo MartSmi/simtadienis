@@ -145,3 +145,11 @@ input[type=number] {
 .navbar-brand, .nav-link, .navbar-text {
     color: #65B3DB;
 }
+
+.textSuccess {
+    color: rgb(77, 253, 77);
+}
+
+.textDanger {
+    color: rgb(255, 9, 9);
+}

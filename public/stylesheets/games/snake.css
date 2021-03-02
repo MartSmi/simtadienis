@@ -16,9 +16,10 @@ body {
   background-color: #c8f177;
 }
 
-img {
+#imgContainer {
   display: none;
 }
+
 .navbar {
   background-color: #64974d;
 }

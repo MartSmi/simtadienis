@@ -72,12 +72,15 @@ body {
 #slot1, #slot2, #slot3 {
 	position: relative;
 	top: 7%;
-	right: 0.3%;
-	height: 24%;
-	width: 8%;
+	right: 0.4%;
+	height: 14%;
+	width: 7%;
 	background-size: 100% 100%;
-	margin-left: 0.9%;
-	margin-right: 0.9%;
+	margin-left: 1.45%;
+	margin-right: 1.45%;
+}
+#slot1 {
+	right: 0.35%;
 }
 
 .textContainer {

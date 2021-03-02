@@ -115,7 +115,6 @@ dealer.pointsPlace.textContent = `0`;
 
 //TODO: after game ends stand button should be disabled
 
-const timer = ms => new Promise(res => setTimeout(res, ms));
 let suits = ['♠', '♥', '♦', '♣'];
 let cardValues = [
   'A',
@@ -161,7 +160,7 @@ function betRequest(bet) {
         this.status == 406 &&
         JSON.parse(this.response).error == 'Bet too big'
       ) {
-        alert("You don't have that much money");
+        alert("Neturi tiek licų");
         reject();
       } else if (this.readyState == 4) {
         reject();
@@ -177,6 +176,16 @@ betButton.addEventListener('click', async function placeBet() {
     let res = await betRequest(bet);
     res.playerCards.forEach(card => addPlayerCard(card));
     res.dealerCards.forEach(card => addDealerCard(card));
+
+    stake.textContent = betField.value;
+    potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
+    outcomeAmount = Number(betField.value)*(-1)
+    betContainer.classList.add('hide');
+    moneyAmount.classList.remove('hide');
+    moneyAmountText.classList.remove('hide');
+    gameOutcome = 'lose'
+    winningAnimation()
+
     if (player.points > 21) {
       lost();
     } else if (player.points == 21) {
@@ -187,16 +196,11 @@ betButton.addEventListener('click', async function placeBet() {
       }
     } else {
       hitButton.disabled = false;
-      gameSessionID = res.gameSessionID;
-      stake.textContent = betField.value;
       standButton.disabled = false;
-      potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
-      betContainer.classList.add('hide');
-      moneyAmount.classList.remove('hide');
-      moneyAmountText.classList.remove('hide');
+      gameSessionID = res.gameSessionID;
     }
   } else {
-    alert('Bad bet');
+    alert('Netinkamas statymas');
   }
 });
 
@@ -246,10 +250,8 @@ async function addDealerCard(card) {
     if (dealer.cards.length > 1) {
       await timer(500);
       placeCardOnTable(dealer, card);
-      alert('await 500 place');
     } else {
       placeCardOnTable(dealer, card);
-      alert('place');
     }
     if (
       dealer.points > player.points &&
@@ -257,7 +259,6 @@ async function addDealerCard(card) {
       standButtonPressed
     ) {
       lost();
-      alert('dealer more than player less than 21');
       finished = true;
     }
     dealer.updatePoints();
@@ -287,6 +288,7 @@ function lost() {
 }
 
 function blackjack() {
+  outcomeAmount = Number(potentialWinnings.textContent)
   ending.classList.remove('hide');
   ending.textContent = `Juodasis Džekas!`;
   moneyAmount.classList.add('hide');
@@ -294,6 +296,8 @@ function blackjack() {
   hitButton.disabled = true;
   standButton.disabled = true;
   restartButton.disabled = false;
+  gameOutcome = 'win'
+  winningAnimation()
 }
 
 window.addEventListener('load', f => {
@@ -328,7 +332,7 @@ function hitRequest() {
         JSON.parse(this.response).error == 'Bet too big'
       ) {
         hitInProgress = false;
-        alert("You don't have that much money");
+        alert("Neturi tiek licų");
         reject("You don't have that much money");
       } else if (this.readyState == 4) {
         hitInProgress = false;
@@ -350,6 +354,8 @@ hitButton.addEventListener('click', function hit() {
     addPlayerCard(res.playerCard);
     if (res.dealerCards.length > 0) {
       //Only happens if player.points = 21
+      hitButton.disabled = true
+      standButton.disabled = true
       for (let i = 0; i < res.dealerCards.length; i++) {
         await addDealerCard(res.dealerCards[i]);
       }
@@ -386,7 +392,7 @@ function standRequest() {
         JSON.parse(this.response).error == 'Bet too big'
       ) {
         standInProgress = false;
-        alert("You don't have that much money");
+        alert("Neturi tiek licų");
         reject("You don't have that much money");
       } else if (this.readyState == 4) {
         standInProgress = false;
@@ -417,17 +423,21 @@ standButton.addEventListener('click', function stand() {
 });
 
 function tie() {
+  outcomeAmount = Number(stake.textContent)
   ending.classList.remove('hide');
   ending.textContent = `Lygiosios`;
   moneyAmount.classList.add('hide');
   moneyAmountText.classList.add('hide');
+  restartButton.disabled = false;
+  gameOutcome = 'draw'
+  winningAnimation()
   // currentStake = 0;
   // stake.textContent = `0`;
   // potentialWinnings.textContent = `0`;
-  // restartButton.disabled = false;
 }
 
 function won() {
+  outcomeAmount = Number(potentialWinnings.textContent)
   ending.classList.remove('hide');
   ending.textContent = `Laimėjai`;
   moneyAmount.classList.add('hide');
@@ -438,6 +448,8 @@ function won() {
   restartButton.disabled = false;
   hitButton.disabled = true;
   standButton.disabled = true;
+  gameOutcome = 'win'
+  winningAnimation()
 }
 
 restartButton.addEventListener('click', function restart() {
@@ -449,6 +461,8 @@ restartButton.addEventListener('click', function restart() {
   dealer.aces = 0;
   player.points = 0;
   dealer.points = 0;
+  player.usedAces = 0;
+  dealer.usedAces = 0;
   player.updatePoints();
   dealer.updatePoints();
   player.cardPlaces.forEach(cardPlace => {

@@ -2,10 +2,10 @@ console.log('hafhajkfhaf');
 let canvas = document.getElementById('gameScreen');
 let ctx = canvas.getContext('2d');
 
-const GAME_WIDTH = 336;
-const GAME_HEIGHT = 372;
-const PLAY_TEXT = "Žaisti";
-const PAUSE_TEXT = "Sustabdyti";
+const GAME_WIDTH = canvas.width;
+const GAME_HEIGHT = canvas.height;
+const PLAY_TEXT = "ŽAISTI";
+const PAUSE_TEXT = "SUSTABDYTI";
 
 let game = new Game(GAME_WIDTH, GAME_HEIGHT);
 game.start();
@@ -17,7 +17,7 @@ var startStopButton = document.getElementById('start_stop_btn');
 startStopButton.addEventListener('click', event => {
   if (game.lost || game.won) {
     
-    // !!! pervesti į banką kiekį: game.score
+    // !!! pervesti į banką kiekį: game.score / 100
 
     game.start();
   }
@@ -30,8 +30,8 @@ startStopButton.addEventListener('click', event => {
 
   if (playing) startStopButton.innerHTML = PAUSE_TEXT;
   else startStopButton.innerHTML = PLAY_TEXT;
-  if (playing) gameLog.innerHTML = "Žaidžiama";
-  else gameLog.innerHTML = "Sustabdyta";
+  if (playing) gameLog.innerHTML = "ŽAIDŽIAMA";
+  else gameLog.innerHTML = "SUSTABDYTA";
 });
 
 document.getElementById('quit_btn').addEventListener('click', event => {
@@ -39,7 +39,7 @@ document.getElementById('quit_btn').addEventListener('click', event => {
  /* game.pause(); 
   game.quit(); */
 
-  // !!! pervesti į banką kiekį: game.score
+  // !!! pervesti į banką kiekį: game.score / 100
 
   game.start();
 
@@ -60,9 +60,9 @@ function gameLoop(timestamp) {
 
   if (game.lost || game.won) {
     playing = false;
-    if (game.lost) gameLog.innerHTML = "Pralaimėta...";
-    else gameLog.innerHTML = "Laimėjot!";
-    startStopButton.innerHTML = "Iš naujo";
+    if (game.lost) gameLog.innerHTML = "PRALAIMĖTA...";
+    else gameLog.innerHTML = "LAIMĖJOT!";
+    startStopButton.innerHTML = "IŠ NAUJO";
   }
 
   requestAnimationFrame(gameLoop);

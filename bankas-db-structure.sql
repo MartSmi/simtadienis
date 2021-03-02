@@ -6,6 +6,7 @@ USE `bankas`;
 -- Table structure for table `sessions`
 --
 DROP TABLE IF EXISTS `blackjack`;
+DROP TABLE IF EXISTS `auction`;
 DROP TABLE IF EXISTS `play_history`;
 DROP TABLE IF EXISTS `transactions`;
 DROP TABLE IF EXISTS `sessions`;
@@ -100,5 +101,19 @@ CREATE TABLE `blackjack` (
   KEY `game_session_id` (`game_session_id`),
   CONSTRAINT `game_session_id` FOREIGN KEY (`game_session_id`) REFERENCES `play_history` (`id`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `auction` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `item_name` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `biggest_bet` int NOT NULL DEFAULT '0',
+  `bettor_id` int NOT NULL,
+  `in_progress` tinyint(1) NOT NULL DEFAULT '1',
+  `time` time NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `bettor_id` FOREIGN KEY (`bettor_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
