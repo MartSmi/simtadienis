@@ -88,4 +88,7 @@ function gameOverRequest() {
     },
     body: JSON.stringify({ gameSessionID, score: game.score }),
   });
+  gameOutcome = 'win'
+  outcomeAmount = Math.round(game.score/100)
+  winningAnimation()
 }
