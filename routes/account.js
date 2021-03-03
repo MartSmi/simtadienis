@@ -8,6 +8,7 @@ var vs = require('express-validator/filter');
 
 router.get('/', [
   vs.sanitizeQuery('nottime').toBoolean(true),
+  vs.sanitizeQuery('aftertime').toBoolean(true),
   vs.sanitizeQuery('auctionNotStarted').toBoolean(true),
 ],
 function (req, res, next) {
@@ -21,6 +22,7 @@ function (req, res, next) {
   var id = req.session.userID;
 
   opts.nottime = req.query.nottime;
+  opts.aftertime = req.query.aftertime;
   opts.auctionNotStarted = req.query.auctionNotStarted;
 
   Q.ninvoke(dbPool, 'query', 'SELECT * FROM users WHERE id = ?', id)
