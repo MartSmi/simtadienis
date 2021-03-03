@@ -2,7 +2,7 @@
   box-sizing: border-box;
   font-family: arial;
   color: black;
-  margin: auto;
+  /* margin: auto; */
   float: left;
 }
 
@@ -19,24 +19,22 @@ body {
 .wall {
   height: 70%;
   width: 10%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/games/tetris/siena.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/images/games/tetris/siena.jpg');
   background-size: 60%;
   box-shadow: 2vw 0vw #332210;
-
 }
 
 .playArea {
   height: 70%;
   width: 15%;
   background-color: black;
-
 }
 
 .side {
   height: 70%;
   width: 32.5%;
   /*background-image: url("sd.png");*/
-
 }
 
 .s2 {
@@ -45,13 +43,11 @@ body {
   /* background-color: white;*/
 }
 
-
 .hat1 {
-
-
   height: 100%;
   width: 35%;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("/images/games/tetris/siena.jpg");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url('/images/games/tetris/siena.jpg');
   background-size: 15%;
   /*box-shadow: 1vw 2vw dimgray;*/
 }
@@ -73,15 +69,17 @@ body {
   height: 90%;
   box-shadow: 0vw 2vw #332210;
 }
-#start-stop-btn{
-  width: 65%; 
+#start-stop-btn {
+  width: 65%;
   height: 100%;
+  font-size: 1vw;
 }
-#quit-btn{
-  width: 34%; 
+#quit-btn {
+  width: 35%;
   height: 100%;
+  font-size: 1vw;
 }
-#bdy{
+#bdy {
   position: absolute;
   height: 90vh;
   width: 90vw;
@@ -89,7 +87,11 @@ body {
   left: 50%;
   transform: translate(-50%, 0);
 }
-img{
+#btns {
+  width: 100%;
+}
+
+img:not(#topbarCoinImg) {
   display: none;
   width: 2vw;
   height: 2vw;
@@ -100,6 +102,8 @@ img{
   z-index: 1;
 }
 
-.navbar-brand, .nav-link, .navbar-text {
+.navbar-brand,
+.nav-link,
+.navbar-text {
   color: #a79a90;
 }

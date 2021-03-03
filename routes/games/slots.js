@@ -1,14 +1,18 @@
-const { resolve } = require('app-root-path');
 const appRoot = require('app-root-path');
 const express = require('express');
 const dbPool = require(appRoot + '/db').pool;
 const logger = require(appRoot + '/logger');
 const router = express.Router();
 const gameID = 2; //Slots' game id
+const enterTimestamp = process.env.ENTER_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /slots without logging in');
+    res.redirect(303, '/');
+    return;
+  } else if (Date.now() < enterTimestamp) {
+    logger.warn('attempt to access /slots before time');
     res.redirect(303, '/');
     return;
   } else {

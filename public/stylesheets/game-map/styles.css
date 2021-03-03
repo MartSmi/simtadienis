@@ -1,103 +1,134 @@
-*, *::before, *::after {
-    padding: 0;
-    margin: 0;
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    background-color: #1d6487;
-    height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  background-color: #1d6487;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .content-div {
-    position: relative;
+  position: relative;
 }
 
 .image-div {
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: relative;
-    height: 50vw;
-    width: 88.9vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  position: relative;
+  height: 50vw;
+  width: 88.9vw;
 }
 
-.icon:hover {
-    filter: drop-shadow(0 0 15px #f9f753ba);
-  }
-  
-  
+.gameContainer:hover {
+  cursor: pointer;
+}
+.gameContainer:hover .gameIcon {
+  filter: drop-shadow(0 0 15px #fafafaba);
+  transform: scale(0.9);
+  -webkit-transform: scale(0.9);
+}
+
+.gameIcon {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
 .mapImage {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    z-index: 0;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 0;
 }
 
-.pacmanImage {
-    position: absolute;
-    height: 9vw;
-    width: 10.47vw;
-    top: 15%;
-    left: 18%;
+.pacmanContainer {
+  position: absolute;
+  height: 6.79vw;
+  width: 7.9vw;
+  top: 16%;
+  left: 29%;
 }
 
-.tetrisImage {
-    position: absolute;
-    height: 9vw;
-    width: 10.47vw;
-    top: 35%;
-    left: 25%;
+.tetrisContainer {
+  position: absolute;
+  height: 10.32vw;
+  width: 12vw;
+  top: 50%;
+  left: 22%;
 }
 
-.snakeImage {
-    position: absolute;
-    height: 9vw;
-    width: 10.47vw;
-    top: 50%;
-    left: 12.5%;
+.snakeContainer {
+  position: absolute;
+  height: 9vw;
+  width: 10.47vw;
+  top: 38%;
+  left: 9.5%;
 }
 
-.rouletteImage {
-    position: absolute;
-    height: 9vw;
-    width: 8.16vw;
-    top: 13%;
-    left: 45%;
+.rouletteContainer {
+  position: absolute;
+  height: 9vw;
+  width: 8.16vw;
+  top: 13%;
+  left: 45%;
 }
 
-.slotsImage {
-    position: absolute;
-    height: 12vw;
-    width: 12vw;
-    top: 22%;
-    left: 56%;
+.slotsContainer {
+  position: absolute;
+  height: 9.8vw;
+  width: 9.8vw;
+  top: 22%;
+  left: 61%;
 }
 
-.blackjackImage {
-    position: absolute;
-    height: 9vw;
-    width: 8.16vw;
-    top: 40%;
-    left: 48%;
+.blackjackContainer {
+  position: absolute;
+  height: 9vw;
+  width: 8.16vw;
+  top: 34%;
+  left: 52%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+}
+.blackjackImage:hover {
+  transform: translate(-50%, -50%) scale(0.9);
+  -webkit-transform: translate(-50%, -50%) scale(0.9);
 }
 
-.bankImage {
-    position: absolute;
-    height: 10vw;
-    width: 15vw;
-    top: 58%;
-    left: 65%;
+.bankContainer {
+  position: absolute;
+  height: 10vw;
+  width: 15vw;
+  top: 62%;
+  left: 64%;
 }
 
 .navbar {
-    background-color: #1d6487;
-    position: absolute;
+  background-color: #1d6487;
+  position: absolute;
 }
-  
-.navbar-brand, .nav-link, .navbar-text {
-    color: #c1dfd2;
+
+.navbar-brand,
+.nav-link,
+.navbar-text {
+  color: #c1dfd2;
+}
+
+.dune {
+  position: absolute;
+  z-index: 1;
+  height: 12vw;
+  width: 14.14vw;
+  top: 22%;
+  left: 44%;
 }

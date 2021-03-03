@@ -2,25 +2,70 @@ extends ../topbarLayout
 
 block content
   link(rel="stylesheet", href="/stylesheets/games/pacman.css", type="text/css")
-  img#img_pacman(src='/images/games/pacman/pacman.svg')
-  img#img_ghost(src='/images/games/pacman/ghost.png')
-  img#img_wall(src='/images/games/pacman/wall.svg')
-  img#img_bg(src='/images/games/pacman/bg.svg')
-  img#img_dot(src='/images/games/pacman/dot.svg')
-  img#img_fruit(src='/images/games/pacman/fruit.png')
-  img#img_red_ghost(src='/images/games/pacman/redghost.png')
-  img#img_pink_ghost(src='/images/games/pacman/pinkghost.png')
-  img#img_yellow_ghost(src='/images/games/pacman/yellowghost.png')
-  img#img_cyan_ghost(src='/images/games/pacman/cyanghost.png')
-  img#img_frightened_ghost(src='/images/games/pacman/frightenedghost.png')
-  img#img_frightened_blink_ghost(src='/images/games/pacman/frightenedghostblink.png')
-  img#img_eaten_ghost(src='/images/games/pacman/eatenghost.jpg')
-  canvas#gameScreen(width='420' height='540')
-  div#texts
-    div#score_text Score: 0000
-    div#log_text Žaidimas nepradėtas
-  button#start_stop_btn Žaisti
-  button#quit_btn Baigti žaidimą ir atsiimti prizą
+  //- img#img_pacman(src='/images/games/pacman/pacman.svg')
+
+  #imgContainer
+    //- pacman movement sprites
+    img#img_pacman1(src='/images/games/pacman/pacman-sprites/1.svg')
+    img#img_pacman2(src='/images/games/pacman/pacman-sprites/2.svg')
+    img#img_pacman3(src='/images/games/pacman/pacman-sprites/3.svg')
+    img#img_pacman4(src='/images/games/pacman/pacman-sprites/4.svg')
+    img#img_pacman5(src='/images/games/pacman/pacman-sprites/5.svg')
+
+    //- pacman death sprites
+    img#img_pacman_death1(src='/images/games/pacman/pacman-sprites/death1.svg')
+    img#img_pacman_death2(src='/images/games/pacman/pacman-sprites/death2.svg')
+    img#img_pacman_death3(src='/images/games/pacman/pacman-sprites/death3.svg')
+    img#img_pacman_death4(src='/images/games/pacman/pacman-sprites/death4.svg')
+    img#img_pacman_death5(src='/images/games/pacman/pacman-sprites/death5.svg')
+
+    //- ghost body sprites
+    img#img_red_ghost_body1(src='/images/games/pacman/ghost-sprites/vaiduokliukas1_red.svg')
+    img#img_red_ghost_body2(src='/images/games/pacman/ghost-sprites/vaiduokliukas2_red.svg')
+    img#img_pink_ghost_body1(src='/images/games/pacman/ghost-sprites/vaiduokliukas1_r.svg')
+    img#img_pink_ghost_body2(src='/images/games/pacman/ghost-sprites/vaiduokliukas2_r.svg')
+    img#img_orange_ghost_body1(src='/images/games/pacman/ghost-sprites/vaiduokliukas1_g.svg')
+    img#img_orange_ghost_body2(src='/images/games/pacman/ghost-sprites/vaiduokliukas2_g.svg')
+    img#img_cyan_ghost_body1(src='/images/games/pacman/ghost-sprites/vaiduokliukas1_m.svg')
+    img#img_cyan_ghost_body2(src='/images/games/pacman/ghost-sprites/vaiduokliukas2_m.svg')
+
+    //- ghost eyes sprites
+    img#img_ghost_eyes(src='/images/games/pacman/ghost-sprites/vbe.svg')
+
+    //- ghost frightened
+    img#img_frightened_ghost(src='/images/games/pacman/ghost-sprites/vaiduokliukas1_tm.svg')
+    img#img_frightened_blink_ghost(src='/images/games/pacman/ghost-sprites/frightenedghostblink.png')
+
+    //- other sprites
+    img#img_bg(src='/images/games/pacman/bg.png')
+    img#img_dot(src='/images/games/pacman/dot.svg')
+    img#img_fruit(src='/images/games/pacman/vysnios.svg')
+    img#img_fruitPicked(src='/images/games/pacman/fruitPicked.png')
+
+    img#img_num1(src='/images/games/pacman/number1.png')
+    img#img_num2(src='/images/games/pacman/number2.png')
+    img#img_num3(src='/images/games/pacman/number3.png')
+
+    img#img_grid(src='/images/games/pacman/su_varteliais_1.svg')
+  
+
+  canvas#gameScreen(width='420' height='465')
+  .gameInfoContainer
+    div#texts
+      div#life_container
+        div#life_text.infoText
+        div#life_count
+      .scoreLevelContainer
+        div#text_container
+          div#score_text.infoText Score: 0000
+          div#level_text.infoText
+        div#count_container
+          div#score_count.infoCounts
+          div#level_count.infoCounts
+      div#log_text Žaidimas nepradėtas
+    .gameButtons
+      button#start_stop_btn Žaisti
+      button#quit_btn Baigti žaidimą ir atsiimti prizą
 
   script(src='/javascripts/games/pacman/graph.js')
   script(src='/javascripts/games/pacman/input.js')
