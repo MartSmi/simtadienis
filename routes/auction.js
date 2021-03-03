@@ -80,7 +80,6 @@ router.post(
         (err, rows) => {
           if (err) {
             // logger.error(`DB error on /blackjack (${req.ip}):`);
-            next(err);
             reject(err);
           } else if (rows.length < 1) {
             logger.error(`non-existant logged-in user: ${req.session.userID}`);
@@ -108,7 +107,7 @@ router.post(
           );
           res.json({
             success: false,
-            error: `neužtenka pinigų (dabartinis balansas: ${balance})`,
+            error: `neužtenka pinigų`,
           });
           throw new Error("not money");
         } else if (row.is_frozen || !row.can_send) {
@@ -128,7 +127,6 @@ router.post(
           'SELECT * FROM auction ORDER BY id DESC LIMIT 1',
           (err, rows) => {
             if (err) {
-              next(err);
               reject(err);
             } else if (rows.length < 1) {
               logger.info(
@@ -158,7 +156,7 @@ router.post(
           );
           res.json({
             success: false,
-            error: `per mažas statymas (didžiausias statymas kol kas: ${biggestBet})`,
+            error: `per mažas statymas`,
           });
           throw new Error("bet less than biggest");
         } else if (!inProgress) {
@@ -181,7 +179,6 @@ router.post(
           (err) => {
             if (err) {
               // logger.error(`DB error on /blackjack (${req.ip}):`);
-              next(err);
               throw err;
             }
           }
@@ -194,7 +191,6 @@ router.post(
           (err) => {
             if (err) {
               // logger.error(`DB error on /blackjack (${req.ip}):`);
-              next(err);
               throw err;
             }
           }
@@ -216,15 +212,7 @@ router.post(
       })
       .catch((err) => {
         logger.error('transfer error: ' + err);
-        // dbConn.rollback(function () {
-        //   dbConn.release();
-        //   res.json({
-        //     success: false,
-        //     error: 'techninė.',
-        //   });
-        // });
-      })
-      .done();
+      });
   }
 );
 
@@ -242,10 +230,10 @@ router.get('/get-biggest-bet', function (req, res) {
           reject(err);
         } else if (rows.length < 1) {
           logger.error(`auction has not started`);
-          res.json({
-            success: false,
-            error: 'aukcionas neprasidėjęs.',
-          });
+          // res.json({
+          //   success: false,
+          //   error: 'aukcionas neprasidėjęs.',
+          // });
           reject(err);
         }
        
@@ -266,6 +254,10 @@ router.get('/get-biggest-bet', function (req, res) {
           if (err) {
             next(err);
             reject(err);
+            // res.json({
+            //   success: false,
+            //   error: err,
+            // });
           } else if (rows.length < 1) {
             reject(new Error("user not found"));
           }
