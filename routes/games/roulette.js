@@ -43,6 +43,7 @@ router.post('/spin', (req, res, next) => {
   }
   let bet = req.body.amount;
   let winnings = bet;
+  let cost = bet;
   let userID = req.session.userID;
   balance
     .get(userID)
@@ -68,8 +69,9 @@ router.post('/spin', (req, res, next) => {
         winnings *= 2;
       } else {
         // Lost
-        winnings *= -1;
+        winnings *= 0;
       }
+      winnings -= cost;
       req.session.balance += winnings;
       res.send({ block });
 
