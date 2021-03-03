@@ -51,6 +51,7 @@ router.post('/bet', function (req, res, next) {
           balance.update(bet * -1, userID).catch(err => {
             reject(err);
           });
+          req.session.balance -= bet;
           playHistory.insert(userID, gameID, bet, 0, false).then(row => {
             resolve(row.insertId);
           });
@@ -291,6 +292,7 @@ async function won(ip, userID, gameSessionID, next) {
     next(err);
     return;
   });
+
   dbPool.query(
     'UPDATE play_history SET winnings = bet, ended = TRUE WHERE id = ?',
     [gameSessionID],
@@ -323,6 +325,7 @@ async function tie(ip, userID, gameSessionID, next) {
     next(err);
     return;
   });
+  
   dbPool.query(
     'UPDATE play_history SET winnings = 0, ended = TRUE WHERE id = ?',
     [gameSessionID],

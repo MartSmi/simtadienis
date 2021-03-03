@@ -93,10 +93,10 @@ function calWinnings(slots) {
   if (slots[0] == slots[1] && slots[1] == slots[2]) {
     if (slots[0] == 6) {
       // Got all best slots; Odds 1:83
-      return 250;
+      return 245;
     } else {
       // Got all the same slots; Odds 6:78
-      return 100;
+      return 95;
     }
   } else if (
     (slots[0] == slots[1] && slots[2] == 6) ||
@@ -104,14 +104,14 @@ function calWinnings(slots) {
     (slots[1] == slots[2] && slots[0] == 6)
   ) {
     // 2 slots are the same and the other one is the best one; Odds 6:78
-    return 25;
+    return 20;
   } else if (
     (slots[0] == slots[1] && slots[0] == 6) ||
     (slots[0] == slots[2] && slots[0] == 6) ||
     (slots[1] == slots[2] && slots[1] == 6)
   ) {
     // 2 slots are the best ones; Odds 6:78
-    return 25;
+    return 20;
   }
   // All slots are different or no best slot; Odds 65:19
   return -5;
