@@ -219,6 +219,8 @@ router.post(
 router.get('/get-biggest-bet', function (req, res, next) {
   var biggestBet;
 
+  // console.log("here");
+
   new Promise((resolve, reject) => {
     dbPool.query(
       'SELECT * FROM auction ORDER BY id DESC LIMIT 1',
@@ -243,7 +245,8 @@ router.get('/get-biggest-bet', function (req, res, next) {
       const row = rows[0];
       biggestBet = row.biggest_bet;
       let bettorId = row.bettor_id;
-
+// console.log("hhhh");
+// console.log("biggest Bet = " + biggestBet + "  bettorId = " + bettorId);
       return new Promise((resolve, reject) => {
         dbPool.query(
           'SELECT * FROM users WHERE id = ?',
@@ -257,7 +260,10 @@ router.get('/get-biggest-bet', function (req, res, next) {
               //   error: err,
               // });
             } else if (rows.length < 1) {
+              console.log("user was not found...");
               reject(new Error('user not found'));
+            } else {
+              resolve(rows);
             }
           }
         );
@@ -266,6 +272,8 @@ router.get('/get-biggest-bet', function (req, res, next) {
     .then(rows => {
       const row = rows[0];
       let bettorName = row.full_name;
+
+      // console.log("herehhrerhehrehs");
 
       res.send({
         biggest_bet: biggestBet,

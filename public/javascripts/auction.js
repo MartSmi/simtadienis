@@ -38,12 +38,14 @@ $(function () {
 
 var biggestBetField = document.getElementById('biggestBet')
 var betHolder = document.getElementById('betHolder')
-console.log(biggestBetField);
+// console.log(biggestBetField);
 
 function updateBiggestBetFields(){	
+	// console.log("dsd");
 	$.get(
 		'/auction/get-biggest-bet',
 		function(data) {
+			// console.log(data);
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
 			biggestBetField.innerHTML = '<img src=/images/auction/L.svg height="30px" width="30px">' + biggestBet
