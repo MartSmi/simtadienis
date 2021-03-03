@@ -174,7 +174,7 @@ router.post('/hit', function (req, res, next) {
           (err, rows) => {
             if (err) {
               logger.error(`DB error on /blackjack (${req.ip}):`);
-              next(err);
+              // next(err);
               return;
             }
           }
@@ -235,7 +235,7 @@ router.post('/stand', async function (req, res, next) {
       (err, rows) => {
         if (err) {
           logger.error(`DB error on /blackjack/stand update (${req.ip}):`);
-          next(err);
+          // next(err);
           return;
         }
       }
