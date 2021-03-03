@@ -101,7 +101,7 @@ CREATE TABLE `blackjack` (
   KEY `game_session_id` (`game_session_id`),
   CONSTRAINT `game_session_id` FOREIGN KEY (`game_session_id`) REFERENCES `play_history` (`id`),
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

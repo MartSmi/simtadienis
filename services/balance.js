@@ -23,6 +23,7 @@ function update(amount, userID) {
         if (err) {
           reject(err);
         }
+        resolve();
       }
     );
   });

@@ -36,8 +36,9 @@ $(function () {
 	});
 });
 
-var biggestBetText = document.getElementById('biggestBetText');
-//console.log(biggestBetText);
+var biggestBetField = document.getElementById('biggestBet')
+var betHolder = document.getElementById('betHolder')
+console.log(biggestBetField);
 
 function updateBiggestBetFields(){	
 	$.get(
@@ -45,7 +46,8 @@ function updateBiggestBetFields(){
 		function(data) {
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
-			biggestBetText.innerHTML = 'Daugiausiai pastatyta: ' + biggestBet + ' licų (' + bettorName + ')';
+			biggestBetField.innerHTML = '<img src=/images/auction/L.svg height="30px" width="30px">' + biggestBet
+			betHolder.innerHTML = bettorName
 		}
 	).fail(() => {
 		console.log("Klaida, techninė.");
@@ -57,4 +59,15 @@ function updateBiggestBetFields(){
     setTimeout(updateBiggestBetFields, 1000);
 }
 
-updateBiggestBetFields();
+setTimeout(updateBiggestBetFields, 1000);
+
+
+
+
+
+// new Twitch.Player("twitch-embed", {
+// 	width: 800,
+// 	height: 650,
+// 	channel: "extracredits",
+// 	parent: ['localhost']
+// });
