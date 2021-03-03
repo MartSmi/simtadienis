@@ -89,7 +89,7 @@ router.post(
             });
             reject(err);
           }
-         
+
           resolve(rows);
         }
       );
@@ -98,7 +98,6 @@ router.post(
         const row = rows[0];
         from_full_name = row.full_name;
         from_is_station = row.is_station;
-
 
         const balance = row.balance;
         if (req.body.amount > balance) {
@@ -109,7 +108,7 @@ router.post(
             success: false,
             error: `neužtenka pinigų`,
           });
-          throw new Error("not money");
+          throw new Error('not money');
         } else if (row.is_frozen || !row.can_send) {
           const frozen = row.is_frozen ? 'frozen' : 'non-can_send';
           logger.warn(
@@ -119,30 +118,31 @@ router.post(
             success: false,
             error: 'tavo sąskaitai neleidžiama daryti mokėjimų',
           });
-          throw new Error("frozen account");
+          throw new Error('frozen account');
         }
 
-        return new Promise ((resolve, reject) => {
+        return new Promise((resolve, reject) => {
           dbPool.query(
-          'SELECT * FROM auction ORDER BY id DESC LIMIT 1',
-          (err, rows) => {
-            if (err) {
-              reject(err);
-            } else if (rows.length < 1) {
-              logger.info(
-                `${from_full_name} attempted to bet but auction has not started`
-              );
-              res.json({
-                success: false,
-                error: 'aukcionas neprasidėjęs',
-              });
-              reject(err);
-            }
+            'SELECT * FROM auction ORDER BY id DESC LIMIT 1',
+            (err, rows) => {
+              if (err) {
+                reject(err);
+              } else if (rows.length < 1) {
+                logger.info(
+                  `${from_full_name} attempted to bet but auction has not started`
+                );
+                res.json({
+                  success: false,
+                  error: 'aukcionas neprasidėjęs',
+                });
+                reject(err);
+              }
 
-            resolve(rows);
-          });
+              resolve(rows);
+            }
+          );
         });
-          // SELECT * FROM auction WHERE id = (SELECT MAX(id) FROM auction)
+        // SELECT * FROM auction WHERE id = (SELECT MAX(id) FROM auction)
       })
       .then(rows => {
         const row = rows[0];
@@ -158,7 +158,7 @@ router.post(
             success: false,
             error: `per mažas statymas`,
           });
-          throw new Error("bet less than biggest");
+          throw new Error('bet less than biggest');
         } else if (!inProgress) {
           logger.info(
             `${from_full_name} attempted to bet when not in progress (auction)`
@@ -167,7 +167,7 @@ router.post(
             success: false,
             error: `statymas pasibaigęs`,
           });
-          throw new Error ("bet not in progress");
+          throw new Error('bet not in progress');
         }
         //resolve();
         //return Q.ninvoke(dbConn, 'beginBet');
@@ -176,7 +176,7 @@ router.post(
         dbPool.query(
           'UPDATE auction SET biggest_bet = ? WHERE id = ?',
           [req.body.amount, rowId],
-          (err) => {
+          err => {
             if (err) {
               // logger.error(`DB error on /blackjack (${req.ip}):`);
               throw err;
@@ -188,7 +188,7 @@ router.post(
         dbPool.query(
           'UPDATE auction SET bettor_id = ? WHERE id = ?',
           [fromID, rowId],
-          (err) => {
+          err => {
             if (err) {
               // logger.error(`DB error on /blackjack (${req.ip}):`);
               throw err;
@@ -210,14 +210,13 @@ router.post(
           time: `${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`,
         });
       })
-      .catch((err) => {
+      .catch(err => {
         logger.error('transfer error: ' + err);
       });
   }
 );
 
-router.get('/get-biggest-bet', function (req, res) {
-
+router.get('/get-biggest-bet', function (req, res, next) {
   var biggestBet;
 
   new Promise((resolve, reject) => {
@@ -236,52 +235,46 @@ router.get('/get-biggest-bet', function (req, res) {
           // });
           reject(err);
         }
-       
         resolve(rows);
       }
     );
   })
-  .then(rows => {
-    const row = rows[0];
-    biggestBet = row.biggest_bet;
-    let bettorId = row.bettor_id;
+    .then(rows => {
+      const row = rows[0];
+      biggestBet = row.biggest_bet;
+      let bettorId = row.bettor_id;
 
-    return new Promise((resolve, reject) => {
-      dbPool.query(
-        'SELECT * FROM users WHERE id = ?',
-        [bettorId],
-        (err, rows) => {
-          if (err) {
-            next(err);
-            reject(err);
-            // res.json({
-            //   success: false,
-            //   error: err,
-            // });
-          } else if (rows.length < 1) {
-            reject(new Error("user not found"));
+      return new Promise((resolve, reject) => {
+        dbPool.query(
+          'SELECT * FROM users WHERE id = ?',
+          [bettorId],
+          (err, rows) => {
+            if (err) {
+              next(err);
+              reject(err);
+              // res.json({
+              //   success: false,
+              //   error: err,
+              // });
+            } else if (rows.length < 1) {
+              reject(new Error('user not found'));
+            }
           }
+        );
+      });
+    })
+    .then(rows => {
+      const row = rows[0];
+      let bettorName = row.full_name;
 
-          resolve(rows);
-        }
-      );
+      res.send({
+        biggest_bet: biggestBet,
+        bettor_name: bettorName,
+      });
+    })
+    .catch(err => {
+      logger.error('transfer error: ' + err);
     });
-
-    
-  }).then(rows => {
-    const row = rows[0];
-    let bettorName = row.full_name;
-
-    res.send ({
-      'biggest_bet': biggestBet,
-      'bettor_name': bettorName
-    });
-  }).catch((err) => {
-    logger.error('transfer error: ' + err);
-  });
-
-
-
-})
+});
 
 module.exports = router;

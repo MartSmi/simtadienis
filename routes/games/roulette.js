@@ -59,7 +59,7 @@ router.post('/spin', (req, res, next) => {
 
       if (chosenColor == 2 && block == 0) {
         // Won on green
-        winnings *= 20;
+        winnings *= 15;
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
         winnings *= 2;
@@ -78,7 +78,7 @@ router.post('/spin', (req, res, next) => {
     })
     .catch(err => {
       logger.error(`DB error on /roulette (${req.ip}):`);
-      next(err);
+      // next(err);
     });
 });
 module.exports = router;
