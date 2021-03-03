@@ -86,9 +86,10 @@ function gameOverRequest() {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ gameSessionID, score: game.score }),
+    body: JSON.stringify({ gameSessionID, score: game.score, level: game.curLevel }),
   });
   gameOutcome = 'win'
   outcomeAmount = Math.round(game.score/100)
+  outcomeAmount += (game.curLevel-1) * 50
   winningAnimation()
 }

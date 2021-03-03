@@ -51,7 +51,9 @@ router.post('/end', function (req, res, next) {
   const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
+  const level = req.body.level;
   const winnings = Math.round(score / 100);
+  winnings += (level-1) * 50;
   playHistory.update(gameSessionID, winnings);
   balance
     .update(winnings, userID)
