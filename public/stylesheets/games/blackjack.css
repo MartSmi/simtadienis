@@ -12,6 +12,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   background-color: #bfeca9;
+  overflow-x: hidden;
 }
 
 .topbar {
