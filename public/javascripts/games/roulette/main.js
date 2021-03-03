@@ -52,7 +52,7 @@ function spin() {
       winningAnimation()
       if (chosenColor == 2 && block == 0) {
         // Won on green
-        winnings *= 20;
+        winnings *= 15;
         won(winnings);
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
@@ -88,6 +88,7 @@ function won(winnings) {
     spinning = false;
     gameOutcome = 'win'
     winningAnimation()
+    // updateTopbarBalanceNumber(winnings);
   }, 5000);
 }
 
@@ -96,6 +97,7 @@ function lost(winnings) {
   setTimeout(function () {
     spinning = false;
     gameOutcome = ''
-    winningAnimation()
+    // winningAnimation()
+    // updateTopbarBalanceNumber(winnings);
   }, 5000);
 }

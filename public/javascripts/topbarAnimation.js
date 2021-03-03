@@ -1,3 +1,5 @@
+let balanceText = document.getElementById('balanceText');
+
 let winningAnimationContainer = document.querySelector('[data-winning-animation]')
 let gameOutcome
 let outcomeAmount
@@ -25,8 +27,11 @@ async function winningAnimation() {
     winningAnimationContainer.textContent = `+${outcomeAmount}`
     winningAnimationContainer.innerHTML += '<img src=/images/topbar/moneta.svg height="30px" width="30px">'
   }
+  let tmpAmount = outcomeAmount;
   await timer(1500)
   easeOut()
+  if (gameOutcome == 'win' || gameOutcome == 'lose' || gameOutcome == 'draw')
+    updateTopbarBalanceNumber(tmpAmount);
 }
 
 async function easeOut() {
@@ -38,4 +43,9 @@ async function easeOut() {
       winningAnimationContainer.classList.add('hide')
     }
   }
+}
+
+function updateTopbarBalanceNumber(winnings) {
+  let newBalance = parseInt(balanceText.innerHTML) + winnings;
+  balanceText.innerHTML = newBalance;
 }
