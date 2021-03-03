@@ -10,22 +10,22 @@ const reels = [
 document.getElementById('Gira').addEventListener('click', doSlot);
 
 let spinInProgress = false;
-const spin = [
-  new Audio('res/sounds/spin.mp3'),
-  new Audio('res/sounds/spin.mp3'),
-  new Audio('res/sounds/spin.mp3'),
-  new Audio('res/sounds/spin.mp3'),
-  new Audio('res/sounds/spin.mp3'),
-  new Audio('res/sounds/spin.mp3'),
-  new Audio('res/sounds/spin.mp3'),
-];
-const coin = [
-  new Audio('res/sounds/coin.mp3'),
-  new Audio('res/sounds/coin.mp3'),
-  new Audio('res/sounds/coin.mp3'),
-];
-const win = new Audio('res/sounds/win.mp3');
-const lose = new Audio('res/sounds/lose.mp3');
+// const spin = [
+//   new Audio('res/sounds/spin.mp3'),
+//   new Audio('res/sounds/spin.mp3'),
+//   new Audio('res/sounds/spin.mp3'),
+//   new Audio('res/sounds/spin.mp3'),
+//   new Audio('res/sounds/spin.mp3'),
+//   new Audio('res/sounds/spin.mp3'),
+//   new Audio('res/sounds/spin.mp3'),
+// ];
+// const coin = [
+// new Audio('res/sounds/coin.mp3'),
+//   new Audio('res/sounds/coin.mp3'),
+//   new Audio('res/sounds/coin.mp3'),
+// ];
+// const win = new Audio('res/sounds/win.mp3');
+// const lose = new Audio('res/sounds/lose.mp3');
 var audio = false;
 var info = true;
 
