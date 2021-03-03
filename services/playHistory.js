@@ -13,5 +13,16 @@ function insert(userID, gameID, bet, winnings, ended = true) {
     );
   });
 }
-
-module.exports = { insert };
+function update(gameSessionID, winnings) {
+  return new Promise((resolve, reject) => {
+    dbPool.query(
+      'UPDATE  play_history SET winnings = ?, ended=TRUE WHERE id = ?',
+      [winnings, gameSessionID],
+      (err, row) => {
+        if (err) reject(err);
+        resolve(row);
+      }
+    );
+  });
+}
+module.exports = { insert, update };

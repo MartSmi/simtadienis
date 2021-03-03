@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 0px;
+    background-color: #470175;
+    overflow-x: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#wrapper{
+    height: 100px;
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 1%;
+}
+
+.twitch{
+    display: inline-block;
+}
+
+#bid{
+    float:left;
+    width: 100%;
+}
+
+#foo{
+    width: 200px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-size: 15px;
+}
+
+#submit{
+    float:left;
+    width: 100%;
+    padding-top: 10px;
+}
+
+#bar{
+    width: 100px;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    background:#333;
+    color: #fff;
+    font-weight: bold;
+}
+
+#bar:hover{
+    background: #7050ad;
+}
+
+.navbar {
+    background-color: #320055;
+    width: 100vw;
+    max-width: 100%;
+}
+  
+.navbar-brand, .nav-link, .navbar-text {
+    color: #9A00F3;
+}
+
+.bettingContainer {
+    position: relative;
+    height: 10vw;
+    width: 90vw;
+    left: 50%;
+    transform: translate(-50%, 0);
+    margin-top: 2%;
+    display: flex;
+    flex-direction: row;
+}
+
+.biggestBetContainer {
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 45%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.betTexts {
+    position: relative;
+    font-size: 140%;
+    height: 100%;
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    color: #e4b3ff;
+    font-style: oblique;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.betValues {
+    margin-left: 3%;
+    position: relative;
+    font-size: 140%;
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    color: #e4b3ff;
+}
+
+#biggestBet {
+    position: relative;
+    font-family: "Bodoni MT", Didot, "Didot LT STD", "Hoefler Text", Garamond, "Times New Roman", serif;
+    font-weight: 800;
+    font-size: 300%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#betHolder {
+    position: relative;
+    margin-top: 15%;
+    bottom: 15%;
+}
+
+#betHolderText {
+    margin-top: 25%;
+}
+
+#biggestBetText, #betHolderText {
+    text-align: right;
+}
+
+#coinImg {
+    position: relative;
+    height: 40%;
+    width: 40%;
+}
+
+#decorationLine {
+    position: absolute;
+    background-color: #782fac;
+    z-index: -1;
+    width: 200%;
+    height: 22%;
+    bottom: 50%;
+}
+
+.betInputContainer {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    width: 45%;
+}
+
+#bet-form {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#amount {
+    width: 60%;
+    border-radius: 0;
+    border: 2px solid white;
+    background-color: transparent;
+    -webkit-transition: all .5s ease-out;
+    -moz-transition: all .5s ease-out;
+    -ms-transition: all .5s ease-out;
+    -o-transition: all .5s ease-out;
+    transition: all .5s ease-out;
+    outline: none;
+    color: white;
+}
+#amount::placeholder {
+    color: #945bbd;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+#amount:focus {
+    outline: none;
+    border: 3px solid white;
+    transform: scale(1.05);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#formDecorationLine {
+    position: absolute;
+    width: 200%;
+    height: 20%;
+    background-color: #782fac;
+    z-index: -1;
+    bottom: 37%;
+    left: 3.2%;
+}
+
+.btn-primary {
+    position: relative;
+    margin-left: -30%;
+    border-radius: 0;
+    border: none;
+    height: 20%;
+    width: 20%;
+    background-color: #e4b3ff;
+    color: #470175;
+    font-size: 130%;
+    font-weight: 700;
+    padding: 0;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-style: oblique;
+}
+.btn-primary:hover {
+    background-color: #ce73ff;
+    color: #e8bffd;
+    transition-duration: .3s;
+}

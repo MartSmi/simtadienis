@@ -126,6 +126,9 @@ function deathRequest() {
   xhr.open('POST', '/games/snake/end', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({ gameSessionID, score }));
+  outcomeAmount = Math.round((score / 2) * Math.pow(1.03, score));
+  gameOutcome = 'win'
+  winningAnimation()
 }
 
 function mirtis(ar) {

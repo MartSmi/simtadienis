@@ -43,6 +43,7 @@ router.post('/spin', (req, res, next) => {
   }
   let bet = req.body.amount;
   let winnings = bet;
+  let cost = bet;
   let userID = req.session.userID;
   balance
     .get(userID)
@@ -59,7 +60,7 @@ router.post('/spin', (req, res, next) => {
 
       if (chosenColor == 2 && block == 0) {
         // Won on green
-        winnings *= 20;
+        winnings *= 15;
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
         winnings *= 2;
@@ -68,8 +69,9 @@ router.post('/spin', (req, res, next) => {
         winnings *= 2;
       } else {
         // Lost
-        winnings *= -1;
+        winnings *= 0;
       }
+      winnings -= cost;
       req.session.balance += winnings;
       res.send({ block });
 
@@ -78,7 +80,7 @@ router.post('/spin', (req, res, next) => {
     })
     .catch(err => {
       logger.error(`DB error on /roulette (${req.ip}):`);
-      next(err);
+      // next(err);
     });
 });
 module.exports = router;
