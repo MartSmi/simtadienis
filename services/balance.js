@@ -23,6 +23,8 @@ function update(amount, userID) {
         if (err) {
           reject(err);
         }
+        resolve();
+        // console.log("added " + amount + " to user " + userID); 
       }
     );
   });

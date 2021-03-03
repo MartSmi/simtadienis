@@ -6,6 +6,7 @@ const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
 const gameID = 0; //Roulette's game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const endTimestamp = process.env.END_TIMESTAMP;
 
 router.get('/', (req, res, next) => {
   if (!req.session.loggedIn) {
@@ -14,6 +15,10 @@ router.get('/', (req, res, next) => {
     return;
   } else if (Date.now() < enterTimestamp) {
     logger.warn('attempt to access /roulette before time');
+    res.redirect(303, '/');
+    return;
+  } else if (Date.now() > endTimestamp) {
+    logger.warn('attempt to access /roulette after time');
     res.redirect(303, '/');
     return;
   } else {
@@ -43,6 +48,7 @@ router.post('/spin', (req, res, next) => {
   }
   let bet = req.body.amount;
   let winnings = bet;
+  let cost = bet;
   let userID = req.session.userID;
   balance
     .get(userID)
@@ -59,7 +65,7 @@ router.post('/spin', (req, res, next) => {
 
       if (chosenColor == 2 && block == 0) {
         // Won on green
-        winnings *= 20;
+        winnings *= 15;
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
         winnings *= 2;
@@ -68,8 +74,9 @@ router.post('/spin', (req, res, next) => {
         winnings *= 2;
       } else {
         // Lost
-        winnings *= -1;
+        winnings *= 0;
       }
+      winnings -= cost;
       req.session.balance += winnings;
       res.send({ block });
 
@@ -78,7 +85,7 @@ router.post('/spin', (req, res, next) => {
     })
     .catch(err => {
       logger.error(`DB error on /roulette (${req.ip}):`);
-      next(err);
+      // next(err);
     });
 });
 module.exports = router;

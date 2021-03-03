@@ -10,19 +10,21 @@ var helmet = require('helmet');
 var dbPool = require('./db').pool;
 const sessionSecret = process.env.SESSION_SECRET;
 
-var rootRouter = require('./routes/root');
-var loginRouter = require('./routes/login');
-var logoutRouter = require('./routes/logout');
-var accountRouter = require('./routes/account');
-var accountActionRouter = require('./routes/account-action');
-var adminRouter = require('./routes/admin');
-var adminActionRouter = require('./routes/admin-action');
-var gamePacman = require('./routes/games/pacman');
-var gameTetris = require('./routes/games/tetris');
-var gameBlackjack = require('./routes/games/blackjack');
-var gameSlots = require('./routes/games/slots');
-var gameRoulette = require('./routes/games/roulette');
-var gameSnake = require('./routes/games/snake');
+let rootRouter = require('./routes/root');
+let loginRouter = require('./routes/login');
+let logoutRouter = require('./routes/logout');
+let accountRouter = require('./routes/account');
+let accountActionRouter = require('./routes/account-action');
+let adminRouter = require('./routes/admin');
+let adminActionRouter = require('./routes/admin-action');
+let gamePacman = require('./routes/games/pacman');
+let gameTetris = require('./routes/games/tetris');
+let gameBlackjack = require('./routes/games/blackjack');
+let gameSlots = require('./routes/games/slots');
+let gameRoulette = require('./routes/games/roulette');
+let gameSnake = require('./routes/games/snake');
+let auctionRouter = require('./routes/auction');
+let auctionAdminRouter = require('./routes/auction-admin');
 
 var app = express();
 
@@ -40,14 +42,16 @@ app.use(
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
+      defaultSrc: ["'self'", 'https://player.twitch.tv/'],
       scriptSrc: [
         "'self'",
         'https://code.jquery.com',
         'https://stackpath.bootstrapcdn.com',
+        'https://player.twitch.tv/'
       ],
       styleSrc: ["'self'", 'https://stackpath.bootstrapcdn.com'],
       objectSrc: ["'none'"],
+      frameSrc: ['https://player.twitch.tv/', 'https://www.twitch.tv/'],
     },
   })
 );
@@ -97,6 +101,8 @@ app.use('/games/blackjack', gameBlackjack);
 app.use('/games/slots', gameSlots);
 app.use('/games/roulette', gameRoulette);
 app.use('/games/snake', gameSnake);
+app.use('/auction', auctionRouter);
+app.use('/auction-admin', auctionAdminRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

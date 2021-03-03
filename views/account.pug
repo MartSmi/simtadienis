@@ -17,6 +17,20 @@ block content
         button.close(type='button' data-dismiss='alert')
           span &times;
 
+    if aftertime 
+      .alert.alert-danger
+        img.alertIcon.alertIconLogin(src='/images/account/exclamation-mark.svg' height='100px' width='30px' alt='')
+        <div class="alertContainer"><div class="alertText">Žaidimai jau pasibaigę...</div></div>
+        button.close(type='button' data-dismiss='alert')
+          span &times;
+    
+    if auctionNotStarted 
+      .alert.alert-danger
+        img.alertIcon.alertIconLogin(src='/images/account/exclamation-mark.svg' height='100px' width='30px' alt='')
+        <div class="alertContainer"><div class="alertText">Aukcionas dar neprasidėjęs Luktelkite iki penktadienio 16:00!</div></div>
+        button.close(type='button' data-dismiss='alert')
+          span &times;
+
     div.mainHeader Banko sąskaita
 
     p.lead.mt-3= name
@@ -72,7 +86,7 @@ block content
             tr(class=row.reverted ? 'reverted' : '')
               td.tableText= row.name
               if row.outgoing
-                td.text-danger -#{row.amount}
+                td.textDanger -#{row.amount}
               else
-                td.text-success +#{row.amount}
+                td.textSuccess +#{row.amount}
               td.tableText= row.time

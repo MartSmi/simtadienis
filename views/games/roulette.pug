@@ -3,13 +3,14 @@ extends ../topbarLayout
 block content
   link(rel="stylesheet", href="/stylesheets/games/roulette.css", type="text/css")
 
+
   .bets
     div#wrapper0
       p#text ĮVESK STATOMĄ SUMĄ:
       input#amountInput(type='number' value='' min='0' step='5')
       
     div#wrapper0
-      p#text PASIRINK SPALVĄ UŽ KURIĄ NORI STATYTI:
+      p#text PASIRINK SPALVĄ, UŽ KURIĄ NORI STATYTI:
       .btn-group.btn-group-toggle(data-toggle='buttons')
         div#buttons-div
           //-label.btn.btn-danger.btn-lg
@@ -32,4 +33,4 @@ block content
     img.arrowIcon(src='/images/games/roulette/rodykle.svg' height='150' width='450')
     
 
-  script(src='/javascripts/games/roulette/main.js')
+  script(type='text/javascript' src='/javascripts/games/roulette/main.js')
