@@ -43,7 +43,7 @@ router.post('/end', function (req, res, next) {
     res.redirect(303, '/');
     return;
   }
-  const userID = req.body.userID;
+  const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
   const winnings = Math.round(score / 100);
