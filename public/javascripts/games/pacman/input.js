@@ -16,7 +16,6 @@ class InputHandler {
           player.updateDir(2);
           break;
         default:
-          console.log('pressed unknown key');
           break;
       }
     });
