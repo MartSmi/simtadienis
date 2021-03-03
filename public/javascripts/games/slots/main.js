@@ -48,7 +48,7 @@ async function doSlot() {
     console.log('lost');
     costImage.src = '/images/games/slots/pralaimejai.png';
   }
-
+  spinInProgress = false;
   return;
 
   slot1 = setInterval(spin1, 50);

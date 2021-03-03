@@ -27,11 +27,12 @@ router.get('/spin', (req, res, next) => {
     return;
   }
   const slots = [randomSlotNum(), randomSlotNum(), randomSlotNum()];
+  const winnings = calWinnings(slots);
 
+  req.session.balance += winnings;
   res.send({ slots });
 
   const userID = req.session.userID;
-  const winnings = calWinnings(slots);
 
   updateBalance(winnings, userID, req, next);
 
@@ -61,22 +62,22 @@ function updateBalance(winnings, userID, req, next) {
       }
     );
   })
-    .then(() => {
-      dbPool.query(
-        'SELECT balance FROM users WHERE id = ?',
-        [userID],
-        (err, rows) => {
-          if (err) {
-            logger.error(`DB error on /slots (SELECT balance) (${req.ip}):`);
-            reject(err);
-          }
-          resolve(rows[0].balance);
-        }
-      );
-    })
-    .then(balance => {
-      req.session.balance = balance;
-    })
+    // .then(() => {
+    //   dbPool.query(
+    //     'SELECT balance FROM users WHERE id = ?',
+    //     [userID],
+    //     (err, rows) => {
+    //       if (err) {
+    //         logger.error(`DB error on /slots (SELECT balance) (${req.ip}):`);
+    //         reject(err);
+    //       }
+    //       resolve(rows[0].balance);
+    //     }
+    //   );
+    // })
+    // .then(balance => {
+    //   req.session.balance = balance;
+    // })
     .catch(err => {
       next(err);
     });
