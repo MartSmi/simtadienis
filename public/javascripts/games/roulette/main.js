@@ -21,11 +21,13 @@ let previousBlockDeg = 0;
 function spin() {
   numSpins++;
   let amount = parseInt(document.getElementById('amountInput').value);
-  if (amount == 0) {
-    console.log('Amount must be greater than 0');
+  if (amount <= 0) {
+    console.log('Statymas turi būti didesnis nei 0');
+    alert('Statymas turi būti didesnis nei 0')
     return;
   } else if (chosenColor == undefined) {
-    console.log('A color must be chosen');
+    console.log('Spalva turi būti pasirinkta');
+    alert('Spalva turi būti pasirinkta')
     return;
   }
   spinning = true;
@@ -45,9 +47,12 @@ function spin() {
       previousBlockDeg = currentBlockDeg;
       document.getElementById('box').style.transform = 'rotate(' + deg + 'deg)';
       let winnings = amount;
+      outcomeAmount = amount*(-1)
+      gameOutcome = 'lose'
+      winningAnimation()
       if (chosenColor == 2 && block == 0) {
         // Won on green
-        winnings *= 20;
+        winnings *= 15;
         won(winnings);
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
@@ -59,7 +64,7 @@ function spin() {
         won(winnings);
       } else {
         // Lost
-        winnings *= -2;
+        winnings *= -1;
         lost(winnings);
       }
     } else if (
@@ -67,7 +72,7 @@ function spin() {
       this.status == 406 &&
       JSON.parse(this.response).error == 'Bet too big'
     ) {
-      alert("You don't have that much money");
+      alert("Neturi tiek licų");
       spinning = false;
     } else if (this.readyState == 4) {
       spinning = false;
@@ -78,15 +83,21 @@ function spin() {
 }
 
 function won(winnings) {
+  outcomeAmount = winnings
   setTimeout(function () {
-    alert('You won ' + winnings);
     spinning = false;
+    gameOutcome = 'win'
+    winningAnimation()
+    // updateTopbarBalanceNumber(winnings);
   }, 5000);
 }
 
 function lost(winnings) {
+  outcomeAmount = winnings
   setTimeout(function () {
-    alert('You lost ' + winnings);
     spinning = false;
+    gameOutcome = ''
+    // winningAnimation()
+    // updateTopbarBalanceNumber(winnings);
   }, 5000);
 }

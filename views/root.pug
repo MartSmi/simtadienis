@@ -9,19 +9,26 @@ block content
   //-   span.navbar-toggler-icon
   .content-div
     .image-div
+      img.dune(src='/images/game-map/kopa.png' alt='')
       img.mapImage(src='/images/game-map/zemelapis1.png', alt="")
-      a(href='/games/pacman')
-        img.pacmanImage.classhere(src='/images/game-map/pacman.svg', alt="Pacman" data-pacman)
-      a(href='/games/tetris')
-        img.tetrisImage(src='/images/game-map/tetris.svg', alt="Tetris" data-tetris)
-      a(href='/games/snake')
-        img.snakeImage(src='/images/game-map/snake.svg', alt="Snake" data-snake)
-      a(href='/games/roulette')
-        img.rouletteImage(src='/images/game-map/rulete.svg', alt="Roulette" data-roulette)
-      a(href='/games/slots')
-        img.slotsImage(src='/images/game-map/slots.svg', alt="Slots" data-slots)
-      a(href='/games/blackjack')
-        img.blackjackImage(src='/images/game-map/blackjack.svg', alt="Blackjack" data-blackjack)
-      a(href='/account')
-        img.bankImage(src='/images/game-map/bankas.svg', alt="Bank" data-bank)
-      script(src='/javascripts/map.js')
+      .gameContainer.pacmanContainer
+        a(href='/games/pacman')
+          img#pacmanImageContainer.gameIcon.pacmanImage(src='/images/game-map/pacman.svg', alt="Pacman" data-pacman)
+      .gameContainer.tetrisContainer
+        a(href='/games/tetris')
+          img.gameIcon.tetrisImage(src='/images/game-map/tetris.svg', alt="Tetris" data-tetris)
+      .gameContainer.snakeContainer
+        a(href='/games/snake')
+          img.gameIcon.snakeImage(src='/images/game-map/snake.svg', alt="Snake" data-snake)
+      .gameContainer.rouletteContainer
+        a(href='/games/roulette')
+          img.gameIcon.rouletteImage(src='/images/game-map/rulete.svg', alt="Roulette" data-roulette)
+      .gameContainer.slotsContainer
+        a(href='/games/slots')
+          img.gameIcon.slotsImage(src='/images/game-map/slots.svg', alt="Slots" data-slots)
+      .gameContainer.blackjackContainer
+        a(href='/games/blackjack')
+          img.gameIcon.blackjackImage(src='/images/game-map/blackjack.svg', alt="Blackjack" data-blackjack)
+      .gameContainer.bankContainer
+        a(href='/account')
+          img.gameIcon.bankImage(src='/images/game-map/bankas.svg', alt="Bank" data-bank)

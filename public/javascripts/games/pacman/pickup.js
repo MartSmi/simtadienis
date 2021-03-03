@@ -28,6 +28,11 @@ class Pickup {
     let pacmanPos = this.game.getPacmanPos();
     let dx = this.position.x - pacmanPos.x;
     let dy = this.position.y - pacmanPos.y;
+
+    let eps = 1e-9;
+    if (Math.abs(dx) > eps && Math.abs(dy) > eps)
+        return false;
+
     let sqDist = dx * dx + dy * dy;
     let sumRadius = this.radius + this.game.player.radius;
     let doPick = sqDist <= (sumRadius * sumRadius);
@@ -44,7 +49,7 @@ class Pickup {
 class PowerPickup extends Pickup {
   constructor (game, position) {
     super (game, position);
-    this.radius = this.radius * 3 / 2;
+    this.radius = this.radius * 3;
   }
 
   pick () {
@@ -59,6 +64,26 @@ class FruitPickup extends Pickup {
     super (game, position);
     this.points = 100;
     this.img = document.getElementById('img_fruit');
-    this.radius = this.radius * 2;
+    this.radius = this.radius * 6;
+
+    this.pickedImg = document.getElementById('img_fruitPicked');
+    this.pickedImgShowTime = 1.5;
+    this.timeLeft = this.pickedImgShowTime;
+  }
+
+  update (deltaTime) {
+    super.update (deltaTime);
+    if (this.picked && this.timeLeft >= 0) {
+      this.timeLeft -= deltaTime;
+    }
+  }
+
+  draw(ctx) {
+    super.draw (ctx);
+    if (!this.picked || this.timeLeft < 0) return;
+    let posX = this.position.x - this.radius / 2;
+    let posY = this.position.y - this.radius / 2;
+    ctx.drawImage(this.pickedImg, posX, posY, this.radius, this.radius);
+    // console.log("pickup: posx: " + posX + " posy: " + posY + " radius: " + this.radius);
   }
 }

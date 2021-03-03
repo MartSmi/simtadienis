@@ -14,10 +14,37 @@
   font-weight: 600;
   color: #2f00ff;
   /* padding-left: 10px; */
-  font-style: italic;
   letter-spacing: 1.5px;
 }
 
 .navbar-brand:hover, .nav-link:hover {
   color: #ffffff;
+}
+
+#topbarCoinImg {
+  width: 3%;
+  height: auto;
+  display: inline-block;
+}
+
+.hide {
+  display: none;
+}
+
+.winningAnimationContainer, .lossAnimationContainer {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 5vw;
+  right: 0;
+  text-align: center;
+  padding: 0.6%;
+  font-size: 150%;
+  font-weight: 600;
+}
+.moneyWon {
+  color: #3DF900;
+}
+.moneyLost {
+  color: #F90000;
 }
