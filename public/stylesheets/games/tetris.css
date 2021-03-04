@@ -108,3 +108,7 @@ img:not(#topbarCoinImg) {
 .navbar-text {
   color: #a79a90;
 }
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}

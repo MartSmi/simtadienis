@@ -91,7 +91,7 @@ router.post(
     // getting a dedicated connection is necessary since we're using transactions
     new Promise((resolve, reject) => {
       dbPool.query(
-        'SELECT full_name, balance, can_send, is_station, is_frozen FROM users WHERE id = ?',
+        'SELECT full_name, balance, can_send, is_station, is_frozen, klase FROM users WHERE id = ?',
         [fromID],
         (err, rows) => {
           if (err) {
@@ -114,6 +114,8 @@ router.post(
         const row = rows[0];
         from_full_name = row.full_name;
         from_is_station = row.is_station;
+        let clas = row.klase;
+        console.log(clas);
 
         const balance = row.balance;
         if (req.body.amount > balance) {
@@ -125,7 +127,7 @@ router.post(
             error: `neužtenka pinigų`,
           });
           throw new Error('not money');
-        } else if (row.is_frozen || !row.can_send) {
+        } else if (row.is_station || row.is_frozen || !row.can_send || clas == 'III') {
           const frozen = row.is_frozen ? 'frozen' : 'non-can_send';
           logger.warn(
             `attempted transfer by ${frozen} account ${from_full_name}`
@@ -234,6 +236,7 @@ router.post(
 
 router.get('/get-biggest-bet', function (req, res, next) {
   var biggestBet;
+  var itemName;
 
   // console.log("here");
 
@@ -261,6 +264,7 @@ router.get('/get-biggest-bet', function (req, res, next) {
       const row = rows[0];
       biggestBet = row.biggest_bet;
       let bettorId = row.bettor_id;
+      itemName = row.item_name;
 // console.log("hhhh");
 // console.log("biggest Bet = " + biggestBet + "  bettorId = " + bettorId);
       return new Promise((resolve, reject) => {
@@ -294,6 +298,7 @@ router.get('/get-biggest-bet', function (req, res, next) {
       res.send({
         biggest_bet: biggestBet,
         bettor_name: bettorName,
+        item_name: itemName,
       });
     })
     .catch(err => {

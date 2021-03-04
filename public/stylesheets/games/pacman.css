@@ -156,3 +156,7 @@ canvas {
 #life_container {
   margin-bottom: 10%;
 }
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}

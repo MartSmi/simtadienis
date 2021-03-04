@@ -52,3 +52,7 @@ body {
 #restartButton:disabled {
   display: none;
 }
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}

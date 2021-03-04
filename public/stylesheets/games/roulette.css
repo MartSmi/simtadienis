@@ -257,3 +257,7 @@ input[type='radio'] {
 .navbar-brand, .nav-link, .navbar-text {
   color: #768d6c;
 }
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}

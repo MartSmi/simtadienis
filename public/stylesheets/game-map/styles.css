@@ -113,6 +113,10 @@ body {
   left: 64%;
 }
 
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}
+
 .navbar {
   background-color: #1d6487;
   position: absolute;

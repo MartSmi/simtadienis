@@ -55,6 +55,10 @@ body {
     background: #7050ad;
 }
 
+.navbar-brand, .nav-link, .navbar-text {
+    display: inline-block;
+}
+
 .navbar {
     background-color: #320055;
     width: 100vw;

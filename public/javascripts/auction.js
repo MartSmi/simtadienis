@@ -49,11 +49,13 @@ function updateBiggestBetFields(){
 			// console.log(data);
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
+			itemName = data.item_name;
+
 			biggestBetField.innerHTML = '<img src=/images/auction/L.svg height="30px" width="30px">' + biggestBet
 			betHolder.innerHTML = bettorName
 
 			//Daikto pavadinimas
-			auctionItem.innerHTML = bettorName
+			auctionItem.innerHTML = itemName
 		}
 	).fail(() => {
 		console.log("Klaida, techninė.");

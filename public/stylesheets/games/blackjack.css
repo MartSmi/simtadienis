@@ -388,3 +388,7 @@ body {
 .stake {
   margin-bottom: 20%;
 }
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}
