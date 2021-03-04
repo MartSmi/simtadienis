@@ -135,7 +135,7 @@ var slotMachine = {
     if (calWinnings(symbols) > 0) {
       console.log('won');
       gameOutcome = 'win'
-      outcomeAmount = calWinnings(symbols)
+      outcomeAmount = calWinnings(symbols) + 5
       winningAnimation()
       alertImage.src = '/images/games/slots/laimejai.png';
     } else {
