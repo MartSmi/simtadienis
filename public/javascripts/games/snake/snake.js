@@ -99,6 +99,10 @@ let gamePause = false;
 function start() {
   if (!game.started) {
     game.started = true;
+    log = {
+      movement: [],
+      eatenFood: [],
+    };
     startRequest();
   }
 }
