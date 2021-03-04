@@ -37,7 +37,7 @@ class Game {
 
   updateScoreText () {
     this.scoreText.innerHTML = 'Taškai: '
-    this.scoreCount.innerHTML = ("0000" + this.score).slice(-4) 
+    this.scoreCount.innerHTML = ("00000" + this.score).slice(-5) 
     this.lifeText.innerHTML = '\nGyvybių liko: '
     this.lifeCount.innerHTML = '<img src=/images/games/pacman/gyvybe.svg height="30px" width="30px">'.repeat((Math.max(this.curHealth-1, 0)))
     this.levelText.innerHTML = '\nLygis: '
