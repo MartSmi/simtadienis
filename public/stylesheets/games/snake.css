@@ -22,6 +22,7 @@ body {
 
 .navbar {
   background-color: #64974d;
+  display: flex;
 }
 
 .navbar-brand,
@@ -51,8 +52,4 @@ body {
 
 #restartButton:disabled {
   display: none;
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-  display: inline-block;
 }

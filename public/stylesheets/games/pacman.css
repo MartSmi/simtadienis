@@ -53,6 +53,7 @@ canvas {
   position: absolute;
   min-height: 8vh;
   background-color: black;
+  display: flex;
 }
 
 .navbar-brand, .nav-link, .navbar-text {
@@ -155,8 +156,4 @@ canvas {
 
 #life_container {
   margin-bottom: 10%;
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-  display: inline-block;
 }

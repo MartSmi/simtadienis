@@ -216,14 +216,11 @@ body {
 
 .navbar {
   background-color: #b78007;
+  display: flex;
 }
 
 .navbar-brand,
 .nav-link,
 .navbar-text {
   color: #eee8aa;
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-  display: inline-block;
 }

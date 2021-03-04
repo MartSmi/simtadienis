@@ -5,6 +5,7 @@
   width: 100vw;
   height: 5vw;
   background-color: #f81546;
+  display: none;
 }
   
 .navbar-brand, .nav-link, .navbar-text {
@@ -15,7 +16,6 @@
   color: #2f00ff;
   /* padding-left: 10px; */
   letter-spacing: 1.5px;
-  display: none;
 }
 
 .navbar-brand:hover, .nav-link:hover {

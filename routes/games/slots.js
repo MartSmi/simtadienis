@@ -6,6 +6,7 @@ const router = express.Router();
 const gameID = 2; //Slots' game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const endTimestamp = process.env.END_TIMESTAMP;
+const balance = require(appRoot + '/services/balance');
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
@@ -35,27 +36,38 @@ router.get('/spin', (req, res, next) => {
     res.redirect(303, '/');
     return;
   }
-  const slots = [randomSlotNum(), randomSlotNum(), randomSlotNum()];
-  const winnings = calWinnings(slots);
-
-  req.session.balance += winnings;
-  res.send({ slots });
-
-  const userID = req.session.userID;
-
-  updateBalance(winnings, userID, req, next);
-
-  dbPool.query(
-    'INSERT INTO play_history (user_id, game_id, winnings, time) VALUES(?, ?, ?, CURRENT_TIME())',
-    [userID, gameID, winnings],
-    (err, rows) => {
-      if (err) {
-        logger.error(`DB error on /roulette (${req.ip}):`);
-        next(err);
-        return;
-      }
+  balance.get(req.session.userID).then(bal => {
+    if (bal < 5) {
+      logger.warn("tried to use slots with small bet");
+      throw new Error ("too small bet");
     }
-  );
+
+    const slots = [randomSlotNum(), randomSlotNum(), randomSlotNum()];
+    const winnings = calWinnings(slots);
+
+    req.session.balance += winnings;
+    res.send({ slots });
+
+    const userID = req.session.userID;
+
+    updateBalance(winnings, userID, req, next);
+
+    dbPool.query(
+      'INSERT INTO play_history (user_id, game_id, winnings, time) VALUES(?, ?, ?, CURRENT_TIME())',
+      [userID, gameID, winnings],
+      (err, rows) => {
+        if (err) {
+          logger.error(`DB error on /roulette (${req.ip}):`);
+          next(err);
+          return;
+        }
+      }
+    );
+  }).catch(err => {
+    logger.warn("Error occured while spinning slots: " + err);
+  });
+
+  
 });
 
 function updateBalance(winnings, userID, req, next) {

@@ -113,19 +113,18 @@ body {
   left: 64%;
 }
 
-.navbar-brand, .nav-link, .navbar-text {
-  display: inline-block;
-}
-
-.navbar {
-  background-color: #1d6487;
-  position: absolute;
-}
 
 .navbar-brand,
 .nav-link,
 .navbar-text {
   color: #c1dfd2;
+  display: flex;
+}
+
+.navbar {
+  background-color: #1d6487;
+  position: absolute;
+  display: flex;
 }
 
 .dune {
