@@ -1,4 +1,3 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var morgan = require('morgan');
@@ -47,7 +46,7 @@ app.use(
         "'self'",
         'https://code.jquery.com',
         'https://stackpath.bootstrapcdn.com',
-        'https://player.twitch.tv/'
+        'https://player.twitch.tv/',
       ],
       styleSrc: ["'self'", 'https://stackpath.bootstrapcdn.com'],
       objectSrc: ["'none'"],

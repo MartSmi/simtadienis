@@ -1,3 +1,3 @@
 require('cluster-service').start({
-	workers: 'bin/www'
+  workers: 'bin/www',
 });

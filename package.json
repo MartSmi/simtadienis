@@ -26,5 +26,9 @@
     "split": "^1.0.1",
     "validator": "^10.11.0",
     "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "pretty-bytes": "^5.6.0",
+    "request-stats": "^3.0.0"
   }
 }
