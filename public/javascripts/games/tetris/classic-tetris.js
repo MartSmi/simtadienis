@@ -1426,7 +1426,7 @@ class ClassicTetris {
   }
 
   _triggerGameOver() {
-    _payUp();
+
     // stop theme song
     if (this.gameTheme) {
       this.gameTheme.pause();
@@ -1448,10 +1448,6 @@ class ClassicTetris {
       score: this.score,
       lines: this.lines,
     });
-  }
-  _payUp(){
-    ///ismokas padaryt.
-    let sum = this.score/100;
   }
 
   _processGameOver() {

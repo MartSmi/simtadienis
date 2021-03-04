@@ -6,6 +6,7 @@ const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
 const gameID = 5; // Pacman gameID
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const endTimestamp = process.env.END_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
@@ -14,6 +15,10 @@ router.get('/', function (req, res, next) {
     return;
   } else if (Date.now() < enterTimestamp) {
     logger.warn('attempt to access /pacman before time');
+    res.redirect(303, '/');
+    return;
+  } else if (Date.now() > endTimestamp) {
+    logger.warn('attempt to access /pacman after time');
     res.redirect(303, '/');
     return;
   } else {
@@ -43,10 +48,12 @@ router.post('/end', function (req, res, next) {
     res.redirect(303, '/');
     return;
   }
-  const userID = req.body.userID;
+  const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
+  const level = req.body.level;
   const winnings = Math.round(score / 100);
+  winnings += (level-1) * 50;
   playHistory.update(gameSessionID, winnings);
   balance
     .update(winnings, userID)

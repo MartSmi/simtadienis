@@ -6,6 +6,7 @@ const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
 const gameID = 0; //Roulette's game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const endTimestamp = process.env.END_TIMESTAMP;
 
 router.get('/', (req, res, next) => {
   if (!req.session.loggedIn) {
@@ -14,6 +15,10 @@ router.get('/', (req, res, next) => {
     return;
   } else if (Date.now() < enterTimestamp) {
     logger.warn('attempt to access /roulette before time');
+    res.redirect(303, '/');
+    return;
+  } else if (Date.now() > endTimestamp) {
+    logger.warn('attempt to access /roulette after time');
     res.redirect(303, '/');
     return;
   } else {

@@ -23,6 +23,10 @@ const maistas = document.getElementsByClassName('maistas');
 // const save = document.getElementById('save');
 let started = false;
 let died = false;
+
+/*window.addEventListener('load', () => {
+  restartButton.disabled = true;
+})*/
 window.onload = window.onresize = function () {
   var canvas = document.getElementById('snake');
   scaleConstant = 532 / 610;
@@ -126,7 +130,7 @@ function deathRequest() {
   xhr.open('POST', '/games/snake/end', true);
   xhr.setRequestHeader('Content-Type', 'application/json');
   xhr.send(JSON.stringify({ gameSessionID, score }));
-  outcomeAmount = score
+  outcomeAmount = Math.round((score / 2) * Math.pow(1.03, score));
   gameOutcome = 'win'
   winningAnimation()
 }
@@ -162,6 +166,8 @@ function mirtis(ar) {
       (84 * box) / 32,
       (325 * box) / 32
     );
+
+    //restartButton.disabled = false
 
   //Šitoje vietoje tūrėtų būti kažkas su taškų pervedimu kintamsis: score
   // score prasideda nuo 0. Lenta yra 15*17, todėl teoriškai 254 yra įmanoma surinkti idealiai žaidžiat, bet praktiškai tai nėra realu, nes žaidimas greitėja.
@@ -282,3 +288,15 @@ function draw() {
     ctx.fillText(score, 2 * box, 1.6 * box);
   }
 }
+
+/*let restartButton = document.getElementById('restartButton')
+
+restartButton.addEventListener('click', () => {
+  food.x = Math.floor(Math.random() * 17 + 1)
+  food.y = Math.floor(Math.random() * 15 + 3)
+  snake.x = 9
+  snake.y = 10
+  started = true
+  died = false
+  restartButton.disabled = true
+})*/
