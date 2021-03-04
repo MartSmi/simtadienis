@@ -70,7 +70,7 @@ const game = {
   started: false,
 };
 
-const log = {
+let log = {
   movement: [],
   eatenFood: [],
 };
