@@ -27,6 +27,14 @@ var slotMachine = {
     if (slotMachine.spinning) {
       return;
     }
+
+    let balanceText = document.getElementById('balanceText');
+    let balance = parseInt(balanceText.innerHTML);
+    if (balance < 5) {
+      alert("Per mažai licų!");
+      return;
+    }
+
     alertImage.hidden = true;
     gameOutcome = 'lose'
     outcomeAmount = -5

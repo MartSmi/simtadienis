@@ -36,9 +36,7 @@ router.get('/spin', (req, res, next) => {
     res.redirect(303, '/');
     return;
   }
-console.log("herer");
-  balance.get(req.userID).then(bal => {
-console.log("hererererer"); 
+  balance.get(req.session.userID).then(bal => {
     if (bal < 5) {
       logger.warn("tried to use slots with small bet");
       throw new Error ("too small bet");

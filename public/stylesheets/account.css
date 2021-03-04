@@ -140,6 +140,7 @@ input[type=number] {
 .navbar {
     background-color: #085f8a;
     max-width: 100%;
+    display: flex;
 }
   
 .navbar-brand, .nav-link, .navbar-text {
@@ -152,8 +153,4 @@ input[type=number] {
 
 .textDanger {
     color: rgb(255, 9, 9);
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-    display: inline-block;
 }
