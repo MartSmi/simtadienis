@@ -28,6 +28,9 @@ var slotMachine = {
       return;
     }
     alertImage.hidden = true;
+    gameOutcome = 'lose'
+    outcomeAmount = -5
+    winningAnimation()
 
     slotMachine.spinning = true;
     spinRequest().then(symbols => {
@@ -131,6 +134,9 @@ var slotMachine = {
   end_spin: function (symbols) {
     if (calWinnings(symbols) > 0) {
       console.log('won');
+      gameOutcome = 'win'
+      outcomeAmount = calWinnings(symbols)
+      winningAnimation()
       alertImage.src = '/images/games/slots/laimejai.png';
     } else {
       console.log('lost');
