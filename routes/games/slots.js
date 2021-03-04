@@ -1,4 +1,3 @@
-const { resolve } = require('app-root-path');
 const appRoot = require('app-root-path');
 const express = require('express');
 const dbPool = require(appRoot + '/db').pool;

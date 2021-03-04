@@ -41,8 +41,8 @@ router.post('/spin', (req, res, next) => {
     res.redirect(400, req.baseUrl);
     return;
   }
-  let bet = req.body.amount;
-  let winnings = bet;
+  const bet = req.body.amount;
+  let winnings = 0;
   let cost = bet;
   let userID = req.session.userID;
   balance
@@ -58,20 +58,24 @@ router.post('/spin', (req, res, next) => {
     .then(() => {
       let block = Math.floor(Math.random() * 15);
 
-      if (chosenColor == 2 && block == 0) {
-        // Won on green
-        winnings *= 15;
+      if (block == 0) {
+        if (chosenColor == 2) {
+          // Won on green
+          winnings = 15 * bet;
+        } else {
+          // Lost
+          winnings -= cost;
+        }
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
-        winnings *= 2;
+        winnings = 2 * bet;
       } else if (chosenColor == 0 && block % 2 == 1) {
         // Won on red
-        winnings *= 2;
+        winnings = 2 * bet;
       } else {
         // Lost
-        winnings *= 0;
+        winnings -= cost;
       }
-      winnings -= cost;
       req.session.balance += winnings;
       res.send({ block });
 
