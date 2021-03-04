@@ -14,11 +14,11 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     play_his;
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /snake before time');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() > endTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() > endTimestamp) {
     logger.warn('attempt to access /snake after time');
     res.redirect(303, '/');
     return;

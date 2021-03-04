@@ -17,11 +17,11 @@ router.get('/', function (req, res, next) {
     logger.warn('attempt to access /auction without logging in');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /auction before time');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < auctionStartTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < auctionStartTimestamp) {
     logger.warn('attempt to access /auction before auction time');
     res.redirect(303, '/account?auctionNotStarted=true');
     return;
