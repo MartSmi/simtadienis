@@ -252,12 +252,9 @@ input[type='radio'] {
 .navbar {
   background-color: #202e19;
   position: absolute;
+  display: flex;
 }
 
 .navbar-brand, .nav-link, .navbar-text {
   color: #768d6c;
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-  display: inline-block;
 }

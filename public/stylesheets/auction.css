@@ -56,10 +56,11 @@ body {
 }
 
 .navbar-brand, .nav-link, .navbar-text {
-    display: inline-block;
+    display: flex;
 }
 
 .navbar {
+    display: flex;
     background-color: #320055;
     width: 100vw;
     max-width: 100%;

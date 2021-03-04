@@ -148,6 +148,7 @@ var slotMachine = {
   },
 };
 function calWinnings(symbols) {
+  console.log(symbols);
   if (symbols[0] == symbols[1] && symbols[1] == symbols[2]) {
     if (symbols[0] == 6) {
       return 245;

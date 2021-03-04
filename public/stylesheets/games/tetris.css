@@ -101,14 +101,11 @@ img:not(#topbarCoinImg) {
 .navbar {
   background-color: #5c463d;
   z-index: 1;
+  display: flex;
 }
 
 .navbar-brand,
 .nav-link,
 .navbar-text {
   color: #a79a90;
-}
-
-.navbar-brand, .nav-link, .navbar-text {
-  display: inline-block;
 }
