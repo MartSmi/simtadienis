@@ -62,6 +62,15 @@ router.post('/end', function (req, res, next) {
   const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
+  if (score > 254 || score < 0) {
+    logger.warn(
+      'SERIOUS: player has given a score out of bounds ' +
+        parseInt(score) +
+        ' /snake'
+    );
+    res.sendStatus(406);
+    return;
+  }
   if (score > 30) {
     const gameLog = req.body.log;
     if (!('movement' in gameLog) || !('eatenFood' in gameLog)) {
