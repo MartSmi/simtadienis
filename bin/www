@@ -26,7 +26,16 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+// var requestStats = require('request-stats');
+// var stats = requestStats(server);
+// const prettyBytes = require('pretty-bytes');
+// stats.on('complete', function (details) {
+//   if (details.req.path == '/end') {
+//     var size = details.req.bytes;
+//     console.log(prettyBytes(size));
+//     console.log(details.req.raw.body.log.movement);
+//   }
+// });
 /**
  * Listen on provided port, on all network interfaces.
  */
