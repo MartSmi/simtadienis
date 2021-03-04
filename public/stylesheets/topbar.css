@@ -15,6 +15,7 @@
   color: #2f00ff;
   /* padding-left: 10px; */
   letter-spacing: 1.5px;
+  display: none;
 }
 
 .navbar-brand:hover, .nav-link:hover {

@@ -5,14 +5,19 @@ const logger = require(appRoot + '/logger');
 const router = express.Router();
 const gameID = 2; //Slots' game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const endTimestamp = process.env.END_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /slots without logging in');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /slots before time');
+    res.redirect(303, '/');
+    return;
+  } else if (!req.session.adminLoggedIn && Date.now() > endTimestamp) {
+    logger.warn('attempt to access /slots after time');
     res.redirect(303, '/');
     return;
   } else {
@@ -92,10 +97,10 @@ function calWinnings(slots) {
   if (slots[0] == slots[1] && slots[1] == slots[2]) {
     if (slots[0] == 6) {
       // Got all best slots; Odds 1:83
-      return 250;
+      return 245;
     } else {
       // Got all the same slots; Odds 6:78
-      return 100;
+      return 95;
     }
   } else if (
     (slots[0] == slots[1] && slots[2] == 6) ||
@@ -103,14 +108,14 @@ function calWinnings(slots) {
     (slots[1] == slots[2] && slots[0] == 6)
   ) {
     // 2 slots are the same and the other one is the best one; Odds 6:78
-    return 25;
+    return 20;
   } else if (
     (slots[0] == slots[1] && slots[0] == 6) ||
     (slots[0] == slots[2] && slots[0] == 6) ||
     (slots[1] == slots[2] && slots[1] == 6)
   ) {
     // 2 slots are the best ones; Odds 6:78
-    return 25;
+    return 20;
   }
   // All slots are different or no best slot; Odds 65:19
   return -5;

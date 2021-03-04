@@ -8,8 +8,9 @@ block topbar
     a.navbar-brand(href='/') Šimtadienis
     //- button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarSupportedContent')
     //- span.navbar-toggler-icon
-    img.mx-auto.mr-sm-2#topbarCoinImg(src='/images/topbar/moneta.svg')
-    span.navbar-text#balanceText= balance
+    img.mx-auto.mr-sm-0#topbarCoinImg(src='/images/topbar/moneta.svg')
+    //- a(href='/account')
+    a.nav-link#balanceText(href='/account')= balance
     //- a.nav-link.my-2.my-sm-0(href='/account')
     //-   p= name
   

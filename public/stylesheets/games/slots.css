@@ -223,3 +223,7 @@ body {
 .navbar-text {
   color: #eee8aa;
 }
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}

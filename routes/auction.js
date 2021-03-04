@@ -5,32 +5,48 @@ const dbPool = require(appRoot + '/db').pool;
 const logger = require(appRoot + '/logger');
 const router = express.Router();
 const v = require('express-validator/check');
+const { ConsoleTransportOptions } = require('winston/lib/winston/transports');
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const auctionStartTimestamp = process.env.AUCTION_START_TIMESTAMP;
 const streamLink = process.env.AUCTION_STREAM_LINK;
 const chatLink = process.env.AUCTION_CHAT_LINK;
+const balance = require(appRoot + '/services/balance');
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /auction without logging in');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /auction before time');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < auctionStartTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < auctionStartTimestamp) {
     logger.warn('attempt to access /auction before auction time');
     res.redirect(303, '/account?auctionNotStarted=true');
     return;
   } else {
-    var opts = {
-      // name: req.session.fullName,
-      balance: req.session.balance,
-      streamLink: streamLink,
-      chatLink: chatLink,
-    };
-    res.render('auction', opts);
+
+
+    const userID = req.session.userID;
+    balance.get(userID).then (bal => {
+      req.session.balance = bal;
+      // console.log(bal);
+      // console.log(req.session.balance);
+
+      var opts = {
+        // name: req.session.fullName,
+        balance: req.session.balance,
+        streamLink: streamLink,
+        chatLink: chatLink,
+      };
+      // console.log(opts.balance);
+      // console.log(req.session.balance);
+      res.render('auction', opts);
+    }).catch(err => {
+      logger.warn(err);
+      res.render('auction');  
+    });
   }
 });
 
@@ -75,7 +91,7 @@ router.post(
     // getting a dedicated connection is necessary since we're using transactions
     new Promise((resolve, reject) => {
       dbPool.query(
-        'SELECT full_name, balance, can_send, is_station, is_frozen FROM users WHERE id = ?',
+        'SELECT full_name, balance, can_send, is_station, is_frozen, klase FROM users WHERE id = ?',
         [fromID],
         (err, rows) => {
           if (err) {
@@ -98,6 +114,8 @@ router.post(
         const row = rows[0];
         from_full_name = row.full_name;
         from_is_station = row.is_station;
+        let clas = row.klase;
+        console.log(clas);
 
         const balance = row.balance;
         if (req.body.amount > balance) {
@@ -109,7 +127,7 @@ router.post(
             error: `neužtenka pinigų`,
           });
           throw new Error('not money');
-        } else if (row.is_frozen || !row.can_send) {
+        } else if (row.is_station || row.is_frozen || !row.can_send || clas == 'III') {
           const frozen = row.is_frozen ? 'frozen' : 'non-can_send';
           logger.warn(
             `attempted transfer by ${frozen} account ${from_full_name}`
@@ -218,6 +236,9 @@ router.post(
 
 router.get('/get-biggest-bet', function (req, res, next) {
   var biggestBet;
+  var itemName;
+
+  // console.log("here");
 
   new Promise((resolve, reject) => {
     dbPool.query(
@@ -243,7 +264,9 @@ router.get('/get-biggest-bet', function (req, res, next) {
       const row = rows[0];
       biggestBet = row.biggest_bet;
       let bettorId = row.bettor_id;
-
+      itemName = row.item_name;
+// console.log("hhhh");
+// console.log("biggest Bet = " + biggestBet + "  bettorId = " + bettorId);
       return new Promise((resolve, reject) => {
         dbPool.query(
           'SELECT * FROM users WHERE id = ?',
@@ -257,7 +280,10 @@ router.get('/get-biggest-bet', function (req, res, next) {
               //   error: err,
               // });
             } else if (rows.length < 1) {
+              console.log("user was not found...");
               reject(new Error('user not found'));
+            } else {
+              resolve(rows);
             }
           }
         );
@@ -267,9 +293,12 @@ router.get('/get-biggest-bet', function (req, res, next) {
       const row = rows[0];
       let bettorName = row.full_name;
 
+      // console.log("herehhrerhehrehs");
+
       res.send({
         biggest_bet: biggestBet,
         bettor_name: bettorName,
+        item_name: itemName,
       });
     })
     .catch(err => {

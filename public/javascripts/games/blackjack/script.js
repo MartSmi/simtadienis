@@ -288,7 +288,7 @@ function lost() {
 }
 
 function blackjack() {
-  outcomeAmount = Number(potentialWinnings.textContent)
+  outcomeAmount = Math.ceil(1.25*Number(potentialWinnings.textContent))
   ending.classList.remove('hide');
   ending.textContent = `Juodasis Džekas!`;
   moneyAmount.classList.add('hide');

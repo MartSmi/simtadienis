@@ -6,6 +6,7 @@ var router = express.Router();
 const balance = require(appRoot + '/services/balance');
 const gameID = 2; //Snake game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const endTimestamp = process.env.END_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
@@ -13,8 +14,12 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     play_his;
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /snake before time');
+    res.redirect(303, '/');
+    return;
+  } else if (!req.session.adminLoggedIn && Date.now() > endTimestamp) {
+    logger.warn('attempt to access /snake after time');
     res.redirect(303, '/');
     return;
   } else {

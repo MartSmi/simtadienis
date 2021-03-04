@@ -29,3 +29,30 @@ body {
 .navbar-text {
   color: #c8f177;
 }
+
+#restartButton {
+  position: absolute;
+  height: 6%;
+  width: 9%;
+  top: 16%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background-color: rgb(32, 80, 9);
+  color: #c8f177;
+  border: none;
+  box-shadow: 4px 5px rgb(24, 59, 7);
+}
+
+#restartButton:hover {
+  background-color:rgb(21, 107, 21);
+  transition-duration: .3s;
+}
+
+#restartButton:disabled {
+  display: none;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
+}

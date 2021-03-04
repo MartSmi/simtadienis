@@ -7,14 +7,19 @@ const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
 const gameID = 1; //Blackjack's game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
+const endTimestamp = process.env.END_TIMESTAMP;
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to access /blackjack without logging in');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /blackjack before time');
+    res.redirect(303, '/');
+    return;
+  } else if (!req.session.adminLoggedIn && Date.now() > endTimestamp) {
+    logger.warn('attempt to access /blackjack after time');
     res.redirect(303, '/');
     return;
   } else {
@@ -51,6 +56,7 @@ router.post('/bet', function (req, res, next) {
           balance.update(bet * -1, userID).catch(err => {
             reject(err);
           });
+          req.session.balance -= bet;
           playHistory.insert(userID, gameID, bet, 0, false).then(row => {
             resolve(row.insertId);
           });
@@ -168,7 +174,7 @@ router.post('/hit', function (req, res, next) {
           (err, rows) => {
             if (err) {
               logger.error(`DB error on /blackjack (${req.ip}):`);
-              next(err);
+              // next(err);
               return;
             }
           }
@@ -229,7 +235,7 @@ router.post('/stand', async function (req, res, next) {
       (err, rows) => {
         if (err) {
           logger.error(`DB error on /blackjack/stand update (${req.ip}):`);
-          next(err);
+          // next(err);
           return;
         }
       }
@@ -291,6 +297,7 @@ async function won(ip, userID, gameSessionID, next) {
     next(err);
     return;
   });
+
   dbPool.query(
     'UPDATE play_history SET winnings = bet, ended = TRUE WHERE id = ?',
     [gameSessionID],
@@ -323,6 +330,7 @@ async function tie(ip, userID, gameSessionID, next) {
     next(err);
     return;
   });
+  
   dbPool.query(
     'UPDATE play_history SET winnings = 0, ended = TRUE WHERE id = ?',
     [gameSessionID],

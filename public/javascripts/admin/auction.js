@@ -56,6 +56,8 @@ $(function () {
 
 
 var biggestBetText = document.getElementById('biggestBetText');
+var bettorNameText = document.getElementById('bettorNameText');
+var itemNameText = document.getElementById('itemNameText');
 //console.log(biggestBetText);
 
 function updateBiggestBetFields(){	
@@ -64,7 +66,11 @@ function updateBiggestBetFields(){
 		function(data) {
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
-			biggestBetText.innerHTML = 'Daugiausiai pastatyta: ' + biggestBet + ' licų (' + bettorName + ')';
+			itemName = data.item_name;
+
+			biggestBetText.innerHTML = 'Daugiausiai pastatyta: ' + biggestBet
+			bettorNameText.innerHTML = 'Pastatė: ' + bettorName;
+			itemNameText.innerHTML = 'Dabartinis daiktas: ' + itemName;
 		}
 	).fail(() => {
 		console.log("Klaida, techninė.");
