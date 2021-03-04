@@ -4,6 +4,7 @@ var dbPool = require(appRoot + '/db').pool;
 var logger = require(appRoot + '/logger');
 var router = express.Router();
 const balance = require(appRoot + '/services/balance');
+const gameLogger = require(appRoot + '/services/gameLogger');
 const gameID = 2; //Snake game id
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const endTimestamp = process.env.END_TIMESTAMP;
@@ -61,6 +62,16 @@ router.post('/end', function (req, res, next) {
   const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
+  if (score > 30) {
+    const gameLog = req.body.log;
+    if (!('movement' in gameLog) || !('eatenFood' in gameLog)) {
+      logger.warn('SERIOUS: player did not provide a log in /snake');
+      res.sendStatus(406);
+      return;
+    }
+    gameLogger.insert(userID, gameSessionID, score, gameLog);
+  }
+
   const winnings = Math.round((score / 2) * 1.03 ** score);
   req.session.balance += winnings;
   res.sendStatus(200);

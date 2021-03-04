@@ -5,6 +5,8 @@ USE `bankas`;
 --
 -- Table structure for table `sessions`
 --
+
+DROP TABLE IF EXISTS `game_log`;
 DROP TABLE IF EXISTS `blackjack`;
 DROP TABLE IF EXISTS `auction`;
 DROP TABLE IF EXISTS `play_history`;
@@ -116,4 +118,20 @@ CREATE TABLE `auction` (
   PRIMARY KEY (`id`),
   CONSTRAINT `bettor_id` FOREIGN KEY (`bettor_id`) REFERENCES `users` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `game_log` (
+  `user_id` int NOT NULL,
+  `game_session_id` int NOT NULL,
+  `score` int NOT NULL,
+  `time` time NOT NULL,
+  `log` JSON NOT NULL,
+  KEY `user_id` (`user_id`),
+  KEY `game_session_id` (`game_session_id`),
+  CONSTRAINT `game_session_id_log` FOREIGN KEY (`game_session_id`) REFERENCES `play_history` (`id`),
+  CONSTRAINT `user_id_log` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
