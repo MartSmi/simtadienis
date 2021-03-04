@@ -118,6 +118,7 @@ router.post('/hit', function (req, res, next) {
   const gameSessionID = req.body.gameSessionID;
   let oldPlayerCards = req.body.playerCards;
   let oldDealerCard = req.body.dealerCard;
+  const bet = req.body.bet;
   const userID = req.session.userID;
 
   cardValue = calCardValue(playerCard.value);
@@ -136,6 +137,11 @@ router.post('/hit', function (req, res, next) {
       calCardValue(oldDealerCard.value),
       oldDealerCard.value == 0
     );
+    if (dealer.points == 21) {
+      req.session.balance += bet;
+    } else {
+      req.session.balance += bet * 2;
+    }
   }
 
   res.send({ playerCard, dealerCards: dealer.newCards || [] });
@@ -153,14 +159,7 @@ router.post('/hit', function (req, res, next) {
         safePlayerPoints += 10;
 
       if (dealer.points != undefined) {
-        if (
-          playerPoints != safePlayerPoints ||
-          rows[0].player_aces + cardAces != dealer.aces
-        ) {
-          //Player is editing cards
-          lost(req.ip, gameSessionID, next);
-          logger.warn(`Player tried to edit cards (${req.ip}):`);
-        } else if (safePlayerPoints == dealer.points) {
+        if (safePlayerPoints == dealer.points) {
           tie(req.ip, userID, gameSessionID, next);
         } else if (safePlayerPoints > dealer.points) {
           won(req.ip, userID, gameSessionID, next);
@@ -191,6 +190,7 @@ router.post('/stand', async function (req, res, next) {
     return;
   }
   const gameSessionID = req.body.gameSessionID;
+  const bet = req.body.bet;
   const userID = req.session.userID;
   let playerPoints;
   new Promise((resolve, reject) => {
@@ -214,20 +214,23 @@ router.post('/stand', async function (req, res, next) {
 
     const dealer = playDealer(row.dealer_points, row.dealer_aces);
 
-    res.send({
-      cards: dealer.newCards,
-    });
-
     if (dealer.points > 21 || playerPoints > dealer.points) {
       //Player won
+      req.session.balance += bet * 2;
       won(req.ip, userID, gameSessionID, next);
     } else if (playerPoints < dealer.points) {
       //Dealer won
       lost(req.ip, gameSessionID, next);
     } else {
       //Draw
+      req.session.balance += bet;
       tie(req.ip, userID, gameSessionID, next);
     }
+
+    // req.session.balance;
+    res.send({
+      cards: dealer.newCards,
+    });
 
     dbPool.query(
       'UPDATE blackjack SET dealer_points = ?, dealer_aces = ? WHERE game_session_id = ?',
@@ -330,7 +333,7 @@ async function tie(ip, userID, gameSessionID, next) {
     next(err);
     return;
   });
-  
+
   dbPool.query(
     'UPDATE play_history SET winnings = 0, ended = TRUE WHERE id = ?',
     [gameSessionID],
@@ -368,7 +371,7 @@ function calCardValue(val) {
 
 // For debugging specific hand combinations
 // let i = 0;
-// const c = [0, 12, 2, 3];
+// const c = [0, 5, 2, 3];
 
 function drawCard() {
   // For debugging specific hand combinations

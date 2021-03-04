@@ -146,7 +146,7 @@ function isStakeViable(amount) {
   }
 }
 
-function betRequest(bet) {
+function betRequest() {
   return new Promise((resolve, reject) => {
     let xhttp = new XMLHttpRequest();
     xhttp.open('POST', '/games/blackjack/bet', true);
@@ -160,7 +160,7 @@ function betRequest(bet) {
         this.status == 406 &&
         JSON.parse(this.response).error == 'Bet too big'
       ) {
-        alert("Neturi tiek licų");
+        alert('Neturi tiek licų');
         reject();
       } else if (this.readyState == 4) {
         reject();
@@ -172,19 +172,19 @@ function betRequest(bet) {
 
 betButton.addEventListener('click', async function placeBet() {
   if (isStakeViable(Number(betField.value))) {
-    let bet = Number(betField.value);
-    let res = await betRequest(bet);
+    bet = Number(betField.value);
+    let res = await betRequest();
     res.playerCards.forEach(card => addPlayerCard(card));
     res.dealerCards.forEach(card => addDealerCard(card));
 
     stake.textContent = betField.value;
     potentialWinnings.textContent = `${2 * Number(stake.textContent)}`;
-    outcomeAmount = Number(betField.value)*(-1)
+    outcomeAmount = Number(betField.value) * -1;
     betContainer.classList.add('hide');
     moneyAmount.classList.remove('hide');
     moneyAmountText.classList.remove('hide');
-    gameOutcome = 'lose'
-    winningAnimation()
+    gameOutcome = 'lose';
+    winningAnimation();
 
     if (player.points > 21) {
       lost();
@@ -288,7 +288,7 @@ function lost() {
 }
 
 function blackjack() {
-  outcomeAmount = Math.ceil(1.25*Number(potentialWinnings.textContent))
+  outcomeAmount = Math.ceil(1.25 * Number(potentialWinnings.textContent));
   ending.classList.remove('hide');
   ending.textContent = `Juodasis Džekas!`;
   moneyAmount.classList.add('hide');
@@ -296,8 +296,8 @@ function blackjack() {
   hitButton.disabled = true;
   standButton.disabled = true;
   restartButton.disabled = false;
-  gameOutcome = 'win'
-  winningAnimation()
+  gameOutcome = 'win';
+  winningAnimation();
 }
 
 window.addEventListener('load', f => {
@@ -332,7 +332,7 @@ function hitRequest() {
         JSON.parse(this.response).error == 'Bet too big'
       ) {
         hitInProgress = false;
-        alert("Neturi tiek licų");
+        alert('Neturi tiek licų');
         reject("You don't have that much money");
       } else if (this.readyState == 4) {
         hitInProgress = false;
@@ -344,6 +344,7 @@ function hitRequest() {
         gameSessionID,
         playerCards: player.cards,
         dealerCard: dealer.cards[0],
+        bet,
       })
     );
   }).catch(e => console.log(e));
@@ -354,8 +355,8 @@ hitButton.addEventListener('click', function hit() {
     addPlayerCard(res.playerCard);
     if (res.dealerCards.length > 0) {
       //Only happens if player.points = 21
-      hitButton.disabled = true
-      standButton.disabled = true
+      hitButton.disabled = true;
+      standButton.disabled = true;
       for (let i = 0; i < res.dealerCards.length; i++) {
         await addDealerCard(res.dealerCards[i]);
       }
@@ -392,14 +393,14 @@ function standRequest() {
         JSON.parse(this.response).error == 'Bet too big'
       ) {
         standInProgress = false;
-        alert("Neturi tiek licų");
+        alert('Neturi tiek licų');
         reject("You don't have that much money");
       } else if (this.readyState == 4) {
         standInProgress = false;
         reject('this.readyState == 4');
       }
     };
-    xhttp.send(JSON.stringify({ gameSessionID }));
+    xhttp.send(JSON.stringify({ gameSessionID, bet }));
   }).catch(e => console.log(e));
 }
 
@@ -423,21 +424,21 @@ standButton.addEventListener('click', function stand() {
 });
 
 function tie() {
-  outcomeAmount = Number(stake.textContent)
+  outcomeAmount = Number(stake.textContent);
   ending.classList.remove('hide');
   ending.textContent = `Lygiosios`;
   moneyAmount.classList.add('hide');
   moneyAmountText.classList.add('hide');
   restartButton.disabled = false;
-  gameOutcome = 'draw'
-  winningAnimation()
+  gameOutcome = 'draw';
+  winningAnimation();
   // currentStake = 0;
   // stake.textContent = `0`;
   // potentialWinnings.textContent = `0`;
 }
 
 function won() {
-  outcomeAmount = Number(potentialWinnings.textContent)
+  outcomeAmount = Number(potentialWinnings.textContent);
   ending.classList.remove('hide');
   ending.textContent = `Laimėjai`;
   moneyAmount.classList.add('hide');
@@ -448,8 +449,8 @@ function won() {
   restartButton.disabled = false;
   hitButton.disabled = true;
   standButton.disabled = true;
-  gameOutcome = 'win'
-  winningAnimation()
+  gameOutcome = 'win';
+  winningAnimation();
 }
 
 restartButton.addEventListener('click', function restart() {
