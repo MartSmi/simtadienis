@@ -6,6 +6,7 @@ const logger = require(appRoot + '/logger');
 const router = express.Router();
 const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
+const gameLogger = require(appRoot + '/services/gameLogger');
 const gameID = 4; // Tetris gameID
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const endTimestamp = process.env.END_TIMESTAMP;
@@ -50,9 +51,28 @@ router.post('/end', function (req, res, next) {
     res.redirect(303, '/');
     return;
   }
-  const userID = req.body.userID;
+  const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
+  if (score < 0) {
+    logger.warn(
+      'SERIOUS: player has given a score out of bounds ' +
+        parseInt(score) +
+        ' /snake'
+    );
+    res.sendStatus(406);
+    return;
+  }
+  if (score > 3000) {
+    const gameLog = req.body.log;
+    if (!('boardHistory' in gameLog) || !('scoreHistory' in gameLog)) {
+      logger.warn('SERIOUS: player did not provide a log in /tetris snake');
+      res.sendStatus(406);
+      return;
+    }
+    gameLogger.insert(userID, gameSessionID, score, gameLog);
+  }
+
   const winnings = Math.round(score / 100);
   playHistory.update(gameSessionID, winnings);
   balance
