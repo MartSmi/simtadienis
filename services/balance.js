@@ -24,6 +24,7 @@ function update(amount, userID) {
           reject(err);
         }
         resolve();
+        // console.log("added " + amount + " to user " + userID); 
       }
     );
   });

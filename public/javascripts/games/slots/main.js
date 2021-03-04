@@ -101,22 +101,22 @@ async function doSlot() {
 function calWinnings(symbols) {
   if (symbols[0] == symbols[1] && symbols[1] == symbols[2]) {
     if (symbols[0] == 6) {
-      return 250;
+      return 245;
     } else {
-      return 100;
+      return 95;
     }
   } else if (
     (symbols[0] == symbols[1] && symbols[2] == 6) ||
     (symbols[0] == symbols[2] && symbols[1] == 6) ||
     (symbols[1] == symbols[2] && symbols[0] == 6)
   ) {
-    return 25;
+    return 20;
   } else if (
     (symbols[0] == symbols[1] && symbols[0] == 6) ||
     (symbols[0] == symbols[2] && symbols[0] == 6) ||
     (symbols[1] == symbols[2] && symbols[1] == 6)
   ) {
-    return 25;
+    return 20;
   }
   return -5;
 }
