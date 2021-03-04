@@ -26,6 +26,10 @@ body {
   font-weight: 600;
 }
 
+#stripImage {
+  display: none;
+}
+
 #Slots {
   position: relative;
   margin-top: 10px;
@@ -37,6 +41,10 @@ body {
   justify-content: center;
   min-height: 300px;
   min-width: 600px;
+  /* min-height: 557px;
+  max-height: 905px;
+  max-width: 1825.590px;
+  min-width: 600px; */
 }
 
 .slotsImage {
@@ -97,7 +105,7 @@ body {
 
 .reel {
   /* left: 304px; */
-  /* top: -1116px; */
+  top: -971.428%;
   position: relative;
   width: 27.5%;
   height: 2100px;
@@ -173,7 +181,7 @@ body {
   }
 }
 
-.costImage {
+#alertImage {
   position: absolute;
   z-index: 2;
   width: 100%;
