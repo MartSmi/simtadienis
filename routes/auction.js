@@ -5,10 +5,12 @@ const dbPool = require(appRoot + '/db').pool;
 const logger = require(appRoot + '/logger');
 const router = express.Router();
 const v = require('express-validator/check');
+const { ConsoleTransportOptions } = require('winston/lib/winston/transports');
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const auctionStartTimestamp = process.env.AUCTION_START_TIMESTAMP;
 const streamLink = process.env.AUCTION_STREAM_LINK;
 const chatLink = process.env.AUCTION_CHAT_LINK;
+const balance = require(appRoot + '/services/balance');
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
@@ -24,13 +26,27 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/account?auctionNotStarted=true');
     return;
   } else {
-    var opts = {
-      // name: req.session.fullName,
-      balance: req.session.balance,
-      streamLink: streamLink,
-      chatLink: chatLink,
-    };
-    res.render('auction', opts);
+
+
+    const userID = req.session.userID;
+    balance.get(userID).then (bal => {
+      req.session.balance = bal;
+      // console.log(bal);
+      // console.log(req.session.balance);
+
+      var opts = {
+        // name: req.session.fullName,
+        balance: req.session.balance,
+        streamLink: streamLink,
+        chatLink: chatLink,
+      };
+      // console.log(opts.balance);
+      // console.log(req.session.balance);
+      res.render('auction', opts);
+    }).catch(err => {
+      logger.warn(err);
+      res.render('auction');  
+    });
   }
 });
 
