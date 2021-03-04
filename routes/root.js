@@ -10,7 +10,7 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/account?nottime=true');
     return;
   } else if (Date.now() > endTimestamp) {
-    res.redirect(303, '/account?aftertime=true');
+    res.redirect(303, '/auction');
     return;
   } else {
     var opts = {
