@@ -91,5 +91,6 @@ function gameOverRequest() {
   gameOutcome = 'win'
   outcomeAmount = Math.round(game.score/100)
   outcomeAmount += (game.curLevel-1) * 50
+  game.curLevel = 1;
   winningAnimation()
 }

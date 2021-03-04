@@ -31,6 +31,8 @@ class Game {
     this.imgNumber1 = document.getElementById('img_num1');
     this.imgNumber2 = document.getElementById('img_num2');
     this.imgNumber3 = document.getElementById('img_num3');
+
+    // this.tmpCnt = 0;
   }
 
   updateScoreText () {
@@ -81,7 +83,7 @@ class Game {
     }
   }
 
-  start(doResetPoints = true) {
+  start(doResetPoints = true, doResetLevel = false) {
     if (doResetPoints) this.curHealth = this.maxHealth;
 
     this.createLevel();
@@ -90,6 +92,9 @@ class Game {
     this.won = false;
 
     new InputHandler(this.player);
+
+    if (doResetLevel)
+      this.curLevel = 1;
 
     this.gameObjects = [this.level, ...this.pickups, ...this.ghosts, this.player];
 
@@ -114,7 +119,7 @@ class Game {
 
   fLost () {
     this.lost = true;
-    this.curLevel = 1;
+    // this.curLevel = 1;
     //this.start();
   }
 
@@ -128,6 +133,7 @@ class Game {
     this.lost = false;
     this.won = false;
     this.playLose = false;
+    // this.curLevel = 1;
 
 
 
@@ -265,6 +271,8 @@ class Game {
     if (isPickup) {
       this.pickupCount--;
       
+      // this.tmpCnt++;
+
       if (this.pickupCount == 0) {
         this.score += this.winScore;
         this.fWon();
