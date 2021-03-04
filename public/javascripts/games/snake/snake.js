@@ -70,7 +70,7 @@ const game = {
   started: false,
 };
 
-const log = {
+let log = {
   movement: [],
   eatenFood: [],
 };
@@ -99,6 +99,10 @@ let gamePause = false;
 function start() {
   if (!game.started) {
     game.started = true;
+    log = {
+      movement: [],
+      eatenFood: [],
+    };
     startRequest();
   }
 }
