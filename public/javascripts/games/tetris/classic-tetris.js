@@ -338,21 +338,21 @@ class ClassicTetris {
     ];
 
     // HUD stuff coordinates
-    this.scoreX = 105 * px//scoreX;             // score coords
+    this.scoreX = 105 * px; //scoreX;             // score coords
     this.scoreY = scoreY;
-    this.levelX = 105 * px;             // level coords
+    this.levelX = 105 * px; // level coords
     this.levelY = levelY;
-    this.linesX = 105 * px;             // lines coords
+    this.linesX = 105 * px; // lines coords
     this.linesY = linesY;
-    this.nextX = 105 * px;               // next text coords
+    this.nextX = 105 * px; // next text coords
     this.nextY = nextY;
-    this.nextOffsetX = 105 * px;   // next piece coords
+    this.nextOffsetX = 105 * px; // next piece coords
     this.nextOffsetY = nextOffsetY;
     this.pauseX = 105 * px; // pause text coords
     this.pauseY = pauseY;
 
-    // canvas font 
-    this.canvasFont = (px*8).toString()+'px georgia';
+    // canvas font
+    this.canvasFont = (px * 8).toString() + 'px georgia';
     //this.canvasFont= canvasFont.fontsize(px*50);
     this.canvasFontColor = canvasFontColor;
 
@@ -616,7 +616,8 @@ class ClassicTetris {
     else if (level <= 15) return 4;
     else if (level <= 18) return 3;
     else if (level <= 28) return 2;
-    return 2;  1;
+    return 2;
+    1;
   }
 
   //----------------------------------------------------------------------------------------
@@ -1315,6 +1316,10 @@ class ClassicTetris {
 
   _processBurn() {
     if (this.frameCounter % 8 === 0) {
+      if (this.columnsCleared == 0) {
+        log.boardHistory.push(this.board);
+      }
+
       //4) === 0) {
       ++this.columnsCleared;
       if (this.columnsCleared < 5) {
@@ -1386,6 +1391,7 @@ class ClassicTetris {
         // entry delay for next piece
         this.areFrames = this._getARE();
         this.gameState = ClassicTetris.STATE_ARE;
+        log.scoreHistory.push(this.score);
       }
     }
   }
@@ -1426,7 +1432,6 @@ class ClassicTetris {
   }
 
   _triggerGameOver() {
-
     // stop theme song
     if (this.gameTheme) {
       this.gameTheme.pause();
@@ -1584,7 +1589,12 @@ class ClassicTetris {
   // whatever comes first, the level advances by 1. After this, the level advances by 1 for every 10 lines.
   _getLevel() {
     //const a = this.lines - Math.min(this.startLevel * 10 + 10, Math.max(100, this.startLevel * 10 - 50));
-    const a = this.lines - Math.min(this.startLevel * 2 + 10, Math.max(100, this.startLevel * 10 - 50));
+    const a =
+      this.lines -
+      Math.min(
+        this.startLevel * 2 + 10,
+        Math.max(100, this.startLevel * 10 - 50)
+      );
     return this.startLevel + (a >= 0 ? ((a / 10) | 0) + 1 : 0);
   }
 

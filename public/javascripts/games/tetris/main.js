@@ -1,3 +1,5 @@
+let log = { boardHistory: [], scoreHistory: [] };
+
 window.addEventListener('load', event => {
   loadTetris();
   paintHat();
@@ -6,7 +8,7 @@ window.addEventListener('load', event => {
 // Loads tetris
 function loadTetris() {
   const canvas = document.getElementById('tetris-canvas');
-  const tetris = new ClassicTetris(canvas);
+  tetris = new ClassicTetris(canvas);
   document.getElementById('start-stop-btn').addEventListener('click', event => {
     //const startLevel = document.getElementById('level-input').value;
     const startLevel = 5;
@@ -53,6 +55,8 @@ function paintHat() {
 }
 
 function gameStartRequest() {
+  log = { boardHistory: [], scoreHistory: [] };
+
   fetch('/games/tetris/start', { method: 'GET' })
     .then(res => res.json())
     .then(data => (gameSessionID = data.gameSessionID));
@@ -64,9 +68,13 @@ function gameOverRequest(score) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ gameSessionID, score }),
+    body: JSON.stringify({
+      gameSessionID,
+      score,
+      log: score > 3000 ? log : {},
+    }),
   });
-  gameOutcome = 'win'
-  outcomeAmount = Math.round(score/100)
-  winningAnimation()
+  gameOutcome = 'win';
+  outcomeAmount = Math.round(score / 100);
+  winningAnimation();
 }
