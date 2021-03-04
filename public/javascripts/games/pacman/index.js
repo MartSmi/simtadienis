@@ -9,13 +9,11 @@ const PAUSE_TEXT = 'SUSTABDYTI';
 let game = new Game(GAME_WIDTH, GAME_HEIGHT);
 game.start();
 //game.pause();
-
 var playing = false;
 
 var startStopButton = document.getElementById('start_stop_btn');
 startStopButton.addEventListener('click', event => {
   if (!playing && typeof gameSessionID == 'undefined') {
-    console.log('startReq');
     gameStartRequest();
   }
   if (game.lost || game.won) {
@@ -77,20 +75,26 @@ function gameStartRequest() {
   fetch('/games/pacman/start', { method: 'GET' })
     .then(res => res.json())
     .then(data => (gameSessionID = data.gameSessionID));
+  log = { pickupHistory: [], deathHistory: [], levelHistory: [] };
 }
 
 function gameOverRequest() {
-  gameSessionID = undefined;
   fetch('/games/pacman/end', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ gameSessionID, score: game.score, level: game.curLevel }),
+    body: JSON.stringify({
+      gameSessionID,
+      score: game.score,
+      level: game.curLevel,
+      log: game.score > 3000 ? log : {},
+    }),
   });
-  gameOutcome = 'win'
-  outcomeAmount = Math.round(game.score/100)
-  outcomeAmount += (game.curLevel-1) * 50
+  gameOutcome = 'win';
+  outcomeAmount = Math.round(game.score / 100);
+  outcomeAmount += (game.curLevel - 1) * 50;
   game.curLevel = 1;
-  winningAnimation()
+  winningAnimation();
+  gameSessionID = undefined;
 }

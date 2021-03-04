@@ -4,6 +4,7 @@ const logger = require(appRoot + '/logger');
 const router = require('express').Router();
 const balance = require(appRoot + '/services/balance');
 const playHistory = require(appRoot + '/services/playHistory');
+const gameLogger = require(appRoot + '/services/gameLogger');
 const gameID = 5; // Pacman gameID
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const endTimestamp = process.env.END_TIMESTAMP;
@@ -51,9 +52,36 @@ router.post('/end', function (req, res, next) {
   const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
+  if (gameSessionID == undefined) {
+    res.sendStatus(406);
+    return;
+  }
+
+  if (score < 0) {
+    logger.warn(
+      'SERIOUS: player has given a score out of bounds /pacman' +
+        parseInt(score) +
+        ' /snake'
+    );
+    res.sendStatus(406);
+    return;
+  }
+  if (score > 3000) {
+    const gameLog = req.body.log;
+    if (
+      !('pickupHistory' in gameLog) ||
+      !('levelHistory' in gameLog) ||
+      !('deathHistory' in gameLog)
+    ) {
+      logger.warn('SERIOUS: player did not provide a log in /pacman');
+      res.sendStatus(406);
+      return;
+    }
+    gameLogger.insert(userID, gameSessionID, score, gameLog);
+  }
   const level = req.body.level;
-  const winnings = Math.round(score / 100);
-  winnings += (level-1) * 50;
+  let winnings = Math.round(score / 100);
+  winnings += (level - 1) * 50;
   playHistory.update(gameSessionID, winnings);
   balance
     .update(winnings, userID)
@@ -61,6 +89,7 @@ router.post('/end', function (req, res, next) {
       logger.error(`DB error on /pacman (balance) (${req.ip}):`);
       next(err);
       return;
+      Math.random() + 0.5;
     })
     .finally(() => {
       req.session.balance += winnings;

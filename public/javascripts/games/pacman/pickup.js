@@ -3,7 +3,6 @@ class Pickup {
     this.game = game;
     this.position = position;
     this.radius = game.level.cellSizeX / 4;
-    this.position = position;
     this.picked = false;
     this.points = 10;
     // console.log(" got pos: " + position);
@@ -20,22 +19,22 @@ class Pickup {
   }
 
   pick() {
+    log.pickupHistory.push(this.position);
     this.picked = true;
     this.game.addScore(this.points, true);
   }
 
-  checkForCollision () {
+  checkForCollision() {
     let pacmanPos = this.game.getPacmanPos();
     let dx = this.position.x - pacmanPos.x;
     let dy = this.position.y - pacmanPos.y;
 
     let eps = 1e-9;
-    if (Math.abs(dx) > eps && Math.abs(dy) > eps)
-        return false;
+    if (Math.abs(dx) > eps && Math.abs(dy) > eps) return false;
 
     let sqDist = dx * dx + dy * dy;
     let sumRadius = this.radius + this.game.player.radius;
-    let doPick = sqDist <= (sumRadius * sumRadius);
+    let doPick = sqDist <= sumRadius * sumRadius;
 
     if (doPick) this.pick();
   }
@@ -47,12 +46,12 @@ class Pickup {
 }
 
 class PowerPickup extends Pickup {
-  constructor (game, position) {
-    super (game, position);
+  constructor(game, position) {
+    super(game, position);
     this.radius = this.radius * 3;
   }
 
-  pick () {
+  pick() {
     super.pick();
     //console.log("supered");
     this.game.ghostsToFrightened();
@@ -60,8 +59,8 @@ class PowerPickup extends Pickup {
 }
 
 class FruitPickup extends Pickup {
-  constructor (game, position) {
-    super (game, position);
+  constructor(game, position) {
+    super(game, position);
     this.points = 100;
     this.img = document.getElementById('img_fruit');
     this.radius = this.radius * 6;
@@ -71,15 +70,15 @@ class FruitPickup extends Pickup {
     this.timeLeft = this.pickedImgShowTime;
   }
 
-  update (deltaTime) {
-    super.update (deltaTime);
+  update(deltaTime) {
+    super.update(deltaTime);
     if (this.picked && this.timeLeft >= 0) {
       this.timeLeft -= deltaTime;
     }
   }
 
   draw(ctx) {
-    super.draw (ctx);
+    super.draw(ctx);
     if (!this.picked || this.timeLeft < 0) return;
     let posX = this.position.x - this.radius / 2;
     let posY = this.position.y - this.radius / 2;
