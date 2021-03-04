@@ -26,6 +26,10 @@ body {
   font-weight: 600;
 }
 
+#stripImage {
+  display: none;
+}
+
 #Slots {
   position: relative;
   margin-top: 10px;
@@ -37,6 +41,10 @@ body {
   justify-content: center;
   min-height: 300px;
   min-width: 600px;
+  /* min-height: 557px;
+  max-height: 905px;
+  max-width: 1825.590px;
+  min-width: 600px; */
 }
 
 .slotsImage {
@@ -69,27 +77,62 @@ body {
   transition-duration: 0.3s;
 }
 
-#reel1,
-#reel2,
+#reel1 {
+  background-size: 100%;
+  /* margin-left: 5%; */
+  margin-right: 3.9%;
+}
+#reel2 {
+  background-size: 100%;
+  margin-left: 5%;
+  margin-right: 3.9%;
+}
 #reel3 {
+  background-size: 100%;
+  margin-left: 5.2%;
+  /* margin-right: 3.9%; */
+}
+
+#reelContainer {
+  position: relative;
+  top: 6.2%;
+  right: 0.38%;
+  width: 27.1%;
+  height: 21%;
+  display: flex;
+  overflow: hidden;
+}
+
+.reel {
+  /* left: 304px; */
+  top: -971.428%;
+  position: relative;
+  width: 27.5%;
+  height: 2100px;
+  /* background: transparent url(/img/slotmachine1/reel_strip.png) 0 0 repeat-y; */
+  background-color: transparent;
+  /* opacity: 0.5; */
+  background-position-x: 0px;
+  background-position-y: 0px;
+  background-repeat: repeat-y;
+  background-image: url(/images/games/slots/lic_strip.png);
+  background-attachment: scroll;
+  background-size: auto;
+  background-origin: padding-box;
+  background-clip: border-box;
+}
+
+#slot1,
+#slot2,
+#slot3 {
   position: relative;
   top: 7%;
-  right: 0.3%;
-  height: 24%;
-  width: 8%;
+  right: 0.4%;
+  height: 14%;
+  width: 7%;
   background-size: 100% 100%;
-  margin-left: 0.9%;
-  margin-right: 0.9%;
-}
-#slot1, #slot2, #slot3 {
-	position: relative;
-	top: 7%;
-	right: 0.4%;
-	height: 14%;
-	width: 7%;
-	background-size: 100% 100%;
-	margin-left: 1.45%;
-	margin-right: 1.45%;
+  margin-left: 1.45%;
+  margin-right: 1.45%;
 }
 
 .textContainer {
@@ -138,7 +181,7 @@ body {
   }
 }
 
-.costImage {
+#alertImage {
   position: absolute;
   z-index: 2;
   width: 100%;
@@ -179,4 +222,8 @@ body {
 .nav-link,
 .navbar-text {
   color: #eee8aa;
+}
+
+.navbar-brand, .nav-link, .navbar-text {
+  display: inline-block;
 }

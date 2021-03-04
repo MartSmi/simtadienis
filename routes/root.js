@@ -6,11 +6,11 @@ const endTimestamp = process.env.END_TIMESTAMP;
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
     res.redirect(303, '/login');
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     res.redirect(303, '/account?nottime=true');
     return;
-  } else if (Date.now() > endTimestamp) {
-    res.redirect(303, '/account?aftertime=true');
+  } else if (!req.session.adminLoggedIn && Date.now() > endTimestamp) {
+    res.redirect(303, '/auction');
     return;
   } else {
     var opts = {

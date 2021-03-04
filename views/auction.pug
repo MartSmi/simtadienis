@@ -7,9 +7,9 @@ block content
     #wrapper
         
         #video.twitch
-            iframe(src=streamLink frameborder='0' allowfullscreen='true' scrolling='no' height='348' width='570')
+            iframe(src=streamLink frameborder='0' allowfullscreen='true' scrolling='no' height='378' width='620')
         #chat.twitch
-            iframe(src=chatLink height='348' width='322')
+            iframe(src=chatLink height='378' width='350')
         
         //- #twitch-embed
         .bettingContainer
@@ -19,13 +19,14 @@ block content
                     #biggestBetText Daugiausia pastatyta:
                     #betHolderText Pastatė:
                 .betValues
-                    #biggestBet <img id='coinImg' src=/images/auction/L.svg> 10000
-                    #betHolder Vardenis Pavardenis
+                    #biggestBet
+                    #betHolder 
 
             .betInputContainer
                 form#bet-form
                     #formDecorationLine
                     .col-8.col-sm-9.col-md-10
+                        label#inputLabel Daikto pavadinimas
                         input#amount.form-control(type='number' autocomplete='off' name='amount' placeholder='Norima statyti suma' required)
                     .form-group
                     button.btn.btn-primary(type='submit') Statyti

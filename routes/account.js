@@ -31,6 +31,7 @@ function (req, res, next) {
       opts.name = row.full_name;
       opts.username = row.username;
       opts.balance = row.balance;
+      req.session.balance = opts.balance;
       opts.can_send = row.can_send;
       opts.can_receive = row.can_receive;
       opts.frozen = row.is_frozen;

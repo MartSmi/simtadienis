@@ -23,6 +23,10 @@ const maistas = document.getElementsByClassName('maistas');
 // const save = document.getElementById('save');
 let started = false;
 let died = false;
+
+window.addEventListener('load', () => {
+  restartButton.disabled = true;
+})
 window.onload = window.onresize = function () {
   var canvas = document.getElementById('snake');
   scaleConstant = 532 / 610;
@@ -73,7 +77,7 @@ function start() {
 }
 
 function direction(event) {
-  let key = event.keyCode;
+  var key = event.keyCode;
   if (key == 37 && d != 'RIGHT') {
     d = 'LEFT';
     start();
@@ -163,6 +167,8 @@ function mirtis(ar) {
       (325 * box) / 32
     );
 
+    restartButton.disabled = false
+
   //Šitoje vietoje tūrėtų būti kažkas su taškų pervedimu kintamsis: score
   // score prasideda nuo 0. Lenta yra 15*17, todėl teoriškai 254 yra įmanoma surinkti idealiai žaidžiat, bet praktiškai tai nėra realu, nes žaidimas greitėja.
 
@@ -175,7 +181,9 @@ var naujas = Math.floor(Math.random() * maistas.length);
 let segmentai = [];
 // draw everything to the canvas
 function draw() {
+  console.log('draw')
   if (veikia == 1) {
+    console.log(veikia)
     //ctx.drawImage(ground,0,0);
     ctx.drawImage(ground, 0, 0, (608 * box) / 32, (608 * box) / 32);
     ctx.drawImage(
@@ -223,6 +231,7 @@ function draw() {
     if (d == 'UP') snakeY -= 1;
     if (d == 'RIGHT') snakeX += 1;
     if (d == 'DOWN') snakeY += 1;
+    console.log(d)
 
     // if the snake eats the food
     if (snakeX == food.x && snakeY == food.y) {
@@ -271,6 +280,10 @@ function draw() {
       collision(newHead, snake)
     ) {
       mirtis(collision(newHead, snake));
+      snakeX = 9
+      snakeY = 10
+      newHead.x = 9
+      newHead.y = 10
     }
 
     // game over
@@ -280,5 +293,26 @@ function draw() {
     ctx.fillStyle = 'black';
     ctx.font = textFont;
     ctx.fillText(score, 2 * box, 1.6 * box);
-  }
+  } else console.log('neveikia')
 }
+
+let restartButton = document.getElementById('restartButton')
+
+restartButton.addEventListener('click', () => {
+  restartButton.disabled = true
+  ctx.clearRect(0, 0, cvs.width, cvs.height)
+  food.x = Math.floor(Math.random() * 17 + 1)
+  food.y = Math.floor(Math.random() * 15 + 3)
+  snake.x = 9
+  snake.y = 10
+  started = false
+  died = false
+  veikia = 1
+  key = ''
+  d = ''
+
+  snake.length = 1
+  game = setInterval(draw, 180 - score / 2);
+  draw()
+  score = 0
+})

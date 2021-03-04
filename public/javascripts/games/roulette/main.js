@@ -50,10 +50,17 @@ function spin() {
       outcomeAmount = amount*(-1)
       gameOutcome = 'lose'
       winningAnimation()
-      if (chosenColor == 2 && block == 0) {
-        // Won on green
-        winnings *= 15;
-        won(winnings);
+      
+      if (block == 0) {
+        if (chosenColor == 2) {
+          // Won on green
+          winnings *= 15;
+          won(winnings);
+        } else {
+          // Lost
+          winnings *= -1;
+          lost(winnings);
+        }
       } else if (chosenColor == 1 && block % 2 == 0) {
         // Won on black
         winnings *= 2;

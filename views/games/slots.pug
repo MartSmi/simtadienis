@@ -7,11 +7,15 @@ block content
   //- .topbar  
   section#Slots
     .textContainer
-      img.costImage(src='/images/games/slots/kaina.png' data-cost-image='')
+      img#alertImage(src='/images/games/slots/kaina.png')
     img.slotsImage(src='/images/games/slots/slots2.svg')
-    #reel1.symbol1
-    #reel2.symbol1
-    #reel3.symbol1
+    #reelContainer
+      #reel1.reel
+      #reel2.reel
+      #reel3.reel
+
   section#Gira SUKTI!
+
+  img#stripImage(src='/images/games/slots/lic_strip.png')
 
   script(src='/javascripts/games/slots/main.js')

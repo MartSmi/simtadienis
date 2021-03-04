@@ -38,16 +38,24 @@ $(function () {
 
 var biggestBetField = document.getElementById('biggestBet')
 var betHolder = document.getElementById('betHolder')
-console.log(biggestBetField);
+var auctionItem = document.getElementById('inputLabel')
+// console.log(biggestBetField);
 
 function updateBiggestBetFields(){	
+	// console.log("dsd");
 	$.get(
 		'/auction/get-biggest-bet',
 		function(data) {
+			// console.log(data);
 		   	biggestBet = data.biggest_bet;
 		   	bettorName = data.bettor_name;
+			itemName = data.item_name;
+
 			biggestBetField.innerHTML = '<img src=/images/auction/L.svg height="30px" width="30px">' + biggestBet
 			betHolder.innerHTML = bettorName
+
+			//Daikto pavadinimas
+			auctionItem.innerHTML = itemName
 		}
 	).fail(() => {
 		console.log("Klaida, techninė.");
@@ -60,9 +68,6 @@ function updateBiggestBetFields(){
 }
 
 setTimeout(updateBiggestBetFields, 1000);
-
-
-
 
 
 // new Twitch.Player("twitch-embed", {

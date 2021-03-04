@@ -13,11 +13,11 @@ router.get('/', function (req, res, next) {
     logger.warn('attempt to access /pacman without logging in');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() < enterTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() < enterTimestamp) {
     logger.warn('attempt to access /pacman before time');
     res.redirect(303, '/');
     return;
-  } else if (Date.now() > endTimestamp) {
+  } else if (!req.session.adminLoggedIn && Date.now() > endTimestamp) {
     logger.warn('attempt to access /pacman after time');
     res.redirect(303, '/');
     return;
