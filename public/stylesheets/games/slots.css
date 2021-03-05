@@ -34,13 +34,13 @@ body {
   position: relative;
   margin-top: 10px;
   background-size: 50%;
-  width: 40vw;
-  height: 40vw;
+  width: 80vh;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 600px;
-  min-width: 600px;
+  /* min-height: 600px;
+  min-width: 600px; */
   /* min-height: 557px;
   max-height: 905px;
   max-width: 1825.590px;
@@ -107,7 +107,7 @@ body {
   /* left: 304px; */
   top: -971.428%;
   position: relative;
-  width: 27.5%;
+  width: 28.7%;
   height: 2800px;
   /* background: transparent url(/img/slotmachine1/reel_strip.png) 0 0 repeat-y; */
   background-color: transparent;
