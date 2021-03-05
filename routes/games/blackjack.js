@@ -83,6 +83,7 @@ router.post('/bet', function (req, res, next) {
             isTie = true;
           }
         } else if (!isTie) {
+          req.session.balance += bet * 2.5;
           blackjack(req.ip, userID, gameSessionID, next);
         }
       }
