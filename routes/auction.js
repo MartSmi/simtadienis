@@ -26,26 +26,19 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/account?auctionNotStarted=true');
     return;
   } else {
-
-
     const userID = req.session.userID;
+    var opts = {
+      balance: req.session.balance,
+      streamLink: streamLink,
+      chatLink: chatLink,
+    };
     balance.get(userID).then (bal => {
       req.session.balance = bal;
-      // console.log(bal);
-      // console.log(req.session.balance);
-
-      var opts = {
-        // name: req.session.fullName,
-        balance: req.session.balance,
-        streamLink: streamLink,
-        chatLink: chatLink,
-      };
-      // console.log(opts.balance);
-      // console.log(req.session.balance);
+      opts.balance = bal;
       res.render('auction', opts);
     }).catch(err => {
       logger.warn(err);
-      res.render('auction');  
+      res.render('auction', opts);  
     });
   }
 });

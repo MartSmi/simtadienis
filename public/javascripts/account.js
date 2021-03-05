@@ -18,7 +18,7 @@ $(function () {
 					alrt_amount: data.amount
 				});
 
-				var b = $('#balance');
+				var b = $('#balanceText');
 				b.text(parseInt(b.text()) - parseInt(data.amount));
 
 				$('#transactions').find('tbody').prepend(

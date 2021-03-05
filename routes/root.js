@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const enterTimestamp = process.env.ENTER_TIMESTAMP;
 const endTimestamp = process.env.END_TIMESTAMP;
+const appRoot = require('app-root-path');
+const balance = require(appRoot + '/services/balance');
 
 router.get('/', function (req, res, next) {
   if (!req.session.loggedIn) {
@@ -13,11 +15,19 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/auction');
     return;
   } else {
+
+    const userID = req.session.userID;
     var opts = {
-      // name: req.session.fullName,
-      balance: req.session.balance
-    }
-    res.render('root', opts);
+      balance: req.session.balance,
+    };
+    balance.get(userID).then (bal => {
+      req.session.balance = bal;
+      opts.balance = bal;
+      res.render('root', opts);
+    }).catch(err => {
+      logger.warn(err);
+      res.render('root', opts);  
+    });
   }
 });
 module.exports = router;

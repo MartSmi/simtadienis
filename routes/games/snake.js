@@ -24,11 +24,19 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     return;
   } else {
+
+    const userID = req.session.userID;
     var opts = {
-      // name: req.session.fullName,
       balance: req.session.balance,
     };
-    res.render('games/snake', opts);
+    balance.get(userID).then (bal => {
+      req.session.balance = bal;
+      opts.balance = bal;
+      res.render('games/snake', opts);
+    }).catch(err => {
+      logger.warn(err);
+      res.render('games/snake', opts);  
+    });
   }
 });
 
