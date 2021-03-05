@@ -34,12 +34,12 @@ body {
   position: relative;
   margin-top: 10px;
   background-size: 50%;
-  width: 80vw;
+  width: 40vw;
   height: 40vw;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 300px;
+  min-height: 600px;
   min-width: 600px;
   /* min-height: 557px;
   max-height: 905px;
@@ -51,7 +51,7 @@ body {
   transform: translate(3%, 0);
   position: absolute;
   height: 100%;
-  width: 50%;
+  width: 100%;
 }
 
 #Gira {
@@ -96,8 +96,8 @@ body {
 #reelContainer {
   position: relative;
   top: 6.2%;
-  right: 0.38%;
-  width: 27.1%;
+  right: 0.7%;
+  width: 54.1%;
   height: 21%;
   display: flex;
   overflow: hidden;
@@ -108,7 +108,7 @@ body {
   top: -971.428%;
   position: relative;
   width: 27.5%;
-  height: 2100px;
+  height: 2800px;
   /* background: transparent url(/img/slotmachine1/reel_strip.png) 0 0 repeat-y; */
   background-color: transparent;
   /* opacity: 0.5; */
@@ -139,10 +139,10 @@ body {
   background-color: white;
   position: absolute;
   z-index: 1;
-  width: 26.3%;
+  width: 53%;
   height: 14.5%;
   top: 10.7%;
-  left: 36.4%;
+  left: 22.9%;
   background-image: linear-gradient(45deg, #f7dd5b 25%, transparent 25%),
     linear-gradient(-45deg, #c5b358 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, #f7dd5b 75%),
