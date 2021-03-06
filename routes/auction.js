@@ -32,14 +32,17 @@ router.get('/', function (req, res, next) {
       streamLink: streamLink,
       chatLink: chatLink,
     };
-    balance.get(userID).then (bal => {
-      req.session.balance = bal;
-      opts.balance = bal;
-      res.render('auction', opts);
-    }).catch(err => {
-      logger.warn(err);
-      res.render('auction', opts);  
-    });
+    balance
+      .get(userID)
+      .then(bal => {
+        req.session.balance = bal;
+        opts.balance = bal;
+        res.render('auction', opts);
+      })
+      .catch(err => {
+        logger.warn(err);
+        res.render('auction', opts);
+      });
   }
 });
 
@@ -61,7 +64,15 @@ router.post(
       });
       return;
     }
+    if (req.session.guest) {
+      logger.warn(`a guest tried to bet in auction (userID: ${req.ip})`);
 
+      res.json({
+        success: false,
+        error: 'Svečiai negali statyti pinigų',
+      });
+      return;
+    }
     if (req.body.amount < 1) {
       logger.warn(
         `negative amount (secondary) (userID: ${req.session.userID})`
@@ -120,7 +131,12 @@ router.post(
             error: `neužtenka pinigų`,
           });
           throw new Error('not money');
-        } else if (row.is_station || row.is_frozen || !row.can_send || clas == 'III') {
+        } else if (
+          row.is_station ||
+          row.is_frozen ||
+          !row.can_send ||
+          clas == 'III'
+        ) {
           const frozen = row.is_frozen ? 'frozen' : 'non-can_send';
           logger.warn(
             `attempted transfer by ${frozen} account ${from_full_name}`
@@ -146,7 +162,7 @@ router.post(
                   success: false,
                   error: 'aukcionas neprasidėjęs',
                 });
-                reject(err);
+                reject();
               }
 
               resolve(rows);
@@ -258,8 +274,8 @@ router.get('/get-biggest-bet', function (req, res, next) {
       biggestBet = row.biggest_bet;
       let bettorId = row.bettor_id;
       itemName = row.item_name;
-// console.log("hhhh");
-// console.log("biggest Bet = " + biggestBet + "  bettorId = " + bettorId);
+      // console.log("hhhh");
+      // console.log("biggest Bet = " + biggestBet + "  bettorId = " + bettorId);
       return new Promise((resolve, reject) => {
         dbPool.query(
           'SELECT * FROM users WHERE id = ?',
@@ -273,7 +289,7 @@ router.get('/get-biggest-bet', function (req, res, next) {
               //   error: err,
               // });
             } else if (rows.length < 1) {
-              console.log("user was not found...");
+              console.log('user was not found...');
               reject(new Error('user not found'));
             } else {
               resolve(rows);
