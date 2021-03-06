@@ -74,6 +74,8 @@ router.post(
               req.body.password === 'licejus'
             ) {
               req.session.guest = true;
+            } else {
+              req.session.guest = false;
             }
             res.redirect(303, '/');
           }
