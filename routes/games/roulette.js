@@ -22,19 +22,21 @@ router.get('/', (req, res, next) => {
     res.redirect(303, '/');
     return;
   } else {
-
     const userID = req.session.userID;
     var opts = {
       balance: req.session.balance,
     };
-    balance.get(userID).then (bal => {
-      req.session.balance = bal;
-      opts.balance = bal;
-      res.render('games/roulette', opts);
-    }).catch(err => {
-      logger.warn(err);
-      res.render('games/roulette', opts);  
-    });
+    balance
+      .get(userID)
+      .then(bal => {
+        req.session.balance = bal;
+        opts.balance = bal;
+        res.render('games/roulette', opts);
+      })
+      .catch(err => {
+        logger.warn(err);
+        res.render('games/roulette', opts);
+      });
   }
 });
 
@@ -58,6 +60,12 @@ router.post('/spin', (req, res, next) => {
   let winnings = 0;
   let cost = bet;
   let userID = req.session.userID;
+  if (req.session.guest) {
+    let block = Math.floor(Math.random() * 15);
+    res.send({ block });
+    return;
+  }
+
   balance
     .get(userID)
     .then(bal => {

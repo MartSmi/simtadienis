@@ -22,19 +22,21 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     return;
   } else {
-
     const userID = req.session.userID;
     var opts = {
       balance: req.session.balance,
     };
-    balance.get(userID).then (bal => {
-      req.session.balance = bal;
-      opts.balance = bal;
-      res.render('games/slots', opts);
-    }).catch(err => {
-      logger.warn(err);
-      res.render('games/slots', opts);  
-    });
+    balance
+      .get(userID)
+      .then(bal => {
+        req.session.balance = bal;
+        opts.balance = bal;
+        res.render('games/slots', opts);
+      })
+      .catch(err => {
+        logger.warn(err);
+        res.render('games/slots', opts);
+      });
   }
 });
 
@@ -44,38 +46,46 @@ router.get('/spin', (req, res, next) => {
     res.redirect(303, '/');
     return;
   }
-  balance.get(req.session.userID).then(bal => {
-    if (bal < 5) {
-      logger.warn("tried to use slots with small bet");
-      throw new Error ("too small bet");
-    }
 
+  if (req.session.guest) {
     const slots = [randomSlotNum(), randomSlotNum(), randomSlotNum()];
-    const winnings = calWinnings(slots);
-
-    req.session.balance += winnings;
     res.send({ slots });
+    return;
+  }
 
-    const userID = req.session.userID;
-
-    updateBalance(winnings, userID, req, next);
-
-    dbPool.query(
-      'INSERT INTO play_history (user_id, game_id, winnings, time) VALUES(?, ?, ?, CURRENT_TIME())',
-      [userID, gameID, winnings],
-      (err, rows) => {
-        if (err) {
-          logger.error(`DB error on /roulette (${req.ip}):`);
-          next(err);
-          return;
-        }
+  balance
+    .get(req.session.userID)
+    .then(bal => {
+      if (bal < 5) {
+        res.sendStatus(402);
+        throw new Error('too small bet');
       }
-    );
-  }).catch(err => {
-    logger.warn("Error occured while spinning slots: " + err);
-  });
 
-  
+      const slots = [randomSlotNum(), randomSlotNum(), randomSlotNum()];
+      const winnings = calWinnings(slots);
+
+      req.session.balance += winnings;
+      res.send({ slots });
+
+      const userID = req.session.userID;
+
+      updateBalance(winnings, userID, req, next);
+
+      dbPool.query(
+        'INSERT INTO play_history (user_id, game_id, winnings, time) VALUES(?, ?, ?, CURRENT_TIME())',
+        [userID, gameID, winnings],
+        (err, rows) => {
+          if (err) {
+            logger.error(`DB error on /roulette (${req.ip}):`);
+            next(err);
+            return;
+          }
+        }
+      );
+    })
+    .catch(err => {
+      logger.warn('Error occured while spinning slots: ' + err);
+    });
 });
 
 function updateBalance(winnings, userID, req, next) {

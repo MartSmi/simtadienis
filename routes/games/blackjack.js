@@ -23,23 +23,25 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     return;
   } else {
-
     const userID = req.session.userID;
     var opts = {
       balance: req.session.balance,
     };
-    balance.get(userID).then (bal => {
-      req.session.balance = bal;
-      opts.balance = bal;
-      res.render('games/blackjack', opts);
-    }).catch(err => {
-      logger.warn(err);
-      res.render('games/blackjack', opts);  
-    });
+    balance
+      .get(userID)
+      .then(bal => {
+        req.session.balance = bal;
+        opts.balance = bal;
+        res.render('games/blackjack', opts);
+      })
+      .catch(err => {
+        logger.warn(err);
+        res.render('games/blackjack', opts);
+      });
   }
 });
 
-router.post('/bet', function (req, res, next) {
+router.post('/bet', async function (req, res, next) {
   if (!req.session.loggedIn) {
     logger.warn('attempt to bet in /blackjack without logging in');
     res.redirect(303, '/');
@@ -48,73 +50,81 @@ router.post('/bet', function (req, res, next) {
   const bet = req.body.bet;
   const userID = req.session.userID;
   let playerCards, dealerCards, playerPoints, playerAces, points, dealerAces;
-  balance
-    .get(userID)
-    .then(bal => {
-      if (bal < bet) {
-        logger.warn(`User bet more than he has (${req.ip}) /blackjack :`);
-        res.status(406).json({ error: 'Bet too big' });
-        reject();
-        // reject({ message: 'You cannot bet more than you have', status: 406 });
-      }
-    })
-    .then(
-      () =>
-        new Promise((resolve, reject) => {
-          balance.update(bet * -1, userID).catch(err => {
-            reject(err);
-          });
-          req.session.balance -= bet;
-          playHistory.insert(userID, gameID, bet, 0, false).then(row => {
-            resolve(row.insertId);
-          });
-        })
-    )
-    .then(gameSessionID => {
-      playerCards = [drawCard(), drawCard()];
-      dealerCards = [drawCard()];
-      if (
-        (playerCards[0].value == 0 && playerCards[1].value >= 9) ||
-        (playerCards[1].value == 0 && playerCards[0].value >= 9)
-      ) {
-        let isTie = false;
-        if (dealerCards[0].value == 0) {
-          dealerCards.push(drawCard());
-          if (dealerCards[1].value >= 10) {
-            tie(req.ip, userID, gameSessionID, next);
-            isTie = true;
-          }
-        } else if (dealerCards[0].value >= 10) {
-          dealerCards.push(drawCard());
-          if (dealerCards[1].value == 0) {
-            tie(req.ip, userID, gameSessionID, next);
-            isTie = true;
-          }
-        } else if (!isTie) {
-          req.session.balance += bet * 2.5;
-          blackjack(req.ip, userID, gameSessionID, next);
+  if (!req.session.guest) {
+    await balance
+      .get(userID)
+      .then(bal => {
+        if (bal < bet) {
+          logger.warn(`User bet more than he has (${req.ip}) /blackjack :`);
+          res.status(406).json({ error: 'Bet too big' });
+          throw new Error();
+          // reject({ message: 'You cannot bet more than you have', status: 406 });
         }
-      }
-      res.send({ gameSessionID, playerCards, dealerCards });
-
-      playerPoints =
-        calCardValue(playerCards[0].value) + calCardValue(playerCards[1].value);
-      playerAces = (playerCards[0].value == 0) + (playerCards[1].value == 0);
-      points = calCardValue(dealerCards[0].value);
-      dealerAces = dealerCards[0].value == 0;
-
-      dbPool.query(
-        'INSERT INTO blackjack (user_id, game_session_id, player_points, player_aces, dealer_points, dealer_aces, time) VALUES(?, ?, ?, ?, ?, ?, CURRENT_TIME())',
-        [userID, gameSessionID, playerPoints, playerAces, points, dealerAces],
-        (err, rows) => {
-          if (err) reject(err);
-        }
-      );
-    })
-    .catch(err => {
-      logger.error(`DB error on /blackjack (${req.ip}):`);
-      next(err);
+      })
+      .then(
+        () =>
+          new Promise((resolve, reject) => {
+            balance.update(bet * -1, userID).catch(err => {
+              reject(err);
+            });
+            req.session.balance -= bet;
+          })
+      )
+      .catch(err => {
+        logger.error(`DB error on /blackjack (${req.ip}):`);
+        next(err);
+      });
+  }
+  let gameSessionID = await playHistory
+    .insert(userID, gameID, bet, 0, false)
+    .then(row => {
+      return row.insertId;
     });
+
+  playerCards = [drawCard(), drawCard()];
+  dealerCards = [drawCard()];
+  if (
+    (playerCards[0].value == 0 && playerCards[1].value >= 9) ||
+    (playerCards[1].value == 0 && playerCards[0].value >= 9)
+  ) {
+    let isTie = false;
+    if (dealerCards[0].value == 0) {
+      dealerCards.push(drawCard());
+      if (dealerCards[1].value >= 10) {
+        tie(req, userID, gameSessionID, next);
+        isTie = true;
+      }
+    } else if (dealerCards[0].value >= 10) {
+      dealerCards.push(drawCard());
+      if (dealerCards[1].value == 0) {
+        tie(req, userID, gameSessionID, next);
+        isTie = true;
+      }
+    } else if (!isTie) {
+      if (!req.session.guest) {
+        req.session.balance += bet * 2.5;
+        blackjack(req, userID, gameSessionID, next);
+      }
+    }
+  }
+  res.send({ gameSessionID, playerCards, dealerCards });
+
+  playerPoints =
+    calCardValue(playerCards[0].value) + calCardValue(playerCards[1].value);
+  playerAces = (playerCards[0].value == 0) + (playerCards[1].value == 0);
+  points = calCardValue(dealerCards[0].value);
+  dealerAces = dealerCards[0].value == 0;
+
+  dbPool.query(
+    'INSERT INTO blackjack (user_id, game_session_id, player_points, player_aces, dealer_points, dealer_aces, time) VALUES(?, ?, ?, ?, ?, ?, CURRENT_TIME())',
+    [userID, gameSessionID, playerPoints, playerAces, points, dealerAces],
+    (err, rows) => {
+      if (err) {
+        logger.error(`DB error on /blackjack (${req.ip}):`);
+        next(err);
+      }
+    }
+  );
 });
 
 router.post('/hit', function (req, res, next) {
@@ -123,6 +133,7 @@ router.post('/hit', function (req, res, next) {
     res.redirect(303, '/');
     return;
   }
+
   playerCard = drawCard();
   const gameSessionID = req.body.gameSessionID;
   let oldPlayerCards = req.body.playerCards;
@@ -146,10 +157,12 @@ router.post('/hit', function (req, res, next) {
       calCardValue(oldDealerCard.value),
       oldDealerCard.value == 0
     );
-    if (dealer.points == 21) {
-      req.session.balance += bet;
-    } else {
-      req.session.balance += bet * 2;
+    if (!req.session.guest) {
+      if (dealer.points == 21) {
+        req.session.balance += bet;
+      } else {
+        req.session.balance += bet * 2;
+      }
     }
   }
 
@@ -169,12 +182,12 @@ router.post('/hit', function (req, res, next) {
 
       if (dealer.points != undefined) {
         if (safePlayerPoints == dealer.points) {
-          tie(req.ip, userID, gameSessionID, next);
+          tie(req, userID, gameSessionID, next);
         } else if (safePlayerPoints > dealer.points) {
-          won(req.ip, userID, gameSessionID, next);
+          won(req, userID, gameSessionID, next);
         }
       } else if (safePlayerPoints > 21) {
-        lost(req.ip, gameSessionID, next);
+        lost(req, gameSessionID, next);
       } else {
         dbPool.query(
           'UPDATE blackjack SET player_points = player_points + ?, player_aces = player_aces + ? WHERE game_session_id = ?',
@@ -225,15 +238,19 @@ router.post('/stand', async function (req, res, next) {
 
     if (dealer.points > 21 || playerPoints > dealer.points) {
       //Player won
-      req.session.balance += bet * 2;
-      won(req.ip, userID, gameSessionID, next);
+      if (!req.session.guest) {
+        req.session.balance += bet * 2;
+      }
+      won(req, userID, gameSessionID, next);
     } else if (playerPoints < dealer.points) {
       //Dealer won
-      lost(req.ip, gameSessionID, next);
+      lost(req, gameSessionID, next);
     } else {
       //Draw
-      req.session.balance += bet;
-      tie(req.ip, userID, gameSessionID, next);
+      if (!req.session.guest) {
+        req.session.balance += bet;
+      }
+      tie(req, userID, gameSessionID, next);
     }
 
     // req.session.balance;
@@ -278,77 +295,80 @@ function playDealer(points, usedAces) {
   return { newCards, points, aces };
 }
 
-async function blackjack(ip, userID, gameSessionID, next) {
+async function blackjack(req, userID, gameSessionID, next) {
   //Ratio - 3:2, round-up
   let bet = await getBet(gameSessionID, next);
   let winnings = Math.ceil(bet * 2.5);
-
-  balance.update(winnings, userID).catch(err => {
-    logger.error(`DB error on /blackjack (blackjack) (balance) (${req.ip}):`);
-    next(err);
-    return;
-  });
+  if (!req.session.guest) {
+    balance.update(winnings, userID).catch(err => {
+      logger.error(`DB error on /blackjack (blackjack) (balance) (${req.ip}):`);
+      next(err);
+      return;
+    });
+  }
 
   dbPool.query(
     'UPDATE play_history SET winnings = bet * 1.5, ended = TRUE WHERE id = ?',
     [gameSessionID],
     (err, rows) => {
       if (err) {
-        logger.error(`DB error on /blackjack (blackjack) (${ip}):`);
+        logger.error(`DB error on /blackjack (blackjack) (${req.ip}):`);
         next(err);
       }
     }
   );
 }
 
-async function won(ip, userID, gameSessionID, next) {
+async function won(req, userID, gameSessionID, next) {
   let bet = await getBet(gameSessionID, next);
   let winnings = bet * 2;
-  balance.update(winnings, userID).catch(err => {
-    logger.error(`DB error on /blackjack (won) (${ip}):`);
-    next(err);
-    return;
-  });
-
+  if (!req.session.guest) {
+    balance.update(winnings, userID).catch(err => {
+      logger.error(`DB error on /blackjack (won) (${req.ip}):`);
+      next(err);
+      return;
+    });
+  }
   dbPool.query(
     'UPDATE play_history SET winnings = bet, ended = TRUE WHERE id = ?',
     [gameSessionID],
     (err, rows) => {
       if (err) {
-        logger.error(`DB error on /blackjack (won) (${ip}):`);
+        logger.error(`DB error on /blackjack (won) (${req.ip}):`);
         next(err);
       }
     }
   );
 }
 
-function lost(ip, gameSessionID, next) {
+function lost(req, gameSessionID, next) {
   dbPool.query(
     'UPDATE play_history SET winnings = bet * -1, ended = TRUE WHERE id = ?',
     [gameSessionID],
     (err, rows) => {
       if (err) {
-        logger.error(`DB error on /blackjack (lost) (${ip}):`);
+        logger.error(`DB error on /blackjack (lost) (${req.ip}):`);
         next(err);
       }
     }
   );
 }
 
-async function tie(ip, userID, gameSessionID, next) {
+async function tie(req, userID, gameSessionID, next) {
   let bet = await getBet(gameSessionID, next);
-  balance.update(bet, userID).catch(err => {
-    logger.error(`DB error on /blackjack (tie) (balance) (${ip}):`);
-    next(err);
-    return;
-  });
-
+  if (!req.session.guest) {
+    balance.update(bet, userID).catch(err => {
+      logger.error(`DB error on /blackjack (tie) (balance) (${req.ip}):`);
+      next(err);
+      return;
+    });
+  }
   dbPool.query(
     'UPDATE play_history SET winnings = 0, ended = TRUE WHERE id = ?',
     [gameSessionID],
     (err, rows) => {
       if (err) {
-        logger.error(`DB error on /blackjack (tie) (${ip}):`);
+        logger.error(`DB error on /blackjack (tie) (${req.ip}):`);
         next(err);
       }
     }

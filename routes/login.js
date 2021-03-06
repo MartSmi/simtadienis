@@ -59,6 +59,7 @@ router.post(
             );
             res.redirect(303, req.baseUrl + '?badcreds=true');
           } else {
+            console.log(req.body.password + ': ' + rows[0].password);
             logger.info(`login: ${rows[0].full_name} (${rows[0].klase})`);
             req.session.loggedIn = true;
             req.session.userID = rows[0].id;
@@ -68,6 +69,12 @@ router.post(
             // console.log(req.session.fullName);
             // console.log(req.session.balance);
             // console.log(rows);
+            if (
+              req.body.username == 'guest' &&
+              req.body.password === 'licejus'
+            ) {
+              req.session.guest = true;
+            }
             res.redirect(303, '/');
           }
         }

@@ -23,44 +23,40 @@ var slotMachine = {
   payoutStopTime: 200,
   numIconsPerReel: 7,
   spinning: false,
-  spin: function () {
+  spin: async function () {
     if (slotMachine.spinning) {
       return;
     }
 
-    let balanceText = document.getElementById('balanceText');
-    let balance = parseInt(balanceText.innerHTML);
-    if (balance < 5) {
-      alert("Per mažai licų!");
+    slotMachine.spinning = true;
+    let symbols = await spinRequest();
+    if (symbols == undefined) {
+      alert('Per mažai licų!');
       return;
     }
-
     alertImage.hidden = true;
-    gameOutcome = 'lose'
-    outcomeAmount = -5
-    winningAnimation()
+    gameOutcome = 'lose';
+    outcomeAmount = -5;
+    winningAnimation();
 
-    slotMachine.spinning = true;
-    spinRequest().then(symbols => {
+    window.setTimeout(function () {
+      var a = 0;
       window.setTimeout(function () {
-        var a = 0;
-        window.setTimeout(function () {
-          slotMachine._stop_reel_spin(1, symbols[0]);
-        }, a);
-        a += slotMachine.secondReelStopTime;
-        window.setTimeout(function () {
-          slotMachine._stop_reel_spin(2, symbols[1]);
-        }, a);
-        a += slotMachine.thirdReelStopTime;
-        window.setTimeout(function () {
-          slotMachine._stop_reel_spin(3, symbols[2]);
-        }, a);
-        a += slotMachine.payoutStopTime;
-        window.setTimeout(function () {
-          slotMachine.end_spin(symbols);
-        }, a);
-      }, slotMachine.firstReelStopTime);
-    });
+        slotMachine._stop_reel_spin(1, symbols[0]);
+      }, a);
+      a += slotMachine.secondReelStopTime;
+      window.setTimeout(function () {
+        slotMachine._stop_reel_spin(2, symbols[1]);
+      }, a);
+      a += slotMachine.thirdReelStopTime;
+      window.setTimeout(function () {
+        slotMachine._stop_reel_spin(3, symbols[2]);
+      }, a);
+      a += slotMachine.payoutStopTime;
+      window.setTimeout(function () {
+        slotMachine.end_spin(symbols);
+      }, a);
+    }, slotMachine.firstReelStopTime);
 
     // var a = parseInt($('#credits').html(), 10);
 
@@ -142,9 +138,9 @@ var slotMachine = {
   end_spin: function (symbols) {
     if (calWinnings(symbols) > 0) {
       console.log('won');
-      gameOutcome = 'win'
-      outcomeAmount = calWinnings(symbols) + 5
-      winningAnimation()
+      gameOutcome = 'win';
+      outcomeAmount = calWinnings(symbols) + 5;
+      winningAnimation();
       alertImage.src = '/images/games/slots/laimejai.png';
     } else {
       console.log('lost');
@@ -187,6 +183,8 @@ function spinRequest() {
       if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           resolve(JSON.parse(xhr.responseText).slots);
+        } else if (xhr.status === 402) {
+          resolve();
         } else {
           reject(xhr.statusText);
         }

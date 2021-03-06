@@ -77,7 +77,7 @@ function destroy_sessions_pred(res, predicate) {
 }
 
 router.use(function (req, res, next) {
-  console.log("using");
+  console.log('using');
   if (!req.session.adminLoggedIn) {
     logger.warn(
       `${req.ip} attempted to access /admin-action without being logged in`

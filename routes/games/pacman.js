@@ -23,20 +23,21 @@ router.get('/', function (req, res, next) {
     res.redirect(303, '/');
     return;
   } else {
-
     const userID = req.session.userID;
     var opts = {
       balance: req.session.balance,
     };
-    balance.get(userID).then (bal => {
-      req.session.balance = bal;
-      opts.balance = bal;
-      res.render('games/pacman', opts);
-    }).catch(err => {
-      logger.warn(err);
-      res.render('games/pacman', opts);  
-    });
-    
+    balance
+      .get(userID)
+      .then(bal => {
+        req.session.balance = bal;
+        opts.balance = bal;
+        res.render('games/pacman', opts);
+      })
+      .catch(err => {
+        logger.warn(err);
+        res.render('games/pacman', opts);
+      });
   }
 });
 
@@ -58,6 +59,11 @@ router.post('/end', function (req, res, next) {
     res.redirect(303, '/');
     return;
   }
+  if (req.session.guest) {
+    res.sendStatus(200);
+    return;
+  }
+
   const userID = req.session.userID;
   const gameSessionID = req.body.gameSessionID;
   const score = req.body.score;
